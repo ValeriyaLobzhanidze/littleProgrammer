@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
+
+export enum MODE{
+  EDIT_MODE
+}
 
 @Component({
   selector: 'app-code-editor',
@@ -7,6 +11,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CodeEditorComponent implements OnInit {
 
+  private mode: MODE;
+  private currentX: number = 10;
+  private currentY: number = 50;
+
   constructor() { }
 
   ngOnInit() {
@@ -14,12 +22,25 @@ export class CodeEditorComponent implements OnInit {
       let canvas: HTMLCanvasElement = document.getElementById('code-editor') as HTMLCanvasElement;
       if (canvas.getContext) {
         let ctx = canvas.getContext('2d');
-
-        ctx.fillStyle = 'rgb(200, 0, 0)';
-        ctx.fillRect(10, 10, 50, 50);
-
-        ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
-        ctx.fillRect(30, 30, 50, 50);
-    }}, 2000);
+        ctx.strokeRect(0, 0, 500, 500);
+    }}, 1000);
     }
+
+  public onClick(): void {
+    this.mode = MODE.EDIT_MODE;
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    this.draw(event.key);
+  }
+
+  private draw(key: string): void {
+    let canvas: HTMLCanvasElement = document.getElementById('code-editor') as HTMLCanvasElement;
+    if (canvas.getContext) {
+      let ctx = canvas.getContext('2d');
+      ctx.font = '25px serif';
+      ctx.fillText(key, this.currentX += 20, this.currentY);
+    }
+  }
 }

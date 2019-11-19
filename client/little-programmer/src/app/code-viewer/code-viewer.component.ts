@@ -14,13 +14,10 @@ export class CodeViewerComponent implements OnInit {
       let canvas: HTMLCanvasElement = document.getElementById('code-viewer') as HTMLCanvasElement;
       if (canvas.getContext) {
         let ctx = canvas.getContext('2d');
-
-        ctx.fillStyle = 'rgb(130, 50, 45)';
-        ctx.fillRect(10, 10, 50, 50);
-
-        ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
-        ctx.fillRect(30, 30, 50, 50);
-      }}, 2000);
+        ctx.fillStyle = 'rgb(169,255,251)';
+        ctx.fillRect(0, 0, 500, 500);
+        ctx.strokeRect(0, 0, 500, 500);
+      }}, 1000);
   }
 
 }
