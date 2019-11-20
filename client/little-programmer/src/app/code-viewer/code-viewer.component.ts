@@ -14,8 +14,9 @@ export class CodeViewerComponent implements OnInit {
       let canvas: HTMLCanvasElement = document.getElementById('code-viewer') as HTMLCanvasElement;
       if (canvas.getContext) {
         let ctx = canvas.getContext('2d');
-        ctx.fillStyle = 'rgb(169,255,251)';
+        ctx.fillStyle = 'rgb(125,250,255)';
         ctx.fillRect(0, 0, 500, 500);
+        ctx.strokeStyle = 'rgb(43,208,255)';
         ctx.strokeRect(0, 0, 500, 500);
       }}, 1000);
   }
