@@ -1,0 +1,24 @@
+#line-holder
+{
+  display: flex;
+  flex-direction: row;
+}
+
+#code-line
+{
+  transform: translate(10px, 0px);
+  height: 30px;
+  width: 500px;
+  margin-top: 2px;
+  font-family: KBSticktoIt;
+  color: #58fbce;
+  font-size: 25px;
+}
+
+#number-holder
+{
+  width: 20px;
+  font-family: KBSticktoIt;
+  font-size: 25px;
+  color: #9f92ff;
+}

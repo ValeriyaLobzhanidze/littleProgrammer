@@ -1,2 +1,9 @@
-<canvas (click)="onClick()" id="code-editor" width={{canvasWidth}} height={{canvasHeight}}>
-</canvas>
+<div id="block">
+  <div id="lines-holder">
+    <ng-container *ngFor="let number of numbers">
+    <app-code-line [numberOfLine]="number" #codeLineComponent>
+    </app-code-line>
+    </ng-container>
+    <button id="button" (click)="onClick()">Execute!</button>
+  </div>
+</div>
