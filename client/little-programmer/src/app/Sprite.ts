@@ -3,44 +3,55 @@ import {CanvasAnimation} from "./CanvasAnimation";
 import {Render} from "./Render";
 
 export class Sprite {
-  public state: State = State.STABLE;
+  private state: State = State.STABLE;
 
-  public ctx;
-  public image;
-  public frameIndex = 0;
-  public tickCount = 0;
+  private readonly image;
+  private frameIndex = 0;
+  private tickCount = 0;
+  private canvas: any;
 
-  public ctxWidth: number;
-  public ctxHeight: number;
-  public spriteWidth: number;
-  public spriteHeight: number;
-  public numberOfFrames: number;
-  public ticketsPerFrame: number;
+  private readonly spriteWidth: number;
+  private readonly spriteHeight: number;
+  private readonly numberOfFrames: number;
+  private readonly ticketsPerFrame: number;
 
-  public animation: CanvasAnimation;
-  public renderFuncList: Render[];
+  private spriteAnimation: CanvasAnimation;
+  private readonly backgroundRenderFunctionsList: Render[];
 
-  public dx: number;
-  public dy: number;
+  private dx: number;
+  private dy: number;
 
-
-  constructor(ctx, image, ctxWidth: number, ctxHeight: number, spriteWidth: number, spriteHeight: number,
-              numberOfFrames: number, ticketsPerFrame: number, animation: CanvasAnimation, dx: number, dy: number) {
-    this.ctx = ctx;
-    this.image = image;
-    this.ctxWidth = ctxWidth;
-    this.ctxHeight = ctxHeight;
+  constructor(canvas: any, imageSrc: string, spriteWidth: number, spriteHeight: number, numberOfFrames: number,
+              ticketsPerFrame: number, dx: number, dy: number, backList: Render[]) {
+    this.canvas = canvas;
+    this.image = new Image(0, 0);
+    this.image.src = imageSrc;
     this.spriteWidth = spriteWidth;
     this.spriteHeight = spriteHeight;
     this.numberOfFrames = numberOfFrames;
     this.ticketsPerFrame = ticketsPerFrame;
-    this.animation = animation;
     this.dx = dx;
     this.dy = dy;
+    this.backgroundRenderFunctionsList = backList
+  }
+
+  private clear(): void {
+    let ctx = this.canvas.getContext('2d');
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  private callBackgroundRenderFunctions() {
+    if (this.backgroundRenderFunctionsList != null) {
+      for (let func of this.backgroundRenderFunctionsList) {
+        func.render();
+      }
+    }
   }
 
   public start(): void {
     let loop = () => {
+      this.clear();
+      this.callBackgroundRenderFunctions();
       this.update();
       this.render();
       window.requestAnimationFrame(loop);
@@ -48,30 +59,25 @@ export class Sprite {
     window.requestAnimationFrame(loop);
   }
 
-  public render(): void {
-    this.ctx.clearRect(0, 0, this.ctxWidth, this.ctxHeight);
-
-    for(let renderFunc of this.renderFuncList){
-      renderFunc.render();
-    }
-
-    this.ctx.drawImage(this.image,
-      this.frameIndex * this.spriteWidth,
-      0,
-      this.spriteWidth,
-      this.spriteHeight,
-      this.dx,
-      this.dy,
-      this.spriteWidth,
-      this.spriteHeight);
+  private render(): void {
+      let ctx = this.canvas.getContext('2d');
+      ctx.drawImage(this.image,
+        this.frameIndex * this.spriteWidth,
+        0,
+        this.spriteWidth,
+        this.spriteHeight,
+        this.dx,
+        this.dy,
+        this.spriteWidth,
+        this.spriteHeight);
   }
 
-  public update() {
+  private update() {
     this.tickCount++;
 
-    if (this.state == State.ACTIVE) {
-      if (!this.animation.shouldEnd()) {
-        let cords = this.animation.update();
+    if (this.state == State.ACTIVE && this.spriteAnimation != null) {
+      if (!this.spriteAnimation.shouldEnd()) {
+        let cords = this.spriteAnimation.update();
         this.dx = cords.dx;
         this.dy = cords.dy;
       } else {
@@ -87,5 +93,13 @@ export class Sprite {
         this.frameIndex = 0;
       }
     }
+  }
+
+  public setAnimation(animation: CanvasAnimation): void {
+    this.spriteAnimation = animation;
+  }
+
+  public activate(): void {
+    this.state = State.ACTIVE;
   }
 }

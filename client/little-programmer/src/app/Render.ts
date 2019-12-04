@@ -1,3 +1,4 @@
 export interface Render {
-  render: () => { x: number, y: number }[];
+  render: () => void;
+  getCords(): { x: number, y: number }[];
 }

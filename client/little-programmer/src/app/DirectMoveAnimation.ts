@@ -8,8 +8,8 @@ export class DirectMoveAnimation implements CanvasAnimation {
   public cords;
   public route;
   public speed;
-  public dx: { val: number };
-  public dy: { val: number };
+  public dx: { val: number } = {val: 0};
+  public dy: { val: number } = {val: 0};
 
   constructor(cords, route, speed: number, dx: number, dy: number) {
     this.cords = cords;
@@ -80,6 +80,6 @@ export class DirectMoveAnimation implements CanvasAnimation {
   }
 
   public shouldEnd(): boolean {
-    return this.amountOfVisitedCords < this.route.length
+    return this.amountOfVisitedCords >= this.route.length
   }
 }

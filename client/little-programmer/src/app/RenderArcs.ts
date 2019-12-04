@@ -2,6 +2,7 @@ import {Render} from "./Render";
 
 export class RenderArcs implements Render {
   private ctx: any;
+  private cords: { x: number, y: number }[];
   private readonly numOfArcsInRow: number;
   private readonly numOfArcsInCol: number;
   private readonly startX: number;
@@ -18,9 +19,10 @@ export class RenderArcs implements Render {
     this.numOfArcsInCol = numOfArcsInCol;
     this.startX = startX;
     this.startY = startY;
+    this.calculateCords();
   }
 
-  public render(): { x: number, y: number }[] {
+  private calculateCords(): void {
     let cords: { x: number, y: number }[] = [];
     let dx = this.startX;
     let dy = this.startY;
@@ -28,15 +30,24 @@ export class RenderArcs implements Render {
       for (let j = 0; j < this.numOfArcsInRow; j++) {
         let cord = {x: dx, y: dy};
         cords.push(cord);
-        this.ctx.beginPath();
-        this.ctx.arc(dx, dy, this.radius, 0, 2 * Math.PI);
-        this.ctx.fillStyle = this.color;
-        this.ctx.fill();
         dx += this.diffX;
       }
       dx = this.startX;
       dy += this.diffY;
     }
-    return cords;
+    this.cords = cords;
+  }
+
+  public render(): void {
+    for (let cord of this.cords) {
+      this.ctx.beginPath();
+      this.ctx.arc(cord.x, cord.y, this.radius, 0, 2 * Math.PI);
+      this.ctx.fillStyle = this.color;
+      this.ctx.fill();
+    }
+  }
+
+  public getCords(): { x: number, y: number }[] {
+    return this.cords;
   }
 }
