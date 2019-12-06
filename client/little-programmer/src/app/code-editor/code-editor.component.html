@@ -1,8 +1,9 @@
 <div id="block">
   <div id="lines-holder">
     <ng-container *ngFor="let number of numbers">
-    <app-code-line [numberOfLine]="number" #codeLineComponent>
-    </app-code-line>
+      <app-code-line [numberOfLine]="number" #codeLineComponent
+                     [isValid]="isValid">
+      </app-code-line>
     </ng-container>
     <button id="button" (click)="onClick()">Execute!</button>
   </div>

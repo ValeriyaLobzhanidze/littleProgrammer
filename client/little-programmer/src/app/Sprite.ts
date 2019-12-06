@@ -1,38 +1,32 @@
 import {State} from "./State";
 import {CanvasAnimation} from "./CanvasAnimation";
-import {Render} from "./Render";
+import {MatrixRender} from "./MatrixRender";
 
 export class Sprite {
   private state: State = State.STABLE;
 
-  private readonly image;
+  private readonly spriteWidth = 30;
+  private readonly spriteHeight = 38;
+  private readonly numberOfFrames = 6;
+  private readonly ticketsPerFrame = 4;
+
   private frameIndex = 0;
   private tickCount = 0;
   private canvas: any;
-
-  private readonly spriteWidth: number;
-  private readonly spriteHeight: number;
-  private readonly numberOfFrames: number;
-  private readonly ticketsPerFrame: number;
+  private readonly image;
 
   private spriteAnimation: CanvasAnimation;
-  private readonly backgroundRenderFunctionsList: Render[];
+  private backgroundRenderFunction: MatrixRender;
 
   private dx: number;
   private dy: number;
 
-  constructor(canvas: any, imageSrc: string, spriteWidth: number, spriteHeight: number, numberOfFrames: number,
-              ticketsPerFrame: number, dx: number, dy: number, backList: Render[]) {
+  constructor(canvas: any) {
     this.canvas = canvas;
     this.image = new Image(0, 0);
-    this.image.src = imageSrc;
-    this.spriteWidth = spriteWidth;
-    this.spriteHeight = spriteHeight;
-    this.numberOfFrames = numberOfFrames;
-    this.ticketsPerFrame = ticketsPerFrame;
-    this.dx = dx;
-    this.dy = dy;
-    this.backgroundRenderFunctionsList = backList
+    this.image.src = "/assets/images/radish.png";
+    this.dx = this.spriteWidth;
+    this.dy = this.spriteHeight;
   }
 
   private clear(): void {
@@ -41,10 +35,8 @@ export class Sprite {
   }
 
   private callBackgroundRenderFunctions() {
-    if (this.backgroundRenderFunctionsList != null) {
-      for (let func of this.backgroundRenderFunctionsList) {
-        func.render();
-      }
+    if (this.backgroundRenderFunction != null) {
+      this.backgroundRenderFunction.render();
     }
   }
 
@@ -60,16 +52,16 @@ export class Sprite {
   }
 
   private render(): void {
-      let ctx = this.canvas.getContext('2d');
-      ctx.drawImage(this.image,
-        this.frameIndex * this.spriteWidth,
-        0,
-        this.spriteWidth,
-        this.spriteHeight,
-        this.dx,
-        this.dy,
-        this.spriteWidth,
-        this.spriteHeight);
+    let ctx = this.canvas.getContext('2d');
+    ctx.drawImage(this.image,
+      this.frameIndex * this.spriteWidth,
+      0,
+      this.spriteWidth,
+      this.spriteHeight,
+      this.dx,
+      this.dy,
+      this.spriteWidth,
+      this.spriteHeight);
   }
 
   private update() {
@@ -101,5 +93,21 @@ export class Sprite {
 
   public activate(): void {
     this.state = State.ACTIVE;
+  }
+
+  public getCords(): { x: number, y: number } {
+    return {x: this.dx, y: this.dy};
+  }
+
+  public setBackgroundRenderFunction(back: MatrixRender): void {
+    this.backgroundRenderFunction = back;
+  }
+
+  public getSpriteWidth(): number {
+    return this.spriteWidth;
+  }
+
+  public getSpriteHeight(): number {
+    return this.spriteHeight;
   }
 }

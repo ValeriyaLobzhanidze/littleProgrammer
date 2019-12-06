@@ -1,4 +1,5 @@
 <div id="line-holder">
   <div id="number-holder">{{numberOfLine}}</div>
-  <input id="code-line" type="text" maxlength="{{maxLength}}" [(ngModel)]="codeLine">
+  <input id="code-line" type="text" [className]="isSyntaxValid ? 'right-syntax' : 'wrong-syntax' "
+         maxlength="{{maxLength}}" [(ngModel)]="codeLine" (input)="onInput()">
 </div>

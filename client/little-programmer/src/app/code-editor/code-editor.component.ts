@@ -1,5 +1,6 @@
 import {Component, HostListener, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {CodeLineComponent} from "../code-line/code-line.component";
+import {SyntaxValidator} from "../SyntaxValidator";
 
 @Component({
   selector: 'app-code-editor',
@@ -10,11 +11,16 @@ export class CodeEditorComponent implements OnInit {
   public numbers: number[];
   @ViewChildren(CodeLineComponent)
   public codeLines: QueryList<CodeLineComponent>;
+  private syntaxValidator: SyntaxValidator = new SyntaxValidator();
+  public isValid = (val: string) => {
+    return this.syntaxValidator.validate(val);
+  }
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
-    this.numbers = Array(15).fill(0).map((x,i)=>i);
+    this.numbers = Array(15).fill(0).map((x, i) => i);
   }
 
   @HostListener('window:keyup', ['$event'])

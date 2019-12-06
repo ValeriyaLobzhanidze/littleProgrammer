@@ -15,9 +15,7 @@ export class CodeViewerComponent implements OnInit {
     setTimeout(() => {
       let canvas = document.getElementById('code-viewer') as any;
       this.level = new DirectMoveLevel(canvas);
-      let route = [1, 4, 5, 6, 3, 2, 5, 4, 1];
       this.level.load();
-      this.level.activate(route);
     }, 1000);
   }
 }
