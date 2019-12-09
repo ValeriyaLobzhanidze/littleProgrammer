@@ -1,6 +1,8 @@
 import {Component, HostListener, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {CodeLineComponent} from "../code-line/code-line.component";
-import {SyntaxValidator} from "../SyntaxValidator";
+import {SyntaxParser} from "../SyntaxParser";
+import {SharedService} from "../SharedService";
+import {DirectMoveFunctions} from "../DirectMoveFunctions";
 
 @Component({
   selector: 'app-code-editor',
@@ -11,12 +13,16 @@ export class CodeEditorComponent implements OnInit {
   public numbers: number[];
   @ViewChildren(CodeLineComponent)
   public codeLines: QueryList<CodeLineComponent>;
-  private syntaxValidator: SyntaxValidator = new SyntaxValidator();
-  public isValid = (val: string) => {
-    return this.syntaxValidator.validate(val);
-  }
+  private syntaxParser: SyntaxParser = new SyntaxParser();
 
-  constructor() {
+  public isValid = (val: string) => {
+    return this.syntaxParser.validate(val);
+  };
+
+  public sharedService: SharedService;
+
+  constructor(sharedService: SharedService) {
+    this.sharedService = sharedService;
   }
 
   ngOnInit() {
@@ -29,6 +35,26 @@ export class CodeEditorComponent implements OnInit {
   }
 
   onClick(): void {
+    let errorLines = this.codeLines.filter(elem => elem.isSyntaxValid === false && elem.codeLine != "");
+    if (errorLines.length > 0) {
+      let errorStr = "";
+      for (let error of errorLines) {
+        errorStr = errorStr + "line " + error.numberOfLine + "\n";
+      }
+      errorStr = "Fix errors in:\n" + errorStr;
+      alert(errorStr);
+      return;
 
+    } else {
+      let codeLines = [];
+      this.codeLines.forEach(elem => {
+        if (elem.codeLine != "") {
+          codeLines.push(elem.codeLine);
+        }
+      });
+
+      let codeLinesMap: Map<DirectMoveFunctions, number> = this.syntaxParser.parse(codeLines);
+      this.sharedService.setData(codeLinesMap);
+    }
   }
 }

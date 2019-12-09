@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DirectMoveLevel} from "../DirectMoveLevel";
+import {SharedService} from "../SharedService";
 
 @Component({
   selector: 'app-code-viewer',
@@ -11,7 +12,17 @@ export class CodeViewerComponent implements OnInit {
   public readonly canvasHeight: number = 700;
   private level: DirectMoveLevel;
 
+  public sharedService: SharedService;
+
+  constructor(sharedService: SharedService) {
+    this.sharedService = sharedService;
+  }
+
   ngOnInit() {
+    this.sharedService.currentData.subscribe(codeLinesMap => {
+      this.level.activate(codeLinesMap);
+    });
+
     setTimeout(() => {
       let canvas = document.getElementById('code-viewer') as any;
       this.level = new DirectMoveLevel(canvas);

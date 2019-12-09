@@ -1,28 +1,91 @@
 import {CanvasAnimation} from "./CanvasAnimation";
+import {DirectMoveFunctions} from "./DirectMoveFunctions";
 
 export class DirectMoveAnimation implements CanvasAnimation {
-  public curPos = 0;
-  public prevPos = -1;
-  public amountOfVisitedCords = 0;
+  private curPos = 0;
+  private prevPos = -1;
+  private amountOfVisitedCords = 0;
 
-  public cords;
-  public route;
-  public speed;
-  public dx: { val: number } = {val: 0};
-  public dy: { val: number } = {val: 0};
+  private matrixCords;
+  private speed;
+  private dx: { val: number } = {val: 0};
+  private dy: { val: number } = {val: 0};
+  private readonly route = [];
+  private numOfCols: number;
+  private numOfRows: number;
 
-  constructor(cords, route, speed: number, dx: number, dy: number) {
-    this.cords = cords;
-    this.route = route;
+  constructor(matrixCords, codeLines, numOfRows: number, numOfCols: number, speed: number, dx: number, dy: number) {
+    this.matrixCords = matrixCords;
     this.speed = speed;
     this.dx.val = dx;
     this.dy.val = dy;
+    this.numOfCols = numOfCols;
+    this.numOfRows = numOfRows;
+    this.route = this.generateRoute(codeLines, numOfRows, numOfCols);
   }
 
-  public activeCord: { val: number };
-  public curBoundary: number;
-  public comparableFunction: (first: number, second: number) => boolean;
-  public diff: number;
+  private activeCord: { val: number };
+  private curBoundary: number;
+  private comparableFunction: (first: number, second: number) => boolean;
+  private diff: number;
+
+  private handleValue(checkFunction: (val: number) => boolean, checkVal: number, route: number[], numOfLastErr: { val: number }
+    , idx: number) {
+    if (checkFunction(checkVal)) {
+      route.push(checkVal);
+    } else {
+      numOfLastErr.val = idx;
+      route.push(-1);
+    }
+  }
+
+  private generateRoute(codeLines: Map<DirectMoveFunctions, number>, numOfRows: number, numOfCols: number): number[] {
+    let route: number[] = [];
+    let idx = -1;
+    let numOfLastErr = {val: -1};
+
+    for (let key of codeLines.keys()) {
+      let value = codeLines.get(key);
+      let checkFunction;
+      let checkValue;
+      let curPos = route.length > 0 ? route[route.length - 1] : 0;
+      switch (key) {
+        case DirectMoveFunctions.MOVE_RIGHT:
+          checkFunction = (val) => {
+            return val < numOfCols
+          };
+          checkValue = curPos + value;
+          break;
+
+        case DirectMoveFunctions.MOVE_LEFT:
+          checkFunction = (val) => {
+            return val >= 0
+          };
+          checkValue = curPos - value;
+          break;
+
+        case DirectMoveFunctions.MOVE_UP:
+          checkFunction = (val) => {
+            return val >= 0
+          };
+          checkValue = curPos - value * numOfCols;
+          break;
+
+        case DirectMoveFunctions.MOVE_DOWN:
+          checkFunction = (val) => {
+            return val < numOfRows * numOfCols
+          };
+          checkValue = curPos + value * numOfCols;
+          break;
+      }
+      idx++;
+      this.handleValue(checkFunction, checkValue, route, numOfLastErr, idx);
+      if (numOfLastErr.val != -1) {
+        break;
+      }
+    }
+    return route;
+  }
 
   private isGreater(first: number, second: number): boolean {
     return first > second;
@@ -33,7 +96,7 @@ export class DirectMoveAnimation implements CanvasAnimation {
   }
 
   private isLeftRightMove(diff: number) {
-    return diff == 1 || diff == -1;
+    return diff < this.numOfCols;
   }
 
   private updateConfig(): void {
@@ -41,10 +104,10 @@ export class DirectMoveAnimation implements CanvasAnimation {
     let diff = index - this.curPos;
     let curBoundary;
     if (this.isLeftRightMove(diff)) {
-      curBoundary = this.cords[index - 1].x;
+      curBoundary = this.matrixCords[index - 1].x;
       this.activeCord = this.dx;
     } else {
-      curBoundary = this.cords[index - 1].y;
+      curBoundary = this.matrixCords[index - 1].y;
       this.activeCord = this.dy
     }
 
@@ -80,6 +143,6 @@ export class DirectMoveAnimation implements CanvasAnimation {
   }
 
   public shouldEnd(): boolean {
-    return this.amountOfVisitedCords >= this.route.length
+    return this.amountOfVisitedCords >= this.route.length || this.route[this.amountOfVisitedCords] == -1;
   }
 }

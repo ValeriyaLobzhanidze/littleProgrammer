@@ -1,4 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
+import {SharedService} from "../SharedService";
 
 @Component({
   selector: 'app-code-line',
@@ -13,19 +14,16 @@ export class CodeLineComponent implements OnInit {
   @Input() public numberOfLine: number;
   @Input() public isValid: (val: string) => boolean;
 
-  constructor() {
+  public sharedService: SharedService;
+
+  constructor(sharedService: SharedService) {
+    this.sharedService = sharedService;
   }
 
   ngOnInit() {
   }
 
   onInput() {
-    let pattern = "([a-zA-Z]+)\\([0-9]{1,2}\\);";
-    let match = this.codeLine.match(pattern);
-    if (match == null || match[0].length != this.codeLine.length) {
-      this.isSyntaxValid = false;
-      return;
-    }
-    this.isSyntaxValid = this.isValid(match[1]);
+    this.isSyntaxValid = this.isValid(this.codeLine);
   }
 }

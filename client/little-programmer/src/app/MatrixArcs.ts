@@ -17,10 +17,9 @@ export class MatrixArcs implements MatrixRender {
 
   constructor(canvas: any, diffX: number, diffY: number) {
     this.ctx = canvas.getContext('2d');
-    let param = this.radius * 10;
-    this.numOfRows = canvas.height / param;
-    this.numOfCols = canvas.width / param;
-    this.startX = this.startY = param;
+    this.startX = this.startY = this.radius * 10;
+    this.numOfRows = Math.ceil((canvas.height - this.startY) / (this.radius + diffY));
+    this.numOfCols = Math.ceil((canvas.width - this.startX) / (this.radius + diffX));
     this.diffX = diffX;
     this.diffY = diffY;
     this.endX = canvas.width - this.startX;
@@ -47,11 +46,9 @@ export class MatrixArcs implements MatrixRender {
   public render(): void {
     for (let cord of this.cords) {
       this.ctx.beginPath();
-      if (cord.x <= this.endX && cord.y <= this.endY) {
-        this.ctx.arc(cord.x, cord.y, this.radius, 0, 2 * Math.PI);
-        this.ctx.fillStyle = this.color;
-        this.ctx.fill();
-      }
+      this.ctx.arc(cord.x, cord.y, this.radius, 0, 2 * Math.PI);
+      this.ctx.fillStyle = this.color;
+      this.ctx.fill();
     }
   }
 

@@ -3,6 +3,7 @@ import {CanvasAnimation} from "./CanvasAnimation";
 import {MatrixRender} from "./MatrixRender";
 import {MatrixArcs} from "./MatrixArcs";
 import {DirectMoveAnimation} from "./DirectMoveAnimation";
+import {DirectMoveFunctions} from "./DirectMoveFunctions";
 
 export class DirectMoveLevel {
 
@@ -20,9 +21,10 @@ export class DirectMoveLevel {
     this.sprite.start();
   }
 
-  public activate(route: number[]): void {
+  public activate(codeLines: Map<DirectMoveFunctions, number>): void {
     let spriteCords = this.sprite.getCords();
-    this.spriteAnimation = new DirectMoveAnimation(this.backgroundRenderFunction.getCords(), route, 0.7, spriteCords.x, spriteCords.y);
+    this.spriteAnimation = new DirectMoveAnimation(this.backgroundRenderFunction.getCords(), codeLines, this.backgroundRenderFunction.getNumOfRows(),
+      this.backgroundRenderFunction.getNumOfCols(), 0.7, spriteCords.x, spriteCords.y);
     this.sprite.setAnimation(this.spriteAnimation);
     this.sprite.activate();
   }

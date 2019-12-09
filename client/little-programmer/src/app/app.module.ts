@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { CodeViewerComponent } from './code-viewer/code-viewer.component';
 import { CodeLineComponent } from './code-line/code-line.component';
+import {SharedService} from "./SharedService";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { CodeLineComponent } from './code-line/code-line.component';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
