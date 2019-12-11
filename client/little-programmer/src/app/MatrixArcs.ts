@@ -17,11 +17,13 @@ export class MatrixArcs implements MatrixRender {
 
   constructor(canvas: any, diffX: number, diffY: number) {
     this.ctx = canvas.getContext('2d');
-    this.startX = this.startY = this.radius * 10;
-    this.numOfRows = Math.ceil((canvas.height - this.startY) / (this.radius + diffY));
-    this.numOfCols = Math.ceil((canvas.width - this.startX) / (this.radius + diffX));
+    let param = this.radius * 10;
+    this.startX = param;
+    this.startY = param;
     this.diffX = diffX;
     this.diffY = diffY;
+    this.numOfRows = Math.ceil((canvas.height - this.startY * 2) / (this.radius + diffY));
+    this.numOfCols = Math.ceil((canvas.width - this.startX) / (this.radius + diffX));
     this.endX = canvas.width - this.startX;
     this.endY = canvas.height - this.startY;
     this.calculateCords();

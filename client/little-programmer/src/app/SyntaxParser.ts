@@ -18,12 +18,13 @@ export class SyntaxParser {
     return this.stringToEnumMap.has(match[1]);
   }
 
-  public parse(codeLines: string[]): Map<DirectMoveFunctions, number> {
-    let enumToNumberValue = new Map<DirectMoveFunctions, number>();
+  public parse(codeLines: string[]): { direction: DirectMoveFunctions, val: number }[] {
+    let directionList: { direction: DirectMoveFunctions, val: number }[] = [];
     for (let codeLine of codeLines) {
       let match = codeLine.match(this.pattern);
-      enumToNumberValue.set(this.stringToEnumMap.get(match[1]), parseInt(match[2]));
+      let entry = {direction: this.stringToEnumMap.get(match[1]), val: parseInt(match[2])};
+      directionList.push(entry);
     }
-    return enumToNumberValue;
+    return directionList;
   }
 }

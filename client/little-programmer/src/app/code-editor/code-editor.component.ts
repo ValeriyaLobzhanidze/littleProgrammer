@@ -53,8 +53,8 @@ export class CodeEditorComponent implements OnInit {
         }
       });
 
-      let codeLinesMap: Map<DirectMoveFunctions, number> = this.syntaxParser.parse(codeLines);
-      this.sharedService.setData(codeLinesMap);
+      let directionList: { direction: DirectMoveFunctions, val: number }[] = this.syntaxParser.parse(codeLines);
+      this.sharedService.setData(directionList);
     }
   }
 }

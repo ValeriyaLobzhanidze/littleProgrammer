@@ -25,8 +25,6 @@ export class Sprite {
     this.canvas = canvas;
     this.image = new Image(0, 0);
     this.image.src = "/assets/images/radish.png";
-    this.dx = this.spriteWidth;
-    this.dy = this.spriteHeight;
   }
 
   private clear(): void {
@@ -68,7 +66,7 @@ export class Sprite {
     this.tickCount++;
 
     if (this.state == State.ACTIVE && this.spriteAnimation != null) {
-      if (!this.spriteAnimation.shouldEnd()) {
+      if (!this.spriteAnimation.shouldEnd() && this.spriteAnimation.getNumOfLastErrLine() == -1) {
         let cords = this.spriteAnimation.update();
         this.dx = cords.dx;
         this.dy = cords.dy;
@@ -109,5 +107,13 @@ export class Sprite {
 
   public getSpriteHeight(): number {
     return this.spriteHeight;
+  }
+
+  public setDx(dx: number){
+    this.dx = dx;
+  }
+
+  public setDy(dy: number){
+    this.dy = dy;
   }
 }

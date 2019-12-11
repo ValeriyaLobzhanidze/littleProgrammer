@@ -19,8 +19,8 @@ export class CodeViewerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sharedService.currentData.subscribe(codeLinesMap => {
-      this.level.activate(codeLinesMap);
+    this.sharedService.currentData.subscribe(directionList => {
+      this.level.activate(directionList);
     });
 
     setTimeout(() => {

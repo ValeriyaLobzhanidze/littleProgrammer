@@ -4,10 +4,10 @@ import {DirectMoveFunctions} from "./DirectMoveFunctions";
 
 @Injectable()
 export class SharedService {
-  private data: Subject<Map<DirectMoveFunctions, number>> = new Subject<Map<DirectMoveFunctions, number>>();
+  private data: Subject<{ direction: DirectMoveFunctions, val: number }[]> = new Subject<{ direction: DirectMoveFunctions, val: number }[]>();
   public currentData = this.data.asObservable();
 
-  public setData(data: Map<DirectMoveFunctions, number>): void {
+  public setData(data: { direction: DirectMoveFunctions, val: number }[]): void {
     this.data.next(data);
   }
 
