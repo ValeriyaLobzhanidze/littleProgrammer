@@ -2,7 +2,7 @@ import {Component, HostListener, OnInit, QueryList, ViewChildren} from '@angular
 import {CodeLineComponent} from "../code-line/code-line.component";
 import {SyntaxParser} from "../SyntaxParser";
 import {SharedService} from "../SharedService";
-import {DirectMoveFunctions} from "../DirectMoveFunctions";
+import {DirectMoveFunction} from "../DirectMoveFunction";
 
 @Component({
   selector: 'app-code-editor',
@@ -53,8 +53,8 @@ export class CodeEditorComponent implements OnInit {
         }
       });
 
-      let directionList: { direction: DirectMoveFunctions, val: number }[] = this.syntaxParser.parse(codeLines);
-      this.sharedService.setData(directionList);
+      let directionList: { direction: DirectMoveFunction, val: number }[] = this.syntaxParser.parse(codeLines);
+      this.sharedService.setCodeLineData(directionList);
     }
   }
 }

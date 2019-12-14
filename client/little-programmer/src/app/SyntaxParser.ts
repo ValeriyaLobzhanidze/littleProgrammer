@@ -1,13 +1,13 @@
-import {DirectMoveFunctions} from "./DirectMoveFunctions";
+import {DirectMoveFunction} from "./DirectMoveFunction";
 
 export class SyntaxParser {
   private pattern = "([a-zA-Z]+)\\(([0-9]{1,2})\\);";
 
-  private stringToEnumMap: Map<string, DirectMoveFunctions> = new Map<string, DirectMoveFunctions>([
-    ["moveRight", DirectMoveFunctions.MOVE_RIGHT],
-    ["moveLeft", DirectMoveFunctions.MOVE_LEFT],
-    ["moveUp", DirectMoveFunctions.MOVE_UP],
-    ["moveDown", DirectMoveFunctions.MOVE_DOWN]
+  private stringToEnumMap: Map<string, DirectMoveFunction> = new Map<string, DirectMoveFunction>([
+    ["moveRight", DirectMoveFunction.MOVE_RIGHT],
+    ["moveLeft", DirectMoveFunction.MOVE_LEFT],
+    ["moveUp", DirectMoveFunction.MOVE_UP],
+    ["moveDown", DirectMoveFunction.MOVE_DOWN]
   ]);
 
   public validate(codeLine: string): boolean {
@@ -18,8 +18,8 @@ export class SyntaxParser {
     return this.stringToEnumMap.has(match[1]);
   }
 
-  public parse(codeLines: string[]): { direction: DirectMoveFunctions, val: number }[] {
-    let directionList: { direction: DirectMoveFunctions, val: number }[] = [];
+  public parse(codeLines: string[]): { direction: DirectMoveFunction, val: number }[] {
+    let directionList: { direction: DirectMoveFunction, val: number }[] = [];
     for (let codeLine of codeLines) {
       let match = codeLine.match(this.pattern);
       let entry = {direction: this.stringToEnumMap.get(match[1]), val: parseInt(match[2])};

@@ -8,13 +8,15 @@ import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { CodeViewerComponent } from './code-viewer/code-viewer.component';
 import { CodeLineComponent } from './code-line/code-line.component';
 import {SharedService} from "./SharedService";
+import { PopUpComponent } from './pop-up/pop-up.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CodeEditorComponent,
     CodeViewerComponent,
-    CodeLineComponent
+    CodeLineComponent,
+    PopUpComponent
   ],
   imports: [
     BrowserModule,

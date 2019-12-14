@@ -1,6 +1,7 @@
 import {State} from "./State";
 import {CanvasAnimation} from "./CanvasAnimation";
 import {MatrixRender} from "./MatrixRender";
+import {SharedService} from "./SharedService";
 
 export class Sprite {
   private state: State = State.STABLE;
@@ -17,14 +18,16 @@ export class Sprite {
 
   private spriteAnimation: CanvasAnimation;
   private backgroundRenderFunction: MatrixRender;
+  private sharedService: SharedService;
 
   private dx: number;
   private dy: number;
 
-  constructor(canvas: any) {
+  constructor(canvas: any, sharedService: SharedService) {
     this.canvas = canvas;
     this.image = new Image(0, 0);
     this.image.src = "/assets/images/radish.png";
+    this.sharedService = sharedService;
   }
 
   private clear(): void {
@@ -72,6 +75,7 @@ export class Sprite {
         this.dy = cords.dy;
       } else {
         this.state = State.STABLE;
+        this.sharedService.completeLevel();
       }
     }
 

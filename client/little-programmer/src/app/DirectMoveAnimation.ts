@@ -1,5 +1,6 @@
 import {CanvasAnimation} from "./CanvasAnimation";
-import {DirectMoveFunctions} from "./DirectMoveFunctions";
+import {DirectMoveFunction} from "./DirectMoveFunction";
+import {SharedService} from "./SharedService";
 
 export class DirectMoveAnimation implements CanvasAnimation {
   private curPos = 0;
@@ -7,22 +8,33 @@ export class DirectMoveAnimation implements CanvasAnimation {
   private amountOfVisitedCords = 0;
 
   private matrixCords;
+  private targetCords;
   private speed;
   private dx: { val: number } = {val: 0};
   private dy: { val: number } = {val: 0};
-  private readonly route: { direction: DirectMoveFunctions, val: number }[];
+  private readonly route: { direction: DirectMoveFunction, val: number }[];
   private readonly numOfCols: number;
   private readonly numOfRows: number;
   private numOfLastErrLine = -1;
+  private sharedService: SharedService;
+  private readonly epsilonX: number;
+  private readonly epsilonY: number;
+  private visitedCords: { x: number, y: number }[] = [];
+  private currentRow: number = 0;
 
-  constructor(matrixCords, route, numOfRows: number, numOfCols: number, speed: number, dx: number, dy: number) {
+  constructor(sharedService: SharedService, matrixCords, targetCords, route, numOfRows: number,
+              numOfCols: number, speed: number, dx: number, dy: number, epsilonX: number, epsilonY: number) {
+    this.sharedService = sharedService;
     this.matrixCords = matrixCords;
+    this.targetCords = targetCords;
     this.speed = speed;
     this.dx.val = dx;
     this.dy.val = dy;
     this.numOfCols = numOfCols;
     this.numOfRows = numOfRows;
     this.route = route;
+    this.epsilonX = epsilonX;
+    this.epsilonY = epsilonY;
   }
 
   private activeCord: { val: number };
@@ -43,8 +55,8 @@ export class DirectMoveAnimation implements CanvasAnimation {
     let curEntry = this.route[this.amountOfVisitedCords];
 
     switch (curEntry.direction) {
-      case DirectMoveFunctions.MOVE_RIGHT:
-        if (this.curPos + curEntry.val < this.numOfCols) {
+      case DirectMoveFunction.MOVE_RIGHT:
+        if (this.curPos + curEntry.val < this.numOfCols * this.currentRow + this.numOfCols) {
           this.curPos += curEntry.val;
           this.curBoundary = this.matrixCords[this.curPos].x;
           this.activeCord = this.dx;
@@ -54,8 +66,8 @@ export class DirectMoveAnimation implements CanvasAnimation {
         }
         break;
 
-      case DirectMoveFunctions.MOVE_LEFT:
-        if (this.curPos - curEntry.val >= 0) {
+      case DirectMoveFunction.MOVE_LEFT:
+        if (this.curPos - curEntry.val >= this.numOfCols * this.currentRow) {
           this.curPos -= curEntry.val;
           this.curBoundary = this.matrixCords[this.curPos].x;
           this.activeCord = this.dx;
@@ -66,8 +78,9 @@ export class DirectMoveAnimation implements CanvasAnimation {
         }
         break;
 
-      case DirectMoveFunctions.MOVE_UP:
+      case DirectMoveFunction.MOVE_UP:
         if (this.curPos - curEntry.val * this.numOfCols >= 0) {
+          this.currentRow -= curEntry.val;
           this.curPos -= curEntry.val * this.numOfCols;
           this.curBoundary = this.matrixCords[this.curPos].y;
           this.activeCord = this.dy;
@@ -78,8 +91,9 @@ export class DirectMoveAnimation implements CanvasAnimation {
         }
         break;
 
-      case DirectMoveFunctions.MOVE_DOWN:
+      case DirectMoveFunction.MOVE_DOWN:
         if (this.curPos + curEntry.val * this.numOfCols < this.numOfCols * this.numOfRows) {
+          this.currentRow += curEntry.val;
           this.curPos += curEntry.val * this.numOfCols;
           this.curBoundary = this.matrixCords[this.curPos].y;
           this.activeCord = this.dy;
@@ -110,7 +124,25 @@ export class DirectMoveAnimation implements CanvasAnimation {
         this.updateState();
       }
     }
+
+    let result = this.targetCords.filter(cord => {
+      return ((this.dx.val < (cord.x + this.epsilonX) && this.dx.val > (cord.x - this.epsilonX))
+        && (this.dy.val < (cord.y + this.epsilonY) && this.dy.val > (cord.y - this.epsilonY))
+        && !this.isInclude(this.visitedCords, cord));
+
+    });
+    if (result.length > 0) {
+      this.visitedCords.push(result[0]);
+      this.sharedService.setScore(result[0]);
+    }
     return {dx: this.dx.val, dy: this.dy.val};
+  }
+
+  private isInclude(arr: { x: number, y: number }[], targetElem: { x: number, y: number }): boolean {
+    let result = arr.filter(elem => {
+      return elem.x == targetElem.x && elem.y == targetElem.y
+    });
+    return result.length > 0;
   }
 
   public shouldEnd(): boolean {

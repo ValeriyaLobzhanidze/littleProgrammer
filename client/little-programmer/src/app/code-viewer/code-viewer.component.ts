@@ -9,9 +9,10 @@ import {SharedService} from "../SharedService";
 })
 export class CodeViewerComponent implements OnInit {
   public readonly canvasWidth: number = 600;
-  public readonly canvasHeight: number = 700;
+  public readonly canvasHeight: number = 600;
+  public targetScore: number = 0;
+  public currentScore: number = 0;
   private level: DirectMoveLevel;
-
   public sharedService: SharedService;
 
   constructor(sharedService: SharedService) {
@@ -19,14 +20,19 @@ export class CodeViewerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sharedService.currentData.subscribe(directionList => {
+    this.sharedService.currentCodeLineData.subscribe(directionList => {
       this.level.activate(directionList);
+    });
+
+    this.sharedService.currentScore.subscribe(curScore => {
+      this.currentScore++;
     });
 
     setTimeout(() => {
       let canvas = document.getElementById('code-viewer') as any;
-      this.level = new DirectMoveLevel(canvas);
+      this.level = new DirectMoveLevel(this.sharedService, canvas);
       this.level.load();
+      this.targetScore = this.level.getAmountOfTargets();
     }, 1000);
   }
 }

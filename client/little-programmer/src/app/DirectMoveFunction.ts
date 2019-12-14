@@ -1,4 +1,4 @@
-export enum DirectMoveFunctions {
+export enum DirectMoveFunction {
   MOVE_RIGHT ,
   MOVE_LEFT ,
   MOVE_UP ,

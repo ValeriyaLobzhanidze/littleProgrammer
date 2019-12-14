@@ -1,8 +1,30 @@
-#block
-{
-  box-shadow: inset 0px 0px 5px rgba(154, 147, 140, 0.5);
+#block {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
   border-radius: 25px;
   height: 700px;
   width: 600px;
 }
 
+#score-holder {
+  height: 50px;
+  overflow: auto;
+}
+
+#score {
+  font-family: KBSticktoIt;
+  font-size: 25px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.current {
+  color: rgba(255, 20, 147, 0.44);
+}
+
+.target{
+  color: rgba(255, 20, 147, 1);
+}
+
+#button-holder {
+  height: 50px;
+}

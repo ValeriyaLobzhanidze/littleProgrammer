@@ -1,4 +1,6 @@
 <div id="block_container">
-<app-code-viewer></app-code-viewer>
-<app-code-editor></app-code-editor>
+  <app-code-viewer></app-code-viewer>
+  <app-code-editor></app-code-editor>
 </div>
+<app-pop-up *ngIf="isPopUpRendered" (close)="closePopUp()"></app-pop-up>
+

@@ -1,14 +1,27 @@
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
-import {DirectMoveFunctions} from "./DirectMoveFunctions";
+import {DirectMoveFunction} from "./DirectMoveFunction";
 
 @Injectable()
 export class SharedService {
-  private data: Subject<{ direction: DirectMoveFunctions, val: number }[]> = new Subject<{ direction: DirectMoveFunctions, val: number }[]>();
-  public currentData = this.data.asObservable();
+  private codeLineData: Subject<{ direction: DirectMoveFunction, val: number }[]> = new Subject<{ direction: DirectMoveFunction, val: number }[]>();
+  public currentCodeLineData = this.codeLineData.asObservable();
 
-  public setData(data: { direction: DirectMoveFunctions, val: number }[]): void {
-    this.data.next(data);
+  private score: Subject<{ x: number, y: number }> = new Subject<{ x: number, y: number }>();
+  public currentScore = this.score.asObservable();
+
+  private levelCompleted: Subject<void> = new Subject<void>();
+  public isLevelCompleted = this.levelCompleted.asObservable();
+
+  public setCodeLineData(data: { direction: DirectMoveFunction, val: number }[]): void {
+    this.codeLineData.next(data);
   }
 
+  public setScore(targetCord: { x: number, y: number }): void {
+    this.score.next(targetCord);
+  }
+
+  public completeLevel(): void{
+    this.levelCompleted.next();
+  }
 }

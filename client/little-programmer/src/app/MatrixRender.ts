@@ -3,4 +3,5 @@ export interface MatrixRender {
   getCords(): { x: number, y: number }[];
   getNumOfRows(): number;
   getNumOfCols(): number;
+  getTargetCords(): { x: number, y: number }[];
 }

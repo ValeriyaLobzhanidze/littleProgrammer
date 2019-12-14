@@ -1,0 +1,31 @@
+#pop-up {
+  width: 350px;
+  height: 200px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+
+  position: absolute;
+  top: 25%;
+  left: 38%;
+
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  font-family: KBSticktoIt;
+  font-size: 25px;
+  color: rgba(187, 116, 251, 0.83);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#button {
+  margin-top: 20px;
+  background-color: #58fbce;
+  font-family: KBSticktoIt;
+  color: white;
+  font-size: 20px;
+  width: 150px;
+  height: 50px;
+  border-radius: 5px;
+}
