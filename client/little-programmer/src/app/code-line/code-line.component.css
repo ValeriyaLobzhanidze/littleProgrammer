@@ -6,6 +6,9 @@
 
 #code-line
 {
+  border: 1px solid rgba(128, 128, 128, 0.23);
+  border-radius: 4px;
+  box-shadow: 0px 3px 4px rgba(128, 128, 128, 0.13);
   transform: translate(10px, 0px);
   height: 30px;
   width: 500px;
@@ -19,7 +22,7 @@
   width: 20px;
   font-family: KBSticktoIt;
   font-size: 25px;
-  color: #9f92ff;
+  color: rgba(159, 146, 255, 0.64)
 }
 
 .right-syntax
@@ -29,5 +32,9 @@
 
 .wrong-syntax
 {
-  color: red;
+  color: rgba(255, 0, 0, 0.64);
+}
+
+#code-line:focus {
+  outline: none;
 }

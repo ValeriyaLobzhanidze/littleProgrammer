@@ -10,8 +10,11 @@ export class SharedService {
   private score: Subject<{ x: number, y: number }> = new Subject<{ x: number, y: number }>();
   public currentScore = this.score.asObservable();
 
-  private levelCompleted: Subject<void> = new Subject<void>();
+  private levelCompleted: Subject<void> = new Subject<void>();//TODO it should be showPopUpEvent too
   public isLevelCompleted = this.levelCompleted.asObservable();
+
+  private showPopUpEvent: Subject<void> = new Subject<void>();
+  public showTask$ = this.showPopUpEvent.asObservable();
 
   public setCodeLineData(data: { direction: DirectMoveFunction, val: number }[]): void {
     this.codeLineData.next(data);
@@ -21,7 +24,11 @@ export class SharedService {
     this.score.next(targetCord);
   }
 
-  public completeLevel(): void{
+  public completeLevel(): void {
     this.levelCompleted.next();
+  }
+
+  public showTask(): void {
+    this.showPopUpEvent.next();
   }
 }

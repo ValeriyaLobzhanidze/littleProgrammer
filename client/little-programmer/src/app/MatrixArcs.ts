@@ -11,7 +11,7 @@ export class MatrixArcs implements MatrixRender {
   private readonly diffX: number;
   private readonly diffY: number;
   private readonly backArcsColor: string = "rgb(75,191,151, 0.1)";
-  private readonly targetColor: string = "rgb(127, 45, 189, 0.5)";
+  private readonly targetColor: string = "rgba(159, 146, 255, 0.64)";
   private readonly radius: number = 8;
   private targets: { i: number, j: number }[] = ([
       {i: 1, j: 2},

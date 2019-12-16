@@ -33,6 +33,6 @@ export class CodeViewerComponent implements OnInit {
       this.level = new DirectMoveLevel(this.sharedService, canvas);
       this.level.load();
       this.targetScore = this.level.getAmountOfTargets();
-    }, 1000);
+    }, 1000);//TODO document.onload
   }
 }
