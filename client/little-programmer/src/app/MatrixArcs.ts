@@ -3,10 +3,10 @@ import {MatrixRender} from "./MatrixRender";
 export class MatrixArcs implements MatrixRender {
   private ctx: any;
   private cords: { x: number, y: number }[] = [];
-  private readonly numOfRows: number;
-  private readonly numOfCols: number;
-  private readonly startX: number;
-  private readonly startY: number;
+  private numOfRows: number;
+  private numOfCols: number;
+  private startX: number;
+  private startY: number;
 
   private readonly diffX: number;
   private readonly diffY: number;
@@ -31,8 +31,8 @@ export class MatrixArcs implements MatrixRender {
     this.startY = diam * 2;
     this.diffX = diffX;
     this.diffY = diffY;
-    this.numOfRows = Math.ceil((canvas.height - this.startY) / (diam + diffY));
-    this.numOfCols = Math.ceil((canvas.width - this.startX) / (diam + diffX)) + 1;
+    this.numOfRows = Math.ceil((canvas.height - this.startY) / (diam + this.diffX));
+    this.numOfCols = Math.ceil((canvas.width - this.startX) / (diam + this.diffY)) + 1;
     this.calculateCords();
   }
 

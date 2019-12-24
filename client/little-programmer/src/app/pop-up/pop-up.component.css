@@ -1,12 +1,6 @@
 #pop-up {
-  width: 350px;
-  height: 200px;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.9);
-
-  position: absolute;
-  top: 25%;
-  left: 38%;
 
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   font-family: KBSticktoIt;
@@ -15,12 +9,20 @@
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-direction: column;
+  margin: auto;
+
+  width: 500px;
+  height: 500px;
+}
+
+#canvas-div{
+  width: 300px;
+  height: 300px;
 }
 
 #button {
-  margin-top: 20px;
   background-color: #58fbce;
   font-family: KBSticktoIt;
   color: white;

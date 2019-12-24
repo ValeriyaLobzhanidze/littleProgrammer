@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SharedService} from "../SharedService";
+import PopUpContent from "../pop-up/PopUpContent";
 
 @Component({
   selector: 'app-control-panel',
@@ -16,8 +17,8 @@ export class ControlPanelComponent implements OnInit {
   ngOnInit() {
   }
 
-  onTask(): void{
-
+  onTask(): void {
+    this.sharedService.showPopUp(new PopUpContent({textContent:"HOORAY"}));
   }
 
 }

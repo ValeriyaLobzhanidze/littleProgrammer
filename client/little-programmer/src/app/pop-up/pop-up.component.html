@@ -1,4 +1,14 @@
+<!--<div id="pop-up" [style.width.px]="content.outlineBlockWidth"-->
+<!--     [style.height.px]="content.outlineBlockHeight">-->
+<!--  <span [textContent]="content.textContent"></span>-->
+<!--  <canvas [width]="content.canvasWidth" [height]="content.canvasHeight"></canvas>-->
+<!--  <button id="button" (click)="closePopUp()" [textContent]="content.buttonValue"></button>-->
+<!--</div>-->
+
 <div id="pop-up">
-  <span [textContent]="textContent"></span>
-  <button id="button" (click)="closePopUp()">Thanks!</button>
+  <span>Help radish visit all purple points!</span>
+  <div id="canvas-div">
+  <canvas id="canvas" width=300 height="300"></canvas>
+  </div>
+  <button id="button" (click)="closePopUp()">Ok!</button>
 </div>

@@ -4,7 +4,7 @@
   flex-direction: row;
 }
 
-#code-line
+.code-line
 {
   border: 1px solid rgba(128, 128, 128, 0.23);
   border-radius: 4px;
@@ -35,6 +35,6 @@
   color: rgba(255, 0, 0, 0.64);
 }
 
-#code-line:focus {
+.code-line:focus {
   outline: none;
 }

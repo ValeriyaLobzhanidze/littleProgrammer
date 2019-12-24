@@ -20,11 +20,11 @@ export class CodeViewerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sharedService.currentCodeLineData.subscribe(directionList => {
+    this.sharedService.codeLineData$.subscribe(directionList => {
       this.level.activate(directionList);
     });
 
-    this.sharedService.currentScore.subscribe(curScore => {
+    this.sharedService.score$.subscribe(curScore => {
       this.currentScore++;
     });
 

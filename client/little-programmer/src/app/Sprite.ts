@@ -120,4 +120,8 @@ export class Sprite {
   public setDy(dy: number){
     this.dy = dy;
   }
+
+  public setCanvas(canvas: any): void{
+    this.canvas = canvas;
+  }
 }
