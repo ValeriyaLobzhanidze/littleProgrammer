@@ -1,14 +1,12 @@
-<!--<div id="pop-up" [style.width.px]="content.outlineBlockWidth"-->
-<!--     [style.height.px]="content.outlineBlockHeight">-->
-<!--  <span [textContent]="content.textContent"></span>-->
-<!--  <canvas [width]="content.canvasWidth" [height]="content.canvasHeight"></canvas>-->
-<!--  <button id="button" (click)="closePopUp()" [textContent]="content.buttonValue"></button>-->
-<!--</div>-->
-
 <div id="pop-up">
   <span>Help radish visit all purple points!</span>
   <div id="canvas-div">
-  <canvas id="canvas" width=300 height="300"></canvas>
+    <span [textContent]="someText"></span>
+    <canvas id="canvas" width="{{canvasWidth}}" height="{{canvasHeight}}"></canvas>
   </div>
-  <button id="button" (click)="closePopUp()">Ok!</button>
+  <div id="panel">
+    <i class="fa fa-caret-left fa-2x"></i>
+    <button id="button" (click)="closePopUp()">Ok!</button>
+    <i class="fa fa-caret-right fa-2x" (click)="onNext()"></i>
+  </div>
 </div>

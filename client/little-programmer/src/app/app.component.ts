@@ -22,7 +22,6 @@ export class AppComponent {
     this.sharedService = sharedService;
     this.sharedService.levelCompleted$.subscribe(() => this.isPopUpRendered = true);
     this.sharedService.showPopUp$.subscribe(el => {
-    // this.popUpContent = el;
       this.handlePopUp();
     });
   }

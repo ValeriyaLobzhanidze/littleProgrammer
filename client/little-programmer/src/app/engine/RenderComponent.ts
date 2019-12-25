@@ -91,7 +91,7 @@ export default class RenderComponent {
 
         let res = this.targets.filter(target => target.i == i && target.j == j);
         if (res.length > 0) {
-          this.targetCords.push(cord);
+          this.targetCords.push({x: dx, y: dy});
         }
         dx += this.diffX;
       }

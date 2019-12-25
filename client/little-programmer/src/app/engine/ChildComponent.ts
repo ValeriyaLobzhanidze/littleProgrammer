@@ -20,18 +20,20 @@ export default class ChildComponent {
   private visitedCords = [];
 
   private currentAnimatedCords = [];
-  private targetArr2 = [];
+  private reachedTargets = [];
   private targetAnimateDy = 0.1;
 
   private dx: number = 0;
   private dy: number = 0;
+
+  private startY;
 
   constructor(matrixCords, targetCords, numOfRows: number, numOfCols: number, route) {
     this.image = new Image(0, 0);
     this.image.src = "/assets/images/radish.png";
 
     this.dx = matrixCords[0].x;
-    this.dy = matrixCords[0].y;
+    this.startY = this.dy = matrixCords[0].y;
     this.targetCords = targetCords;
     this.animation = new ChildAnimation(matrixCords, numOfRows, numOfCols, route);
   }
@@ -66,23 +68,14 @@ export default class ChildComponent {
 
   private animateTargets() {
     for (let target of this.currentAnimatedCords) {
-      if (target.y > 0 && !this.isInclude(this.targetArr2, target)) {
-        // if (this.targetAnimateDy < 0) {
-        //   this.targetAnimateDy = 0.1;
-        // }
+      if (target.y > this.startY && !this.isInclude(this.reachedTargets, target)) {
         target.y -= this.targetAnimateDy;
-        // this.targetAnimateDy -= 0.1;
       } else {
-        if (!this.isInclude(this.targetArr2, target)) {
-          this.targetArr2.push(target);
+        if (!this.isInclude(this.reachedTargets, target)) {
+          this.reachedTargets.push(target);
         }
       }
     }
-
-    // for(let target of this.targetArr2){
-    //   target.y += 0.2;
-    //   target.x += 0.2;
-    // }
   }
 
   private isInclude(arr: { x: number, y: number }[], targetElem: { x: number, y: number }): boolean {

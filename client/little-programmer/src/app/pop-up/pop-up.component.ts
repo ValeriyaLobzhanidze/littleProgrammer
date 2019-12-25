@@ -1,6 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SharedService} from "../SharedService";
-import PopUpContent from "./PopUpContent";
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import Engine from "../engine/Engine";
 import Level from "../engine/Level";
 import RenderComponent from '../engine/RenderComponent';
@@ -11,19 +9,15 @@ import RenderComponent from '../engine/RenderComponent';
   styleUrls: ['./pop-up.component.css']
 })
 export class PopUpComponent implements OnInit {
-  private engine;
+  private engine: Engine;
   private level;
   private rootComponent;
 
-  @Input() content: PopUpContent;
+  private someText: string = "";
+  public canvasWidth = 300;
+  public canvasHeight = 300;
 
   @Output() eventEmitter = new EventEmitter<string>();
-
-  public sharedService: SharedService;
-
-  constructor(sharedService: SharedService) {
-    this.sharedService = sharedService;
-  }
 
   ngOnInit() {
   }
@@ -39,9 +33,17 @@ export class PopUpComponent implements OnInit {
   }
 
   public closePopUp(): void {
-    console.log("closed");
-    this.engine.end();
+    this.engine.stop();
     this.eventEmitter.emit("close");
   }
 
+  public onNext() {
+    this.engine.stop();
+    this.canvasWidth = this.canvasHeight = 0;
+    this.someText = "Additional info\nAdditional info\nAdditional info\nAdditional info\nAdditional info\nAdditional info\n";
+  }
+
+  public onPrev() {
+
+  }
 }

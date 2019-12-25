@@ -3,7 +3,6 @@ export default class Engine {
   private level;
   private started;
   private readonly msPerFrame = 1 / 60;
-  private static i = 0;
 
   constructor(canvas: any, level: any) {
     this.canvas = canvas;
@@ -29,7 +28,11 @@ export default class Engine {
     window.setTimeout(this.loop.bind(this), 0);
   }
 
-  public end() {
-    this.started = false;
+  public stop() {
+    if (this.started == true) {
+      let ctx = this.canvas.getContext('2d');
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.started = false;
+    }
   }
 }
