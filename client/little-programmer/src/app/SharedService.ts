@@ -22,8 +22,8 @@ export class SharedService {
     this.codeLineData.next(data);
   }
 
-  public setScore(targetCord: { x: number, y: number }): void {
-    this.score.next(targetCord);
+  public setScore(): void {
+    this.score.next();
   }
 
   public completeLevel(): void {

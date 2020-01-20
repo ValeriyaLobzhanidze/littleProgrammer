@@ -1,6 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
 import {SharedService} from "./SharedService";
-import PopUpContent from "./pop-up/PopUpContent";
 import {PopUpComponent} from "./pop-up/pop-up.component";
 
 @Component({
@@ -20,7 +19,7 @@ export class AppComponent {
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
     this.sharedService.levelCompleted$.subscribe(() => this.isPopUpRendered = true);
-    this.sharedService.showPopUp$.subscribe(el => {
+    this.sharedService.showPopUp$.subscribe(() => {
       this.handlePopUp();
     });
   }

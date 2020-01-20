@@ -1,6 +1,7 @@
 import SpriteComponent from "./SpriteComponent";
 import {DirectMoveFunction} from "./DirectMoveFunction";
 import {Component} from "../engine/Component";
+import {SharedService} from "../SharedService";
 
 export default class RoundGridComponent implements Component {
 
@@ -23,7 +24,7 @@ export default class RoundGridComponent implements Component {
   private targetNums: { x: number, y: number }[] = [];
   private targetCords: { x: number, y: number }[] = [];
 
-  constructor(width: number, height: number, isDefaultRoute: boolean = true) {
+  constructor(width: number, height: number, isDefaultRoute: boolean = true, sharedService?: SharedService) {
     this.width = width;
     this.height = height;
 
@@ -48,7 +49,7 @@ export default class RoundGridComponent implements Component {
       let route = this.buildDefaultRoute(targetRectTop, targetRectLeft, targetRectHeight);
       this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, route);
     } else {
-      this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols);
+      this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, null, sharedService);
     }
   }
 

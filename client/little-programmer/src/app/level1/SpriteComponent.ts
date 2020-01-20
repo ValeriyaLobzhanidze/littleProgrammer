@@ -3,6 +3,7 @@ import {Animation} from "./Animation";
 import {SpriteAnimation} from "./SpriteAnimation";
 import {Component} from "../engine/Component";
 import {DirectMoveFunction} from "./DirectMoveFunction";
+import {SharedService} from "../SharedService";
 
 export default class SpriteComponent implements Component {
   private state: State = State.STABLE;
@@ -23,16 +24,17 @@ export default class SpriteComponent implements Component {
   private animatedTargets = [];
   private targetAnimateDy = 0.1;
 
-  private numOfCols: number;
-  private numOfRows: number;
-  private matrixCords: { x: number, y: number }[];
+  private readonly numOfCols: number;
+  private readonly numOfRows: number;
+  private readonly matrixCords: { x: number, y: number }[];
   private targetCords: { x: number, y: number }[];
 
   private dx: number = 0;
   private dy: number = 0;
+  private sharedService: SharedService;
 
   constructor(matrixCords: { x: number, y: number }[], targetCords: { x: number, y: number }[],
-              numOfRows: number, numOfCols: number, route ?: { direction: DirectMoveFunction, val: number } []) {
+              numOfRows: number, numOfCols: number, route ?: { direction: DirectMoveFunction, val: number } [], sharedService?: SharedService) {
     this.image = new Image(0, 0);
     this.image.src = "/assets/images/radish.png";
 
@@ -43,10 +45,18 @@ export default class SpriteComponent implements Component {
     this.matrixCords = matrixCords;
     this.numOfCols = numOfCols;
     this.numOfRows = numOfRows;
+    this.sharedService = sharedService;
 
     if (route) {
       this.setAnimation(route);
+    } else {
+      if (sharedService) {
+        this.sharedService.codeLineData$.subscribe(directionList => {
+          this.setAnimation(directionList);
+        });
+      }
     }
+
   }
 
   public setAnimation(route: { direction: DirectMoveFunction, val: number } []) {
