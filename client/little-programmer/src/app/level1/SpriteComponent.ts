@@ -28,11 +28,11 @@ export default class SpriteComponent implements Component {
   private readonly numOfCols: number;
   private readonly numOfRows: number;
   private readonly matrixCords: { x: number, y: number }[];
-  private targetCords: { x: number, y: number }[];
+  private readonly targetCords: { x: number, y: number }[];
 
   private dx: number = 0;
   private dy: number = 0;
-  private sharedService: SharedService;
+  private readonly sharedService: SharedService;
 
   constructor(matrixCords: { x: number, y: number }[], targetCords: { x: number, y: number }[],
               numOfRows: number, numOfCols: number, route ?: { direction: DirectMoveFunction, val: number } [], sharedService?: SharedService) {
@@ -141,7 +141,8 @@ export default class SpriteComponent implements Component {
               canvasWidth: 0,
               headerContent: "Error in " + this.animation.getNumOfLastErrLine() + " line"
             }
-            ;
+          } else {
+            popUpProps = {};
           }
           this.sharedService.showPopUp(new PopUpContent(popUpProps));
         }
