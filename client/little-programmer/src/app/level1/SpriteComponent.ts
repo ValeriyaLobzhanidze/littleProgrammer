@@ -22,7 +22,7 @@ export default class SpriteComponent implements Component {
   private visitedCords = [];
 
   private animatedTargets = [];
-  private targetAnimateDy = 0.1;
+  private targetAnimateDy = 0.2;
 
   private readonly numOfCols: number;
   private readonly numOfRows: number;
@@ -56,7 +56,6 @@ export default class SpriteComponent implements Component {
         });
       }
     }
-
   }
 
   public setAnimation(route: { direction: DirectMoveFunction, val: number } []) {
@@ -79,16 +78,21 @@ export default class SpriteComponent implements Component {
   }
 
   private handleIfTarget(dx, dy) {
-    let result = this.targetCords.filter(cord => {
-      return ((dx < (cord.x + this.spriteWidth / 2) && dx > (cord.x - this.spriteWidth / 2))
-        && (dy < (cord.y + this.spriteHeight / 2) && dy > (cord.y - this.spriteHeight / 2))
-        && !this.isInclude(this.visitedCords, cord));
+    let result = [];
 
-    });
+    for (let target of this.targetCords) {
+      let conditionX = (dx < (target.x + this.spriteWidth / 2) && dx > (target.x - this.spriteWidth / 2));
+      let conditionY = (dy < (target.y + this.spriteHeight / 2) && dy > (target.y - this.spriteHeight / 2));
+      let existenceCond = !this.isInclude(this.visitedCords, target);
+      if (conditionX && conditionY && existenceCond) {
+        result.push(target);
+      }
+    }
 
     if (result.length > 0) {
-      this.visitedCords.push({x: result[0].x, y: result[0].y});
+      this.visitedCords.push(result[0]);
       this.animatedTargets.push(result[0]);
+      this.sharedService.incrementScore();
     }
   }
 
@@ -110,10 +114,7 @@ export default class SpriteComponent implements Component {
   }
 
   private isInclude(arr: { x: number, y: number }[], targetElem: { x: number, y: number }): boolean {
-    let result = arr.filter(elem => {
-      return elem.x == targetElem.x && elem.y == targetElem.y
-    });
-    return result.length > 0;
+    return arr.indexOf(targetElem) != -1;
   }
 
   private update() {
@@ -138,6 +139,10 @@ export default class SpriteComponent implements Component {
       } else {
         this.frameIndex = 0;
       }
+    }
+
+    if (this.animatedTargets.length > 0) {
+      this.animateTargets();
     }
   }
 }

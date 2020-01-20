@@ -22,7 +22,7 @@ export class SharedService {
     this.codeLineData.next(data);
   }
 
-  public setScore(): void {
+  public incrementScore(): void {
     this.score.next();
   }
 
