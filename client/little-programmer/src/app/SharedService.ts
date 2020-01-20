@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
-import {DirectMoveFunction} from "./DirectMoveFunction";
+import {DirectMoveFunction} from "./level1/DirectMoveFunction";
 import PopUpContent from "./pop-up/PopUpContent";
 
 @Injectable()
@@ -30,8 +30,7 @@ export class SharedService {
     this.levelCompleted.next();
   }
 
-  public showPopUp(content: PopUpContent): void {
-    this.showPopUpEvent.next(content);
-    console.log(this.showPopUp$)
+  public showPopUp(): void {
+    this.showPopUpEvent.next();
   }
 }

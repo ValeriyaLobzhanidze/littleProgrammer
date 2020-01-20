@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import Engine from "../engine/Engine";
+import EngineImpl from "../engine/EngineImpl";
 import Level from "../engine/Level";
-import RenderComponent from '../engine/RenderComponent';
+import RoundGridComponent from '../level1/RoundGridComponent';
 
 @Component({
   selector: 'app-pop-up',
@@ -9,7 +9,7 @@ import RenderComponent from '../engine/RenderComponent';
   styleUrls: ['./pop-up.component.css']
 })
 export class PopUpComponent implements OnInit {
-  private engine: Engine;
+  private engine: EngineImpl;
   private level;
   private rootComponent;
 
@@ -20,16 +20,15 @@ export class PopUpComponent implements OnInit {
   @Output() eventEmitter = new EventEmitter<string>();
 
   ngOnInit() {
+    this.runPopUp();
   }
 
   public runPopUp() {
     let canvas = document.getElementById('canvas') as any;
-    window.setTimeout(() => {
-      this.rootComponent = new RenderComponent(300, 300);
-      this.level = new Level(this.rootComponent);
-      this.engine = new Engine(canvas, this.level);
-      this.engine.start();
-    }, 500);
+    this.rootComponent = new RoundGridComponent(300, 300);
+    this.level = new Level(this.rootComponent);
+    this.engine = new EngineImpl(canvas, this.level);
+    this.engine.start();
   }
 
   public closePopUp(): void {

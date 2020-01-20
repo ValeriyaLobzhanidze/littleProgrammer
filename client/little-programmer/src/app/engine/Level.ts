@@ -1,11 +1,13 @@
-export default class Level {
-  private readonly rootComponent;
+import {Component} from "./Component";
 
-  constructor(rootComponent: any) {
+export default class Level {
+  private readonly rootComponent: Component;
+
+  constructor(rootComponent: Component) {
     this.rootComponent = rootComponent;
   }
 
-  public getRootComponent(): any {
+  public getRootComponent(): Component {
     return this.rootComponent;
   }
 }

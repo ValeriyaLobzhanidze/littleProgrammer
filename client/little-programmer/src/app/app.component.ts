@@ -11,11 +11,10 @@ import {PopUpComponent} from "./pop-up/pop-up.component";
 export class AppComponent {
   title = 'little-programmer';
   public isPopUpRendered: boolean = false;
-  public popUpContent = new PopUpContent({});
 
   public sharedService: SharedService;
 
-  @ViewChild(PopUpComponent, {static:false})
+  @ViewChild(PopUpComponent, {static: false})
   popUp: PopUpComponent;
 
   constructor(sharedService: SharedService) {
@@ -30,9 +29,8 @@ export class AppComponent {
     this.isPopUpRendered = false;
   }
 
-  private handlePopUp(){
+  private handlePopUp() {
     this.isPopUpRendered = true;
-    window.setTimeout(()=>{this.popUp.runPopUp()}, 500);
   }
 
 }

@@ -1,4 +1,4 @@
-import {DirectMoveFunction} from "./DirectMoveFunction";
+import {DirectMoveFunction} from "./level1/DirectMoveFunction";
 
 export class SyntaxParser {
   private pattern = "([a-zA-Z]+)\\(([0-9]{1,2})\\);";

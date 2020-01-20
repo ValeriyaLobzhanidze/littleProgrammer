@@ -2,7 +2,7 @@ import {Component, HostListener, OnInit, QueryList, ViewChildren} from '@angular
 import {CodeLineComponent} from "../code-line/code-line.component";
 import {SyntaxParser} from "../SyntaxParser";
 import {SharedService} from "../SharedService";
-import {DirectMoveFunction} from "../DirectMoveFunction";
+import {DirectMoveFunction} from "../level1/DirectMoveFunction";
 
 @Component({
   selector: 'app-code-editor',

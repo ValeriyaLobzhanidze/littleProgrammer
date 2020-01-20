@@ -1,7 +1,7 @@
-import {DirectMoveFunction} from "../DirectMoveFunction";
-import {CanvasAnimation} from "../CanvasAnimation";
+import {DirectMoveFunction} from "./DirectMoveFunction";
+import {Animation} from "./Animation";
 
-export class ChildAnimation implements CanvasAnimation {
+export class SpriteAnimation implements Animation {
   private curPos = 0;
   private startFlag = 0;
   private amountOfVisitedCords = 0;
@@ -14,9 +14,6 @@ export class ChildAnimation implements CanvasAnimation {
   private readonly numOfCols: number;
   private readonly numOfRows: number;
   private numOfLastErrLine = -1;
-  // private readonly epsilonX: number;
-  // private readonly epsilonY: number;
-  // private visitedCords: { x: number, y: number }[] = [];
   private currentRow: number = 0;
 
   constructor(matrixCords, numOfRows: number, numOfCols: number, route, speed: number = 0.4) {
@@ -117,24 +114,8 @@ export class ChildAnimation implements CanvasAnimation {
       }
     }
 
-    // let result = this.targetCords.filter(cord => {
-    //   return ((this.dx.val < (cord.x + this.epsilonX) && this.dx.val > (cord.x - this.epsilonX))
-    //     && (this.dy.val < (cord.y + this.epsilonY) && this.dy.val > (cord.y - this.epsilonY))
-    //     && !this.isInclude(this.visitedCords, cord));
-    //
-    // });
-    // if (result.length > 0) {
-    //   this.visitedCords.push(result[0]);
-    // }
     return {dx: this.dx.val, dy: this.dy.val};
   }
-
-  // private isInclude(arr: { x: number, y: number }[], targetElem: { x: number, y: number }): boolean {
-  //   let result = arr.filter(elem => {
-  //     return elem.x == targetElem.x && elem.y == targetElem.y
-  //   });
-  //   return result.length > 0;
-  // }
 
   public shouldEnd(): boolean {
     return this.amountOfVisitedCords >= this.route.length;

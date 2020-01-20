@@ -1,40 +1,57 @@
-import {State} from "../State";
-import {CanvasAnimation} from "../CanvasAnimation";
-import {ChildAnimation} from "./ChildAnimation";
+import {State} from "./State";
+import {Animation} from "./Animation";
+import {SpriteAnimation} from "./SpriteAnimation";
+import {Component} from "../engine/Component";
+import {DirectMoveFunction} from "./DirectMoveFunction";
 
-export default class ChildComponent {
-  private state: State = State.ACTIVE;
+export default class SpriteComponent implements Component {
+  private state: State = State.STABLE;
 
   private readonly spriteWidth = 30;
   private readonly spriteHeight = 38;
 
   private readonly numberOfFrames = 6;
-  private readonly ticksPerFrame = 15;
+  private readonly ticksPerFrame = 10;
   private tickCount = 0;
 
   private frameIndex = 0;
   private readonly image;
 
-  private animation: CanvasAnimation;
-  private targetCords;
+  private animation: Animation;
   private visitedCords = [];
 
   private animatedTargets = [];
   private targetAnimateDy = 0.1;
 
+  private numOfCols: number;
+  private numOfRows: number;
+  private matrixCords: { x: number, y: number }[];
+  private targetCords: { x: number, y: number }[];
+
   private dx: number = 0;
   private dy: number = 0;
 
-  private startY;
-
-  constructor(matrixCords, targetCords, numOfRows: number, numOfCols: number, route) {
+  constructor(matrixCords: { x: number, y: number }[], targetCords: { x: number, y: number }[],
+              numOfRows: number, numOfCols: number, route ?: { direction: DirectMoveFunction, val: number } []) {
     this.image = new Image(0, 0);
     this.image.src = "/assets/images/radish.png";
 
     this.dx = matrixCords[0].x;
-    this.startY = this.dy = matrixCords[0].y;
+    this.dy = matrixCords[0].y;
+
     this.targetCords = targetCords;
-    this.animation = new ChildAnimation(matrixCords, numOfRows, numOfCols, route);
+    this.matrixCords = matrixCords;
+    this.numOfCols = numOfCols;
+    this.numOfRows = numOfRows;
+
+    if (route) {
+      this.setAnimation(route);
+    }
+  }
+
+  public setAnimation(route: { direction: DirectMoveFunction, val: number } []) {
+    this.animation = new SpriteAnimation(this.matrixCords, this.numOfRows, this.numOfCols, route);
+    this.state = State.ACTIVE;
   }
 
   public render(canvas: any): void {

@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {DirectMoveLevel} from "../DirectMoveLevel";
 import {SharedService} from "../SharedService";
+import {Engine} from "../engine/Engine";
+import EngineImpl from "../engine/EngineImpl";
+import RoundGridComponent from "../level1/RoundGridComponent";
+import Level from "../engine/Level";
 
 @Component({
   selector: 'app-code-viewer',
@@ -12,8 +15,9 @@ export class CodeViewerComponent implements OnInit {
   public readonly canvasHeight: number = 600;
   public targetScore: number = 0;
   public currentScore: number = 0;
-  private level: DirectMoveLevel;
   public sharedService: SharedService;
+
+  private engine: Engine;
 
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
@@ -21,18 +25,21 @@ export class CodeViewerComponent implements OnInit {
 
   ngOnInit() {
     this.sharedService.codeLineData$.subscribe(directionList => {
-      this.level.activate(directionList);
+
     });
 
     this.sharedService.score$.subscribe(curScore => {
       this.currentScore++;
     });
 
-    setTimeout(() => {
-      let canvas = document.getElementById('code-viewer') as any;
-      this.level = new DirectMoveLevel(this.sharedService, canvas);
-      this.level.load();
-      this.targetScore = this.level.getAmountOfTargets();
-    }, 1000);//TODO document.onload
+    document.addEventListener("DOMContentLoaded", this.load.bind(this));
+  }
+
+  private load(): void {
+    let canvas = document.getElementById('code-viewer') as any;
+    let rootComponent = new RoundGridComponent(this.canvasWidth, this.canvasHeight, false);
+    let level = new Level(rootComponent);
+    this.engine = new EngineImpl(canvas, level);
+    this.engine.start();
   }
 }
