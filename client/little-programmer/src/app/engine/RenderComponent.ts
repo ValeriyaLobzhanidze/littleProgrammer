@@ -19,42 +19,7 @@ export default class RenderComponent {
   private childComponent;
 
   private readonly radius: number = 8;
-  private targets: { i: number, j: number }[] = ([
-      {i: 2, j: 2},
-      {i: 2, j: 3},
-      {i: 2, j: 4},
-      {i: 2, j: 5},
-      {i: 2, j: 6},
-      {i: 2, j: 7},
-      {i: 2, j: 8},
-      {i: 2, j: 9},
-
-      {i: 3, j: 2},
-      {i: 4, j: 2},
-      {i: 5, j: 2},
-      {i: 6, j: 2},
-      {i: 7, j: 2},
-      {i: 8, j: 2},
-      {i: 9, j: 2},
-
-      {i: 3, j: 9},
-      {i: 4, j: 9},
-      {i: 5, j: 9},
-      {i: 6, j: 9},
-      {i: 7, j: 9},
-      {i: 8, j: 9},
-      {i: 9, j: 9},
-
-      {i: 9, j: 2},
-      {i: 9, j: 3},
-      {i: 9, j: 4},
-      {i: 9, j: 5},
-      {i: 9, j: 6},
-      {i: 9, j: 7},
-      {i: 9, j: 8},
-      {i: 9, j: 9}
-    ]
-  );
+  private targets: { i: number, j: number }[] = [];
   private targetCords: { x: number, y: number }[] = [];
 
   constructor(width: number, height: number) {
@@ -70,6 +35,8 @@ export default class RenderComponent {
 
     this.numOfRows = Math.ceil((this.height - this.startX * 2) / (diam + this.radius));
     this.numOfCols = Math.ceil((this.width - this.startY * 2) / (diam + this.radius));
+
+    this.targets = this.generateRectangleTargets(this.numOfRows, this.numOfCols, 2, 2, 8);
     this.calculateCords();
 
     let route = ([{direction: DirectMoveFunction.MOVE_RIGHT, val: 2},
@@ -79,6 +46,24 @@ export default class RenderComponent {
       {direction: DirectMoveFunction.MOVE_LEFT, val: 8}]);
 
     this.childComponent = new ChildComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, route);
+  }
+
+  private generateRectangleTargets(row: number, col: number, top: number, left: number, height: number) {
+    let cords = [];
+    if ((top < row && top >= 0) && (left < col && left >= 0)) {
+      for (let i = top; i < top + height; i++) {
+        for (let j = left; j < left + height; j++) {
+          cords.push({i: i, j: j});
+          if (i != top && i != top + height - 1) {
+            cords.push({i: i, j: left + height - 1});
+            break;
+          }
+        }
+      }
+    } else {
+      return null;
+    }
+    return cords;
   }
 
   private calculateCords(): void {

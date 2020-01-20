@@ -7,7 +7,7 @@ export default class Engine {
   constructor(canvas: any, level: any) {
     this.canvas = canvas;
     this.level = level;
-    this.started = true;
+    this.started = false;
   }
 
   public loop(): void {
@@ -25,6 +25,7 @@ export default class Engine {
   }
 
   public start() {
+    this.started = true;
     window.setTimeout(this.loop.bind(this), 0);
   }
 

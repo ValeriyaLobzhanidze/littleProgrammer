@@ -19,8 +19,7 @@ export default class ChildComponent {
   private targetCords;
   private visitedCords = [];
 
-  private currentAnimatedCords = [];
-  private reachedTargets = [];
+  private animatedTargets = [];
   private targetAnimateDy = 0.1;
 
   private dx: number = 0;
@@ -62,17 +61,22 @@ export default class ChildComponent {
 
     if (result.length > 0) {
       this.visitedCords.push({x: result[0].x, y: result[0].y});
-      this.currentAnimatedCords.push(result[0]);
+      this.animatedTargets.push(result[0]);
     }
   }
 
   private animateTargets() {
-    for (let target of this.currentAnimatedCords) {
-      if (target.y > this.startY && !this.isInclude(this.reachedTargets, target)) {
+    for (let target of this.animatedTargets) {
+      if (target.y > 0) {
         target.y -= this.targetAnimateDy;
       } else {
-        if (!this.isInclude(this.reachedTargets, target)) {
-          this.reachedTargets.push(target);
+        let index = this.animatedTargets.indexOf(target);
+        if (index != -1) {
+          this.animatedTargets.splice(this.animatedTargets.indexOf(target), 1);
+        }
+        index = this.targetCords.indexOf(target);
+        if (index != -1) {
+          this.targetCords.splice(index, 1);
         }
       }
     }
