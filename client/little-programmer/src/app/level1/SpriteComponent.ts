@@ -4,6 +4,7 @@ import {SpriteAnimation} from "./SpriteAnimation";
 import {Component} from "../engine/Component";
 import {DirectMoveFunction} from "./DirectMoveFunction";
 import {SharedService} from "../SharedService";
+import PopUpContent from "../pop-up/PopUpContent";
 
 export default class SpriteComponent implements Component {
   private state: State = State.STABLE;
@@ -92,7 +93,9 @@ export default class SpriteComponent implements Component {
     if (result.length > 0) {
       this.visitedCords.push(result[0]);
       this.animatedTargets.push(result[0]);
-      this.sharedService.incrementScore();
+      if (this.sharedService) {
+        this.sharedService.incrementScore();
+      }
     }
   }
 
@@ -129,6 +132,19 @@ export default class SpriteComponent implements Component {
         this.dy = cords.dy;
       } else {
         this.state = State.STABLE;
+
+        if (this.sharedService) {
+          let popUpProps;
+          if (this.animation.getNumOfLastErrLine() != -1) {
+            popUpProps = {
+              canvasHeight: 0,
+              canvasWidth: 0,
+              headerContent: "Error in " + this.animation.getNumOfLastErrLine() + " line"
+            }
+            ;
+          }
+          this.sharedService.showPopUp(new PopUpContent(popUpProps));
+        }
       }
     }
 

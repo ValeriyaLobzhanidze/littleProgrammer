@@ -4,6 +4,7 @@
   <app-control-panel></app-control-panel>
   <div *ngIf="isPopUpRendered" id="pop-up-holder">
     <app-pop-up #popUpComponent
+                [content]="popUpContent"
                 (eventEmitter)="closePopUpEvent()" style="margin: auto"></app-pop-up>
   </div>
 </div>

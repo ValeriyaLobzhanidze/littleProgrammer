@@ -1,7 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import EngineImpl from "../engine/EngineImpl";
-import Level from "../engine/Level";
-import RoundGridComponent from '../level1/RoundGridComponent';
+import PopUpContent from "./PopUpContent";
+import {Engine} from "../engine/Engine";
 
 @Component({
   selector: 'app-pop-up',
@@ -9,37 +9,35 @@ import RoundGridComponent from '../level1/RoundGridComponent';
   styleUrls: ['./pop-up.component.css']
 })
 export class PopUpComponent implements OnInit {
-  private engine: EngineImpl;
-  private level;
-  private rootComponent;
-
-  private someText: string = "";
-  public canvasWidth = 300;
-  public canvasHeight = 300;
+  private engine: Engine;
 
   @Output() eventEmitter = new EventEmitter<string>();
+  @Input() public content: PopUpContent;
 
   ngOnInit() {
-    this.runPopUp();
+    if (this.content.level) {
+      this.runEngine();
+    }
   }
 
-  public runPopUp() {
+  public runEngine() {
     let canvas = document.getElementById('canvas') as any;
-    this.rootComponent = new RoundGridComponent(300, 300);
-    this.level = new Level(this.rootComponent);
-    this.engine = new EngineImpl(canvas, this.level);
+    this.engine = new EngineImpl(canvas, this.content.level);
     this.engine.start();
   }
 
   public closePopUp(): void {
-    this.engine.stop();
+    if (this.engine) {
+      this.engine.stop();
+    }
     this.eventEmitter.emit("close");
   }
 
   public onNext() {
-    this.engine.stop();
-    this.canvasWidth = this.canvasHeight = 0;
-    this.someText = "Additional info\nAdditional info\nAdditional info\nAdditional info\nAdditional info\nAdditional info\n";
+    // this.engine.stop();
+    // this.canvasWidth = 0;
+    // this.canvasHeight = 0;
+    // this.someText = "Additional info\nAdditional info\nAdditional info\nAdditional info\nAdditional info\nAdditional info\n";
   }
 
   public onPrev() {

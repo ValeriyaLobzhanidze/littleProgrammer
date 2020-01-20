@@ -11,10 +11,6 @@ export class SharedService {
   private score: Subject<{ x: number, y: number }> = new Subject<{ x: number, y: number }>();
   public score$ = this.score.asObservable();
 
-  //TODO it should be showPopUpEvent too
-  private levelCompleted: Subject<void> = new Subject<void>();
-  public levelCompleted$ = this.levelCompleted.asObservable();
-
   private showPopUpEvent: Subject<PopUpContent> = new Subject<PopUpContent>();
   public showPopUp$ = this.showPopUpEvent.asObservable();
 
@@ -26,11 +22,7 @@ export class SharedService {
     this.score.next();
   }
 
-  public completeLevel(): void {
-    this.levelCompleted.next();
-  }
-
-  public showPopUp(): void {
-    this.showPopUpEvent.next();
+  public showPopUp(content?: PopUpContent): void {
+    this.showPopUpEvent.next(content);
   }
 }

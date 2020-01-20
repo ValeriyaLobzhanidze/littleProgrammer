@@ -1,6 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {SharedService} from "./SharedService";
 import {PopUpComponent} from "./pop-up/pop-up.component";
+import PopUpContent from "./pop-up/PopUpContent";
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,7 @@ import {PopUpComponent} from "./pop-up/pop-up.component";
 export class AppComponent {
   title = 'little-programmer';
   public isPopUpRendered: boolean = false;
+  public popUpContent: PopUpContent;
 
   public sharedService: SharedService;
 
@@ -18,9 +20,8 @@ export class AppComponent {
 
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
-    this.sharedService.levelCompleted$.subscribe(() => this.isPopUpRendered = true);
-    this.sharedService.showPopUp$.subscribe(() => {
-      this.handlePopUp();
+    this.sharedService.showPopUp$.subscribe((content?: PopUpContent) => {
+      this.renderPopUp(content);
     });
   }
 
@@ -28,7 +29,8 @@ export class AppComponent {
     this.isPopUpRendered = false;
   }
 
-  private handlePopUp() {
+  private renderPopUp(content?: PopUpContent) {
+    this.popUpContent = content;
     this.isPopUpRendered = true;
   }
 
