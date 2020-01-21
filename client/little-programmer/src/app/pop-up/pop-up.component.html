@@ -1,6 +1,7 @@
 <div id="pop-up">
   <span [textContent]="currentContent.headerContent"></span>
-  <canvas id="canvas" width="300" height="300"></canvas>
+  <canvas id="canvas" width="{{currentContent.canvasWidth}}" height="{{currentContent.canvasHeight}}"></canvas>
+  <div id="text" [textContent]="currentContent.mainContent"></div>
   <div id="panel">
     <i *ngIf="content.length > 1"
        class="fa fa-caret-left fa-2x"

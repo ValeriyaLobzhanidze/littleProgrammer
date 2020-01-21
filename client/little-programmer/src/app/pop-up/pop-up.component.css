@@ -46,3 +46,7 @@
   cursor: not-allowed;
   color: rgba(0, 0, 0, 0.23);
 }
+
+#text {
+  margin-left: 20px;
+}
