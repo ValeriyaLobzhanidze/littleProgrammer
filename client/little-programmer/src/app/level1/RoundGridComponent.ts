@@ -43,6 +43,7 @@ export default class RoundGridComponent implements Component {
     let targetRectLeft = 2;
 
     this.targetNums = this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop, targetRectLeft, targetRectHeight);
+    this.targetNums = this.targetNums.concat(this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop + 2, targetRectLeft + 2, targetRectHeight - 4));
     this.calculateCords();
 
     if (isDefaultRoute) {

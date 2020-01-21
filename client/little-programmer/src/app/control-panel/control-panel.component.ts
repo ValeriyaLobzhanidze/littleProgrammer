@@ -42,10 +42,10 @@ export class ControlPanelComponent implements OnInit {
     content.push(new PopUpContent(animationPageProps));
 
     let instructionPageProps = {
-      headerContent: "Instructions",
+      headerContent: "Just write all actions, that radish should do!",
       canvasHeight: 0,
       canvasWidth: 0,
-      mainContent: "Just write all actions, that radish should do for visit all purple points.\n\n" +
+      mainContent:
         "You can use commands:\n\n" +
         "moveRight(*)\n\n" +
         "moveDown(*)\n\n" +
