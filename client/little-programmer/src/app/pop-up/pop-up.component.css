@@ -1,11 +1,10 @@
 #pop-up {
   border-radius: 10px;
-  background-color: rgba(255, 255, 255);
+  background-color: rgb(255, 255, 255);
 
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   font-family: KBSticktoIt;
   font-size: 25px;
-  color: rgba(187, 116, 251, 0.83);
 
   display: flex;
   align-items: center;
@@ -13,13 +12,10 @@
   flex-direction: column;
   margin: auto;
 
+  color: rgba(187, 116, 251, 0.83);
+
   width: 500px;
   height: 500px;
-}
-
-#canvas-div{
-  width: 300px;
-  height: 300px;
 }
 
 #button {
@@ -42,6 +38,11 @@
   height: 50px;
 }
 
-i:hover {
+.icon:hover {
   color: #58fbce;
+}
+
+.disabled {
+  cursor: not-allowed;
+  color: rgba(0, 0, 0, 0.23);
 }

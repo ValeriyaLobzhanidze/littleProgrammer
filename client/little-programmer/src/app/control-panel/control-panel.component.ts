@@ -10,7 +10,9 @@ import Level from "../engine/Level";
   styleUrls: ['./control-panel.component.css']
 })
 export class ControlPanelComponent implements OnInit {
-  public sharedService: SharedService;
+  private sharedService: SharedService;
+  private taskPopUpContent: PopUpContent[];
+  private isTaskContentInit = false;
 
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
@@ -20,13 +22,16 @@ export class ControlPanelComponent implements OnInit {
   }
 
   onTask(): void {
-    let rootComponent = new RoundGridComponent(300, 300);
-    let level = new Level(rootComponent);
-    let properties = {
-      headerContent: "Help radish visit all purple points!",
-      level: level
-    };
-    this.sharedService.showPopUp(new PopUpContent(properties));
+    if (!this.isTaskContentInit) {
+      let rootComponent = new RoundGridComponent(300, 300);
+      let level = new Level(rootComponent);
+      let properties = {
+        headerContent: "Help radish visit all purple points!",
+        level: level
+      };
+      this.taskPopUpContent = [new PopUpContent(properties), new PopUpContent({headerContent: "1"}), new PopUpContent({headerContent: "2"})];
+    }
+    this.sharedService.showPopUp(this.taskPopUpContent);
   }
 
 }

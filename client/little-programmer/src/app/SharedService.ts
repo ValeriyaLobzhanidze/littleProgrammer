@@ -11,7 +11,7 @@ export class SharedService {
   private score: Subject<{ x: number, y: number }> = new Subject<{ x: number, y: number }>();
   public score$ = this.score.asObservable();
 
-  private showPopUpEvent: Subject<PopUpContent> = new Subject<PopUpContent>();
+  private showPopUpEvent: Subject<PopUpContent[]> = new Subject<PopUpContent[]>();
   public showPopUp$ = this.showPopUpEvent.asObservable();
 
   public setCodeLineData(data: { direction: DirectMoveFunction, val: number }[]): void {
@@ -22,7 +22,7 @@ export class SharedService {
     this.score.next();
   }
 
-  public showPopUp(content?: PopUpContent): void {
+  public showPopUp(content: PopUpContent[]): void {
     this.showPopUpEvent.next(content);
   }
 }

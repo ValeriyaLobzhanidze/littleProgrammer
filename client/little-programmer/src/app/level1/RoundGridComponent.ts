@@ -114,4 +114,8 @@ export default class RoundGridComponent implements Component {
     this._render(ctx, this.targetCords, this.targetArcsColor);
     this.childComponent.render(canvas);
   }
+
+  public getAmountOfTargets(): number {
+    return this.targetCords.length;
+  }
 }

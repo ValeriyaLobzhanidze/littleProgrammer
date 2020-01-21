@@ -101,6 +101,14 @@ export class SpriteAnimation implements Animation {
     if (!this.startFlag) {
       this.updateState();
       this.startFlag = 1;
+
+      if (this.getNumOfLastErrLine() != -1) {
+        return null;
+      }
+    }
+
+    if (this.getNumOfLastErrLine() != -1) {
+      return null;
     }
 
     if (this.comparableFunction(this.activeCord.val, this.curBoundary)) {

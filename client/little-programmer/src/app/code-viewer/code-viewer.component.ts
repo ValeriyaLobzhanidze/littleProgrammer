@@ -35,6 +35,8 @@ export class CodeViewerComponent implements OnInit {
     let canvas = document.getElementById('code-viewer') as any;
     let rootComponent = new RoundGridComponent(this.canvasWidth, this.canvasHeight, false, this.sharedService);
     let level = new Level(rootComponent);
+
+    this.targetScore = rootComponent.getAmountOfTargets();
     this.engine = new EngineImpl(canvas, level);
     this.engine.start();
   }

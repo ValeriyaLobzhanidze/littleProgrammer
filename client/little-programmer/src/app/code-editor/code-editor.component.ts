@@ -42,7 +42,7 @@ export class CodeEditorComponent implements OnInit {
         errorStr = errorStr + "line " + error.numberOfLine + "\n";
       }
       errorStr = "Fix errors in:\n" + errorStr;
-      alert(errorStr);
+      alert(errorStr);//TODO: use pop up
       return;
 
     } else {

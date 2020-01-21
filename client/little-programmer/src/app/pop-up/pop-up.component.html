@@ -1,24 +1,15 @@
-<!--<div id="pop-up">-->
-<!--  <span>Help radish visit all purple points!</span>-->
-<!--  <div id="canvas-div">-->
-<!--    <span [textContent]="someText"></span>-->
-<!--    <canvas id="canvas" width="{{canvasWidth}}" height="{{canvasHeight}}"></canvas>-->
-<!--  </div>-->
-<!--  <div id="panel">-->
-<!--    <i class="fa fa-caret-left fa-2x"></i>-->
-<!--    <button id="button" (click)="closePopUp()">Ok!</button>-->
-<!--    <i class="fa fa-caret-right fa-2x" (click)="onNext()"></i>-->
-<!--  </div>-->
-<!--</div>-->
-
 <div id="pop-up">
-  <span [textContent]="content.headerContent"></span>
-  <div id="canvas-div">
-    <canvas id="canvas" width="{{content.canvasWidth}}" height="{{content.canvasHeight}}"></canvas>
-  </div>
+  <span [textContent]="currentContent.headerContent"></span>
+  <canvas id="canvas" width="300" height="300"></canvas>
   <div id="panel">
-    <i class="fa fa-caret-left fa-2x" (click)="onPrev()"></i>
-    <button id="button" [textContent]="content.buttonValue" (click)="closePopUp()"></button>
-    <i class="fa fa-caret-right fa-2x" (click)="onNext()"></i>
+    <i *ngIf="content.length > 1"
+       class="fa fa-caret-left fa-2x"
+       (click)="onPrev()"
+       [ngClass]="['fa fa-caret-left fa-2x', this.shouldGoBack() ? 'icon' : 'disabled']"></i>
+    <button id="button" [textContent]="currentContent.buttonValue" (click)="closePopUp()"></button>
+    <i *ngIf="content.length > 1"
+       class="fa fa-caret-right fa-2x"
+       (click)="onNext()"
+       [ngClass]="['fa fa-caret-right fa-2x', this.shouldGoForward() ? 'icon' : 'disabled']"></i>
   </div>
 </div>

@@ -4,4 +4,5 @@ export interface Animation {
   update(): { dx: number, dy: number };
 
   getNumOfLastErrLine(): number;
+
 }

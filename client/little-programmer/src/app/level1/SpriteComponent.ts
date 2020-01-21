@@ -60,7 +60,7 @@ export default class SpriteComponent implements Component {
   }
 
   public setAnimation(route: { direction: DirectMoveFunction, val: number } []) {
-    this.animation = new SpriteAnimation(this.matrixCords, this.numOfRows, this.numOfCols, route);
+    this.animation = new SpriteAnimation(this.matrixCords, this.numOfRows, this.numOfCols, route); //TODO: reuse Sprite animation, just set new route and start point instead of creating new obj
     this.state = State.ACTIVE;
   }
 
@@ -124,27 +124,42 @@ export default class SpriteComponent implements Component {
     this.tickCount++;
 
     if (this.state == State.ACTIVE && this.animation != null) {
-      if (!this.animation.shouldEnd() && this.animation.getNumOfLastErrLine() == -1) {
+      if (!this.animation.shouldEnd()) {
         let cords = this.animation.update();
-        this.handleIfTarget(cords.dx, cords.dy);
-        this.animateTargets();
-        this.dx = cords.dx;
-        this.dy = cords.dy;
+        if (cords != null) {
+          this.handleIfTarget(cords.dx, cords.dy);
+          this.animateTargets();
+          this.dx = cords.dx;
+          this.dy = cords.dy;
+        } else {
+          this.state = State.STABLE;
+          if (this.sharedService) {
+            let popUpProps;
+            popUpProps = {
+              headerContent: "Error in " + this.animation.getNumOfLastErrLine() + " line"
+            };
+            this.sharedService.showPopUp([new PopUpContent(popUpProps)]);
+          }
+        }
+
       } else {
         this.state = State.STABLE;
-
         if (this.sharedService) {
           let popUpProps;
-          if (this.animation.getNumOfLastErrLine() != -1) {
-            popUpProps = {
-              canvasHeight: 0,
-              canvasWidth: 0,
-              headerContent: "Error in " + this.animation.getNumOfLastErrLine() + " line"
-            }
-          } else {
-            popUpProps = {};
+          let headerContent = "Wonderful!";
+          let buttonValue = "Thanks!";
+
+          if (this.visitedCords.length < this.targetCords.length) {
+            headerContent = "You haven't visited " + (this.targetCords.length - this.visitedCords.length) + " points!";
+            buttonValue = "Ok!";
           }
-          this.sharedService.showPopUp(new PopUpContent(popUpProps));
+
+          popUpProps = {
+            headerContent: headerContent,
+            buttonValue: buttonValue
+          };
+
+          this.sharedService.showPopUp([new PopUpContent(popUpProps)]);
         }
       }
     }
