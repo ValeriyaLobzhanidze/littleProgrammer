@@ -19,7 +19,6 @@ export class PopUpComponent implements OnInit {
 
   ngOnInit() {
     this.currentContent = this.content[this.currentContentNo];
-    this.currentContentNo++;
     if (this.currentContent.level) {
       this.runEngine();
     }
@@ -42,14 +41,13 @@ export class PopUpComponent implements OnInit {
     if (this.engine) {
       this.engine.stop();
     }
-    if (this.shouldChangePage()) {
-      this.currentContent = this.content[this.currentContentNo];
+    if (this.shouldChangePage(this.currentContentNo + 1)) {
       this.currentContentNo++;
+      this.currentContent = this.content[this.currentContentNo];
     } else {
       if (this.currentContentNo < 0) {
         this.currentContentNo = 1;
         this.currentContent = this.content[this.currentContentNo];
-        this.currentContentNo++;
       }
     }
   }
@@ -58,27 +56,26 @@ export class PopUpComponent implements OnInit {
     if (this.engine) {
       this.engine.stop();
     }
-    if (this.shouldChangePage()) {
-      this.currentContent = this.content[this.currentContentNo];
+    if (this.shouldChangePage(this.currentContentNo - 1)) {
       this.currentContentNo--;
+      this.currentContent = this.content[this.currentContentNo];
     } else {
       if (this.currentContentNo >= this.content.length) {
         this.currentContentNo = this.content.length - 2;
         this.currentContent = this.content[this.currentContentNo];
-        this.currentContentNo--;
       }
     }
   }
 
-  private shouldChangePage(): boolean {
-    return this.currentContentNo >= 0 && this.currentContentNo < this.content.length;
+  private shouldChangePage(value: number): boolean {
+    return value >= 0 && value < this.content.length;
   }
 
   public shouldGoForward(): boolean {
-    return this.currentContentNo < this.content.length;
+    return this.currentContentNo + 1 < this.content.length;
   }
 
   public shouldGoBack(): boolean {
-    return this.currentContentNo >= 0;
+    return this.currentContentNo - 1 >= 0;
   }
 }
