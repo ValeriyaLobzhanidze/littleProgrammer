@@ -1,9 +1,9 @@
 import SpriteComponent from "./SpriteComponent";
 import {DirectMoveFunction} from "./DirectMoveFunction";
-import {Component} from "../engine/Component";
+import {ComponentI} from "../engine/ComponentI";
 import {SharedService} from "../SharedService";
 
-export default class RoundGridComponent implements Component {
+export default class RoundGridComponent implements ComponentI {
 
   private cords: { x: number, y: number }[] = [];
   private readonly numOfRows: number;
@@ -18,7 +18,7 @@ export default class RoundGridComponent implements Component {
   private readonly diffY: number;
   private readonly backArcsColor: string = "rgb(75,191,151, 0.1)";
   private readonly targetArcsColor: string = "rgba(159, 146, 255, 0.64)";
-  private childComponent: Component;
+  private childComponent: ComponentI;
 
   private readonly arcRadius: number = 13;
   private targetNums: { x: number, y: number }[] = [];

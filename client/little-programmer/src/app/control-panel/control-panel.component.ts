@@ -3,6 +3,7 @@ import {SharedService} from "../SharedService";
 import PopUpContent from "../pop-up/PopUpContent";
 import RoundGridComponent from "../level1/RoundGridComponent";
 import Level from "../engine/Level";
+import CommandDemonstrationComponent from "../instructionpopup/CommandDemonstrationComponent";
 
 @Component({
   selector: 'app-control-panel',
@@ -28,8 +29,14 @@ export class ControlPanelComponent implements OnInit {
     this.sharedService.showPopUp(this.taskPopUpContent);
   }
 
-  private createLevel(): Level {
+  private createGameDemonstrationLevel(): Level {
     let rootComponent = new RoundGridComponent(300, 300);
+    return new Level(rootComponent);
+  }
+
+  private createInstructionLevel(): Level {
+    let instructions = ["moveRight(*)", "moveLeft(*)", "moveDown(*)", "moveUp(*)"];
+    let rootComponent = new CommandDemonstrationComponent(instructions);
     return new Level(rootComponent);
   }
 
@@ -37,24 +44,15 @@ export class ControlPanelComponent implements OnInit {
     let content = [];
     let animationPageProps = {
       headerContent: "Help radish visit all purple points!",
-      getLevel: this.createLevel
+      getLevel: this.createGameDemonstrationLevel
     };
     content.push(new PopUpContent(animationPageProps));
 
     let instructionPageProps = {
-      headerContent: "Just write all actions, that radish should do!",
-      canvasHeight: 0,
-      canvasWidth: 0,
-      mainContent:
-        "You can use commands:\n\n" +
-        "moveRight(*)\n\n" +
-        "moveDown(*)\n\n" +
-        "moveLeft(*)\n\n" +
-        "moveDown(*)\n\n" +
-        "Instead of star you need to put amount of steps\n\n" +
-        "For example, to force radish make 5 steps to the right, write this:\n\n" +
-        "moveRight(5);"
+      headerContent: "Just write all actions, that radish should do!You can use commands:",
+      getLevel: this.createInstructionLevel
     };
+
     content.push(new PopUpContent(instructionPageProps));
     return content;
   }

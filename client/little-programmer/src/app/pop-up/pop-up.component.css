@@ -47,6 +47,10 @@
   color: rgba(0, 0, 0, 0.23);
 }
 
-#text {
+span {
+  text-align: center;
+}
 
+#text {
+  text-align: center;
 }

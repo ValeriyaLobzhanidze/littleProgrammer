@@ -1,12 +1,12 @@
 import {State} from "./State";
 import {Animation} from "./Animation";
 import {SpriteAnimation} from "./SpriteAnimation";
-import {Component} from "../engine/Component";
+import {ComponentI} from "../engine/ComponentI";
 import {DirectMoveFunction} from "./DirectMoveFunction";
 import {SharedService} from "../SharedService";
 import PopUpContent from "../pop-up/PopUpContent";
 
-export default class SpriteComponent implements Component {
+export default class SpriteComponent implements ComponentI {
   private state: State = State.STABLE;
 
   private readonly spriteWidth = 30;
