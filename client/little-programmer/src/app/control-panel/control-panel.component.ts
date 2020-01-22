@@ -4,6 +4,7 @@ import PopUpContent from "../pop-up/PopUpContent";
 import RoundGridComponent from "../level1/RoundGridComponent";
 import Level from "../engine/Level";
 import CommandDemonstrationComponent from "../instructionpopup/CommandDemonstrationComponent";
+import Instruction from "../instructionpopup/Instruction";
 
 @Component({
   selector: 'app-control-panel',
@@ -35,7 +36,10 @@ export class ControlPanelComponent implements OnInit {
   }
 
   private createInstructionLevel(): Level {
-    let instructions = ["moveRight(*)", "moveLeft(*)", "moveDown(*)", "moveUp(*)"];
+    let instructions = [new Instruction("moveRight(*)"),
+      new Instruction("moveLeft(*)"),
+      new Instruction("moveDown(*)"),
+      new Instruction("moveUp(*)")];
     let rootComponent = new CommandDemonstrationComponent(instructions);
     return new Level(rootComponent);
   }
