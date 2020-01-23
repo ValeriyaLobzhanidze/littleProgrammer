@@ -39,7 +39,8 @@ export class ControlPanelComponent implements OnInit {
     let instructions = [new Instruction("moveRight(*)"),
       new Instruction("moveLeft(*)"),
       new Instruction("moveDown(*)"),
-      new Instruction("moveUp(*)")];
+      new Instruction("moveUp(*)"),
+    new Instruction("*Instead of * write amount of steps", "red", 15)];
     let rootComponent = new CommandDemonstrationComponent(instructions);
     return new Level(rootComponent);
   }

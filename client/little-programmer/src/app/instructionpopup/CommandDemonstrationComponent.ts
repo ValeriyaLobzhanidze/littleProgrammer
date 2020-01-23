@@ -8,6 +8,8 @@ export default class CommandDemonstrationComponent implements ComponentI {
   private ballColor1 = "#58fbce";
   private ballColor2 = "rgba(187, 116, 251, 0.83)";
   private ballStartAngel = 0;
+  private ballTick = 6;
+  private curTick = 0;
 
   private currentUpdateBallFunc: () => void;
   private currentInstruction;
@@ -35,9 +37,9 @@ export default class CommandDemonstrationComponent implements ComponentI {
 
   private renderInstructions(canvas: any) {
     let ctx = canvas.getContext('2d');
-    ctx.font = "30px KBSticktoIt";
 
     for (let instruction of this.instructions) {
+      ctx.font = instruction.size + "px KBSticktoIt";
       ctx.fillStyle = instruction.color;
       ctx.fillText(instruction.instruction, instruction.x, instruction.y);
     }
@@ -48,12 +50,12 @@ export default class CommandDemonstrationComponent implements ComponentI {
 
     ctx.fillStyle = this.ballColor1;
     ctx.beginPath();
-    ctx.arc(this.ballX, this.ballY, 10, this.ballStartAngel, this.ballStartAngel + Math.PI);
+    ctx.arc(this.ballX, this.ballY, 10, this.ballStartAngel, this.ballStartAngel + Math.PI / 2, true);
     ctx.fill();
 
     ctx.fillStyle = this.ballColor2;
     ctx.beginPath();
-    ctx.arc(this.ballX, this.ballY, 10, this.ballStartAngel + Math.PI, 2 * (this.ballStartAngel + Math.PI));
+    ctx.arc(this.ballX, this.ballY, 10, this.ballStartAngel + Math.PI, this.ballStartAngel + 2 * Math.PI, true);
     ctx.fill();
   }
 
@@ -70,10 +72,17 @@ export default class CommandDemonstrationComponent implements ComponentI {
       }
     } else {
       if (this.ballX <= 0) {
+        this.currentUpdateBallFunc = this.positiveDirection;
+      } else if (this.ballY >= 280) {
         this.currentUpdateBallFunc = this.rollBall;
       }
+      if (this.ballX > 250) {
+        this.currentUpdateBallFunc = null;
+      }
     }
-    this.currentUpdateBallFunc();
+    if (this.currentUpdateBallFunc) {
+      this.currentUpdateBallFunc();
+    }
   }
 
   private positiveDirection(): void {
@@ -89,8 +98,13 @@ export default class CommandDemonstrationComponent implements ComponentI {
   }
 
   private rollBall(): void {
-    this.ballStartAngel += Math.PI / 4;
-    this.ballX += 0.1;
+    if (this.curTick < this.ballTick) {
+      this.curTick++;
+    } else {
+      this.curTick = 0;
+      this.ballStartAngel += Math.PI / 4;
+    }
+    this.ballX += 0.6;
   }
 
   render(canvas: any) {
