@@ -53,7 +53,7 @@ export class ControlPanelComponent implements OnInit {
     content.push(new PopUpContent(animationPageProps));
 
     let instructionPageProps = {
-      headerContent: "Just write all actions, that radish should do!You can use commands:",
+      headerContent: "You can use commands:",
       getLevel: this.createInstructionLevel
     };
 
