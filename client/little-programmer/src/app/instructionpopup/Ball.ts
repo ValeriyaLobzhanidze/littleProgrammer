@@ -28,7 +28,7 @@ export default class Ball {
   private currentState = BallState.FLY;
   private startVerticallyMoveY: number;
 
-  private minRadiusSize = 3;
+  private minRadiusSize = 1;
   private radiusStep = 0.2;
 
 
@@ -106,7 +106,7 @@ export default class Ball {
   }
 
   public static trajectoryFlyFunction(value: number): number {
-    return Math.sqrt(value) * 5;
+    return Math.sqrt(value) * 4;
   }
 
   private positiveFlyDirection(): void {

@@ -7,7 +7,7 @@ export default class InstructionSet {
   private visitedInstructionColor = "#58fbce";
   private _xInstructionStart = 50;
   private instructionShift = 10;
-  private _xCommentStart = 10;
+  private _xCommentStart = 35;
   private readonly trajectoryFunction: (x: number) => number;
   private readonly trajectoryFuncStep: number;
   private instructionIdx = 0;
