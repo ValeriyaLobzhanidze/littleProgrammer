@@ -13,6 +13,7 @@ export default class CommandDemonstrationComponent implements ComponentI {
     this.ball = new Ball(this.instructionSet.xInstructionStart,
       this.instructionSet.getSetLength(),
       this.instructionSet.xCommentStart,
+      this.instructionSet.getYCommentStart(),
       this.instructionSet.getCommentSize(),
       this.instructionSet.getCommentLength() * 10.5);
   }

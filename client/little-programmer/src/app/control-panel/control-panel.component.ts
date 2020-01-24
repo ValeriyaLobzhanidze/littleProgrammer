@@ -31,7 +31,7 @@ export class ControlPanelComponent implements OnInit {
   }
 
   private createGameDemonstrationLevel(): Level {
-    let rootComponent = new RoundGridComponent(300, 300);
+    let rootComponent = new RoundGridComponent(400, 400);//TODO
     return new Level(rootComponent);
   }
 

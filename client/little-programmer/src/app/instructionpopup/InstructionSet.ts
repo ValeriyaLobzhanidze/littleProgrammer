@@ -5,9 +5,9 @@ export default class InstructionSet {
   private readonly comment: Instruction;
   private currentInstruction: Instruction;
   private visitedInstructionColor = "#58fbce";
-  private _xInstructionStart = 40;
+  private _xInstructionStart = 50;
   private instructionShift = 10;
-  private _xCommentStart = 0;
+  private _xCommentStart = 10;
   private readonly trajectoryFunction: (x: number) => number;
   private readonly trajectoryFuncStep: number;
   private instructionIdx = 0;
@@ -27,14 +27,14 @@ export default class InstructionSet {
   private initInstructionAndCommentCords(): void {
     if (this.instructionList.length > 0) {
       let curStep = 0;
-      for (let instruction of this.instructionList) {
-        instruction.x = this._xInstructionStart;
-        instruction.y = (curStep + this.trajectoryFunction(instruction.x));//+ instruction.fontSize / 2
+      for (let i = 0; i < this.instructionList.length; i++) {
+        this.instructionList[i].x = this._xInstructionStart;
+        this.instructionList[i].y = (curStep + this.trajectoryFunction(this._xInstructionStart));
         curStep += this.trajectoryFunction(this._xInstructionStart) * this.trajectoryFuncStep;
       }
 
       this.comment.x = this._xCommentStart;
-      this.comment.y = (curStep + this.trajectoryFunction(this._xInstructionStart));//+ this.instructionList[0].fontSize / 2
+      this.comment.y = curStep + this.trajectoryFunction(this._xCommentStart);
     }
   }
 
@@ -59,10 +59,9 @@ export default class InstructionSet {
     for (let instruction of this.instructionList.concat(this.comment)) {
       ctx.font = instruction.fontSize + "px KBSticktoIt";
       ctx.fillStyle = instruction.color;
-      ctx.fillText(instruction.instruction, instruction.x, instruction.y);
+      ctx.fillText(instruction.instruction, instruction.x, instruction.y + instruction.fontSize);
     }
   }
-
 
   get xInstructionStart(): number {
     return this._xInstructionStart;
@@ -70,6 +69,10 @@ export default class InstructionSet {
 
   get xCommentStart(): number {
     return this._xCommentStart;
+  }
+
+  public getYCommentStart(): number {
+    return this.comment.y;
   }
 
   public getCommentLength(): number {
