@@ -1,4 +1,4 @@
-import {State} from "./State";
+import {SpriteState} from "./SpriteState";
 import {Animation} from "./Animation";
 import {SpriteAnimation} from "./SpriteAnimation";
 import {ComponentI} from "../engine/ComponentI";
@@ -7,7 +7,7 @@ import {SharedService} from "../SharedService";
 import PopUpContent from "../pop-up/PopUpContent";
 
 export default class SpriteComponent implements ComponentI {
-  private state: State = State.STABLE;
+  private state: SpriteState = SpriteState.STABLE;
 
   private readonly spriteWidth = 30;
   private readonly spriteHeight = 38;
@@ -61,7 +61,7 @@ export default class SpriteComponent implements ComponentI {
 
   public setAnimation(route: { direction: DirectMoveFunction, val: number } []) {
     this.animation = new SpriteAnimation(this.matrixCords, this.numOfRows, this.numOfCols, route); //TODO: reuse Sprite animation, just set new route and start point instead of creating new obj
-    this.state = State.ACTIVE;
+    this.state = SpriteState.ACTIVE;
   }
 
   public render(canvas: any): void {
@@ -123,7 +123,7 @@ export default class SpriteComponent implements ComponentI {
   private update() {
     this.tickCount++;
 
-    if (this.state == State.ACTIVE && this.animation != null) {
+    if (this.state == SpriteState.ACTIVE && this.animation != null) {
       if (!this.animation.shouldEnd()) {
         let cords = this.animation.update();
         if (cords != null) {
@@ -132,7 +132,7 @@ export default class SpriteComponent implements ComponentI {
           this.dx = cords.dx;
           this.dy = cords.dy;
         } else {
-          this.state = State.STABLE;
+          this.state = SpriteState.STABLE;
           if (this.sharedService) {
             let popUpProps;
             popUpProps = {
@@ -143,7 +143,7 @@ export default class SpriteComponent implements ComponentI {
         }
 
       } else {
-        this.state = State.STABLE;
+        this.state = SpriteState.STABLE;
         if (this.sharedService) {
           let popUpProps;
           let headerContent = "Wonderful!";
