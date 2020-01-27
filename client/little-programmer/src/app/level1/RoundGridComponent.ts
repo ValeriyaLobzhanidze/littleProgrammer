@@ -23,10 +23,16 @@ export default class RoundGridComponent implements ComponentI {
   private readonly arcRadius: number = 12;
   private targetNums: { x: number, y: number }[] = [];
   private targetCords: { x: number, y: number }[] = [];
+  private readonly startCanvasX: number;
+  private readonly startCanvasY: number;
 
-  constructor(width: number, height: number, isDefaultRoute: boolean = true, sharedService?: SharedService) {
+  constructor(width: number, height: number, isDefaultRoute: boolean = true, sharedService?: SharedService,
+              startCanvasX?: number, startCanvasY?: number) {
     this.width = width;
     this.height = height;
+
+    this.startCanvasX = startCanvasX || 0;
+    this.startCanvasY = startCanvasY || 0;
 
     let diam = this.arcRadius * 2;
     this.startX = diam;
@@ -35,15 +41,16 @@ export default class RoundGridComponent implements ComponentI {
     this.diffX = diam + this.arcRadius;
     this.diffY = diam + this.arcRadius;
 
-    this.numOfRows = Math.floor((this.height - this.arcRadius * 2) / (diam + this.arcRadius));
-    this.numOfCols = Math.floor((this.width - this.arcRadius * 2) / (diam + this.arcRadius));
+    this.numOfRows = Math.floor(((this.height - this.startCanvasY) - this.arcRadius * 2) / (diam + this.arcRadius));
+    this.numOfCols = Math.floor(((this.width - this.startCanvasX) - this.arcRadius * 2) / (diam + this.arcRadius));
 
-    let targetRectHeight = this.numOfRows - 4;
+    let targetRectHeight = this.numOfCols - 4;
     let targetRectTop = 2;
     let targetRectLeft = 2;
 
     this.targetNums = this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop, targetRectLeft, targetRectHeight);
-    this.targetNums = this.targetNums.concat(this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop + 2, targetRectLeft + 2, targetRectHeight - 4));
+    this.targetNums = this.targetNums.concat(this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop + 2,
+      targetRectLeft + 2, targetRectHeight - 4));
     this.calculateCords();
 
     if (isDefaultRoute) {
@@ -53,10 +60,6 @@ export default class RoundGridComponent implements ComponentI {
       this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, null, sharedService);
     }
   }
-
-  // private findAppropriateRadius(width: number, height: number): number {
-  //
-  // }
 
   private buildDefaultRoute(top: number, left: number, height: number): { direction: DirectMoveFunction, val: number } [] {
     return ([{direction: DirectMoveFunction.MOVE_RIGHT, val: left},
@@ -85,20 +88,20 @@ export default class RoundGridComponent implements ComponentI {
   }
 
   private calculateCords(): void {
-    let dx = this.startX;
-    let dy = this.startY;
+    let dx = this.startCanvasX + this.startX;
+    let dy = this.startCanvasY + this.startY;
     for (let i = 0; i < this.numOfRows; i++) {
       for (let j = 0; j < this.numOfCols; j++) {
         let cord = {x: dx, y: dy};
         this.cords.push(cord);
 
-        let res = this.targetNums.filter(target => target.x == i && target.y == j);
+        let res = this.targetNums.filter(target => target && target.x == i && target.y == j);
         if (res.length > 0) {
           this.targetCords.push({x: dx, y: dy});
         }
         dx += this.diffX;
       }
-      dx = this.startX;
+      dx = this.startCanvasX + this.startX;
       dy += this.diffY;
     }
   }

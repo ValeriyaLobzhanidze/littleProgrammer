@@ -5,6 +5,7 @@ import RoundGridComponent from "../level1/RoundGridComponent";
 import Level from "../engine/Level";
 import CommandDemonstrationComponent from "../instructionpopup/CommandDemonstrationComponent";
 import Instruction from "../instructionpopup/Instruction";
+import DemonstrationComponent from "../demonstrationpopup/DemonstrationComponent";
 
 @Component({
   selector: 'app-control-panel',
@@ -48,6 +49,11 @@ export class ControlPanelComponent implements OnInit {
     return new Level(rootComponent);
   }
 
+  private createExamplePageLevel(): Level {
+    let rootComponent = new DemonstrationComponent("moveRight(4);", this.canvasWidth, this.canvasHeight);
+    return new Level(rootComponent);
+  }
+
   private createPopUpContent(): PopUpContent[] {
     let content = [];
     let animationPageProps = {
@@ -66,6 +72,11 @@ export class ControlPanelComponent implements OnInit {
     };
 
     content.push(new PopUpContent(instructionPageProps));
+
+    let examplePageProps = {
+      getLevel: this.createExamplePageLevel
+    };
+    content.push(new PopUpContent(examplePageProps));
     return content;
   }
 
