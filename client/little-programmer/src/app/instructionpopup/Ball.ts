@@ -91,7 +91,7 @@ export default class Ball {
               this.currentUpdateFuncX = this.positiveDirection;
               this.currentUpdateFuncY = this.positiveYFlyDirection;
             }
-            if (this.currentX >= this.flyBarrierX) {
+            if (this.currentX > this.flyBarrierX) {
               this.currentX = this.flyBarrierX;
               this.currentY = this.currentUpdateFuncY(this.currentX);
 
