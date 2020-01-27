@@ -6,6 +6,7 @@ export default class Ball {
   private radius = 10;
   private colorHalf1 = "#58fbce";
   private colorHalf2 = "rgba(187, 116, 251, 0.83)";
+  private currentX = 0;
 
   private tickPerFrame = 6;
   private startAngel = 0;
@@ -20,7 +21,6 @@ export default class Ball {
   private barrierCounter = 0;
 
   private readonly startRollHorizontallyX: number;
-  private readonly startRollHorizontallyY: number;
   private readonly rollVerticallyBarrierY: number;
   private readonly lengthOfHorizontallyRoll: number;
 
@@ -28,16 +28,14 @@ export default class Ball {
   private currentState = BallState.FLY;
   private startVerticallyMoveY: number;
 
-  private minRadiusSize = 3;
+  private minRadiusSize = 1;
   private radiusStep = 0.2;
 
 
-  constructor(flyBarrierX: number, amountOfFlyBarriers: number, startRollHorizontallyX: number,
-              startRollHorizontallyY: number, rollVerticallyBarrierY: number, lengthOfHorizontallyRoll: number) {
+  constructor(flyBarrierX: number, amountOfFlyBarriers: number, startRollHorizontallyX: number, rollVerticallyBarrierY: number, lengthOfHorizontallyRoll: number) {
     this.flyBarrierX = flyBarrierX;
     this.amountOfFlyBarriers = amountOfFlyBarriers;
     this.startRollHorizontallyX = startRollHorizontallyX;
-    this.startRollHorizontallyY = startRollHorizontallyY;
     this.rollVerticallyBarrierY = rollVerticallyBarrierY;
     this.lengthOfHorizontallyRoll = lengthOfHorizontallyRoll;
   }
@@ -70,12 +68,15 @@ export default class Ball {
             } else if (this.x >= this.startRollHorizontallyX && this.currentUpdateFunc == this.positiveFlyDirection) {
               this.currentState = BallState.ROLL_HOR;
               this.currentUpdateFunc = this.rollHorizontally;
+              this.speed = 1.2;
             }
           } else {
-            if (this.x <= 0) {
+            if (this.currentX < 0) {
+              this.currentX = 0;
               this.currentUpdateFunc = this.positiveFlyDirection;
             }
-            if (this.x >= this.flyBarrierX && this.y >= this.currentShiftOfTrajectory + Ball.trajectoryFlyFunction(this.flyBarrierX)) {
+            if (this.currentX >= this.flyBarrierX) {
+              this.currentX = this.flyBarrierX;
               this.currentShiftOfTrajectory += Ball.trajectoryFlyFunction(this.flyBarrierX) * Ball.TRAJECTORY_STEP;
               this.currentUpdateFunc = this.negativeFlyDirection;
               this.barrierCounter++;
@@ -101,30 +102,28 @@ export default class Ball {
     }
 
     if (this.currentState != BallState.STABLE) {
+      this.x = this.currentX;
       this.currentUpdateFunc();
+      this.currentX += this.speed;
     }
   }
 
   public static trajectoryFlyFunction(value: number): number {
-    return Math.sqrt(value) * 5;
+    return Math.sqrt(value) * 4;
   }
 
   private positiveFlyDirection(): void {
-    if (this.x < 0) {
-      this.x = 0;
+    if (this.speed < 0) {
+      this.speed *= -1;
     }
-    let sqrt = this.currentShiftOfTrajectory + Ball.trajectoryFlyFunction(this.x);
-    this.x += this.speed;
-    this.y = sqrt;
+    this.y = this.currentShiftOfTrajectory + Ball.trajectoryFlyFunction(this.x);
   }
 
   private negativeFlyDirection(): void {
-    if (this.x < 0) {
-      this.x = 0;
+    if (this.speed > 0) {
+      this.speed *= -1;
     }
-    let sqrt = this.currentShiftOfTrajectory - Ball.trajectoryFlyFunction(this.x);
-    this.x -= this.speed;
-    this.y = sqrt;
+    this.y = this.currentShiftOfTrajectory - Ball.trajectoryFlyFunction(this.x);
   }
 
   private updateAnimationTick() {

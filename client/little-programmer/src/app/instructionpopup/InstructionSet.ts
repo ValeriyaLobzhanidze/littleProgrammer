@@ -5,9 +5,9 @@ export default class InstructionSet {
   private readonly comment: Instruction;
   private currentInstruction: Instruction;
   private visitedInstructionColor = "#58fbce";
-  private _xInstructionStart = 50;
+  private _xInstructionStart = 52.2;
   private instructionShift = 10;
-  private _xCommentStart = 10;
+  private _xCommentStart = 30;
   private readonly trajectoryFunction: (x: number) => number;
   private readonly trajectoryFuncStep: number;
   private instructionIdx = 0;
@@ -39,7 +39,7 @@ export default class InstructionSet {
   }
 
   private update(): void {
-    if (this.shouldUpdate() && (this.flyBodyX >= this.currentInstruction.x && this.flyBodyY >= this.currentInstruction.y)) {
+    if (this.shouldUpdate() && this.flyBodyX >= this.currentInstruction.x) {
       this.currentInstruction.x += this.instructionShift;
       this.currentInstruction.color = this.visitedInstructionColor;
       if (this.instructionIdx + 1 < this.instructionList.length) {
@@ -69,10 +69,6 @@ export default class InstructionSet {
 
   get xCommentStart(): number {
     return this._xCommentStart;
-  }
-
-  public getYCommentStart(): number {
-    return this.comment.y;
   }
 
   public getCommentLength(): number {

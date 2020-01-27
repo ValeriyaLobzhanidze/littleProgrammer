@@ -13,18 +13,16 @@ export default class CommandDemonstrationComponent implements ComponentI {
     this.ball = new Ball(this.instructionSet.xInstructionStart,
       this.instructionSet.getSetLength(),
       this.instructionSet.xCommentStart,
-      this.instructionSet.getYCommentStart(),
       this.instructionSet.getCommentSize(),
-      this.instructionSet.getCommentLength() * 10.5);
+      this.instructionSet.getCommentLength() * 10);
   }
 
   render(canvas: any) {
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     this.ball.render(canvas);
-    let ballCords = this.ball.getCurrentCords();
-
-    this.instructionSet.setFlyBodyCords(ballCords.x, ballCords.y);
+    let cords = this.ball.getCurrentCords();
+    this.instructionSet.setFlyBodyCords(cords.x, cords.y);
     this.instructionSet.render(canvas);
   }
 }
