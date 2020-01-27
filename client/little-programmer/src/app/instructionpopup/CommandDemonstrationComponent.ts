@@ -14,7 +14,7 @@ export default class CommandDemonstrationComponent implements ComponentI {
       this.instructionSet.getSetLength(),
       this.instructionSet.xCommentStart,
       this.instructionSet.getCommentSize(),
-      this.instructionSet.getCommentLength() * 10);
+      this.instructionSet.getCommentLength() * 10.5);
   }
 
   render(canvas: any) {

@@ -3,10 +3,12 @@ import {BallState} from "./BallState";
 export default class Ball {
   private x = 0;
   private y = 0;
-  private radius = 10;
+  private radius = 11;
   private colorHalf1 = "#58fbce";
   private colorHalf2 = "rgba(187, 116, 251, 0.83)";
+
   private currentX = 0;
+  private currentY = 0;
 
   private tickPerFrame = 6;
   private startAngel = 0;
@@ -24,13 +26,14 @@ export default class Ball {
   private readonly rollVerticallyBarrierY: number;
   private readonly lengthOfHorizontallyRoll: number;
 
-  private currentUpdateFunc = this.positiveFlyDirection;
   private currentState = BallState.FLY;
   private startVerticallyMoveY: number;
 
+  private currentUpdateFuncY: (value: number) => number = this.positiveYFlyDirection;
+  private currentUpdateFuncX: (value: number) => number = this.positiveDirection;
+
   private minRadiusSize = 1;
   private radiusStep = 0.2;
-
 
   constructor(flyBarrierX: number, amountOfFlyBarriers: number, startRollHorizontallyX: number, rollVerticallyBarrierY: number, lengthOfHorizontallyRoll: number) {
     this.flyBarrierX = flyBarrierX;
@@ -63,36 +66,56 @@ export default class Ball {
       case BallState.FLY:
         if (this.barrierCounter < this.amountOfFlyBarriers + 1) {
           if (this.barrierCounter == this.amountOfFlyBarriers) {
-            if (this.x <= 0) {
-              this.currentUpdateFunc = this.positiveFlyDirection;
-            } else if (this.x >= this.startRollHorizontallyX && this.currentUpdateFunc == this.positiveFlyDirection) {
+            if (this.currentX < 0) {
+              this.currentX = 0;
+              this.currentY = this.currentUpdateFuncY(this.currentX);
+
+              this.currentUpdateFuncX = this.positiveDirection;
+              this.currentUpdateFuncY = this.positiveYFlyDirection;
+
+            } else if (this.currentX > this.startRollHorizontallyX && this.currentUpdateFuncY == this.positiveYFlyDirection) {
               this.currentState = BallState.ROLL_HOR;
-              this.currentUpdateFunc = this.rollHorizontally;
+
+              this.currentX = this.startRollHorizontallyX;
+              this.currentY = this.currentUpdateFuncY(this.currentX);
+
+              this.currentUpdateFuncY = null;
+              this.currentUpdateFuncX = this.positiveDirection;
               this.speed = 1.2;
             }
           } else {
             if (this.currentX < 0) {
               this.currentX = 0;
-              this.currentUpdateFunc = this.positiveFlyDirection;
+              this.currentY = this.currentUpdateFuncY(this.currentX);
+
+              this.currentUpdateFuncX = this.positiveDirection;
+              this.currentUpdateFuncY = this.positiveYFlyDirection;
             }
             if (this.currentX >= this.flyBarrierX) {
               this.currentX = this.flyBarrierX;
+              this.currentY = this.currentUpdateFuncY(this.currentX);
+
               this.currentShiftOfTrajectory += Ball.trajectoryFlyFunction(this.flyBarrierX) * Ball.TRAJECTORY_STEP;
-              this.currentUpdateFunc = this.negativeFlyDirection;
+              this.currentUpdateFuncX = this.negativeDirection;
+              this.currentUpdateFuncY = this.negativeYFlyDirection;
               this.barrierCounter++;
             }
           }
         }
         break;
       case BallState.ROLL_HOR:
-        if (this.x >= this.startRollHorizontallyX + this.lengthOfHorizontallyRoll) {
+        if (this.currentX > this.startRollHorizontallyX + this.lengthOfHorizontallyRoll) {
           this.currentState = BallState.ROLL_V;
-          this.currentUpdateFunc = this.rollVertically;
+          this.currentX = this.startRollHorizontallyX + this.lengthOfHorizontallyRoll;
+
+          this.currentUpdateFuncX = null;
+          this.currentUpdateFuncY = this.positiveDirection;
           this.startVerticallyMoveY = this.y;
         }
         break;
       case BallState.ROLL_V:
-        if (this.y >= this.startVerticallyMoveY + this.rollVerticallyBarrierY) {
+        if (this.currentY > this.startVerticallyMoveY + this.rollVerticallyBarrierY) {
+          this.currentY = this.startVerticallyMoveY + this.rollVerticallyBarrierY;
           this.currentState = BallState.STABLE;
           this.colorHalf1 = this.colorHalf2;
         }
@@ -103,8 +126,24 @@ export default class Ball {
 
     if (this.currentState != BallState.STABLE) {
       this.x = this.currentX;
-      this.currentUpdateFunc();
-      this.currentX += this.speed;
+      this.y = this.currentY;
+
+      if (this.curTick == 0) {
+        if (this.currentState != BallState.FLY) {
+          this.decreaseSize();
+          this.changeAngle();
+        }
+      }
+      this.updateAnimationTick();
+
+      if (this.currentUpdateFuncX) {
+        this.currentX = this.currentUpdateFuncX(this.x);
+        if (this.currentUpdateFuncX && this.currentUpdateFuncY && this.currentX > 0) {
+          this.currentY = this.currentUpdateFuncY(this.currentX);
+        }
+      } else if (this.currentUpdateFuncY) {
+        this.currentY = this.currentUpdateFuncY(this.currentY);
+      }
     }
   }
 
@@ -112,18 +151,20 @@ export default class Ball {
     return Math.sqrt(value) * 4;
   }
 
-  private positiveFlyDirection(): void {
-    if (this.speed < 0) {
-      this.speed *= -1;
-    }
-    this.y = this.currentShiftOfTrajectory + Ball.trajectoryFlyFunction(this.x);
+  private positiveYFlyDirection(value: number): number {
+    return this.currentShiftOfTrajectory + Ball.trajectoryFlyFunction(value);
   }
 
-  private negativeFlyDirection(): void {
-    if (this.speed > 0) {
-      this.speed *= -1;
-    }
-    this.y = this.currentShiftOfTrajectory - Ball.trajectoryFlyFunction(this.x);
+  private negativeYFlyDirection(value: number): number {
+    return this.currentShiftOfTrajectory - Ball.trajectoryFlyFunction(value);
+  }
+
+  private positiveDirection(value: number): number {
+    return value + this.speed;
+  }
+
+  private negativeDirection(value: number): number {
+    return value - this.speed;
   }
 
   private updateAnimationTick() {
@@ -142,23 +183,6 @@ export default class Ball {
     if (this.radius > this.minRadiusSize) {
       this.radius -= this.radiusStep;
     }
-  }
-
-  private rollHorizontally(): void {
-    this.updateAnimationTick();
-    if (this.curTick == 0) {
-      this.changeAngle();
-      this.decreaseSize();
-    }
-    this.x += this.speed;
-  }
-
-  private rollVertically(): void {
-    this.updateAnimationTick();
-    if (this.curTick == 0) {
-      this.changeAngle();
-    }
-    this.y += this.speed;
   }
 
   public getCurrentCords(): { x: number, y: number } {
