@@ -16,6 +16,9 @@ export class ControlPanelComponent implements OnInit {
   private taskPopUpContent: PopUpContent[];
   private isTaskContentInit = false;
 
+  private canvasWidth = 400;
+  private canvasHeight = 350;
+
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
   }
@@ -31,7 +34,7 @@ export class ControlPanelComponent implements OnInit {
   }
 
   private createGameDemonstrationLevel(): Level {
-    let rootComponent = new RoundGridComponent(400, 400);//TODO
+    let rootComponent = new RoundGridComponent(this.canvasWidth, this.canvasHeight);
     return new Level(rootComponent);
   }
 
@@ -49,13 +52,17 @@ export class ControlPanelComponent implements OnInit {
     let content = [];
     let animationPageProps = {
       headerContent: "Help radish visit all purple points!",
-      getLevel: this.createGameDemonstrationLevel
+      getLevel: this.createGameDemonstrationLevel.bind(this),
+      canvasWidth: this.canvasWidth,
+      canvasHeight: this.canvasHeight
     };
     content.push(new PopUpContent(animationPageProps));
 
     let instructionPageProps = {
       headerContent: "You can use commands:",
-      getLevel: this.createInstructionLevel
+      getLevel: this.createInstructionLevel,
+      canvasWidth: this.canvasWidth,
+      canvasHeight: this.canvasHeight
     };
 
     content.push(new PopUpContent(instructionPageProps));

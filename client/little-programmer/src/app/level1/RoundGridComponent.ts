@@ -20,7 +20,7 @@ export default class RoundGridComponent implements ComponentI {
   private readonly targetArcsColor: string = "rgba(159, 146, 255, 0.64)";
   private childComponent: ComponentI;
 
-  private readonly arcRadius: number = 13;
+  private readonly arcRadius: number = 12;
   private targetNums: { x: number, y: number }[] = [];
   private targetCords: { x: number, y: number }[] = [];
 
@@ -35,8 +35,8 @@ export default class RoundGridComponent implements ComponentI {
     this.diffX = diam + this.arcRadius;
     this.diffY = diam + this.arcRadius;
 
-    this.numOfRows = Math.ceil((this.height - this.startX * 2) / (diam + this.arcRadius));
-    this.numOfCols = Math.ceil((this.width - this.startY * 2) / (diam + this.arcRadius));
+    this.numOfRows = Math.floor((this.height - this.arcRadius * 2) / (diam + this.arcRadius));
+    this.numOfCols = Math.floor((this.width - this.arcRadius * 2) / (diam + this.arcRadius));
 
     let targetRectHeight = this.numOfRows - 4;
     let targetRectTop = 2;
@@ -53,6 +53,10 @@ export default class RoundGridComponent implements ComponentI {
       this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, null, sharedService);
     }
   }
+
+  // private findAppropriateRadius(width: number, height: number): number {
+  //
+  // }
 
   private buildDefaultRoute(top: number, left: number, height: number): { direction: DirectMoveFunction, val: number } [] {
     return ([{direction: DirectMoveFunction.MOVE_RIGHT, val: left},
