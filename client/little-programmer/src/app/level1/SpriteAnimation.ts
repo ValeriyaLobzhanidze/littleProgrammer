@@ -17,7 +17,7 @@ export class SpriteAnimation implements Animation {
   private numOfLastErrLine = -1;
   private currentRow: number = 0;
 
-  constructor(matrixCords, numOfRows: number, numOfCols: number, route, speed: number = 0.4) {
+  constructor(matrixCords, numOfRows: number, numOfCols: number, route, speed: number = 1.2) {
     this.matrixCords = matrixCords;
     this.speed = speed;
     this.dx.val = matrixCords[0].x;

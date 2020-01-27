@@ -9,7 +9,12 @@ export default class DemonstrationComponent implements ComponentI {
   private currentLetterIdx = 0;
   private curText = "";
   private curTextTick = 0;
-  private amountOfTicks = 30;
+  private curStickTick = 0;
+  private amountOfTextTicks = 30;
+  private amountOfStickTicks = 30;
+
+  private curIdle = 0;
+  private idle = 30;
 
   constructor(typingText: string, gridWidth: number, gridHeight: number) {
     this.typingText = typingText;
@@ -21,25 +26,37 @@ export default class DemonstrationComponent implements ComponentI {
     let ctx = canvas.getContext('2d');
     if (this.curTextTick == 0) {
       if (this.currentLetterIdx < this.typingText.length) {
-        if (this.curText.length > 0) {
-          this.curText = this.curText.slice(0, this.curText.length - 2);
-        }
-        this.curText += this.typingText[this.currentLetterIdx++] + " |";
+        this.curText += this.typingText[this.currentLetterIdx++];
       }
     }
     if (this.currentLetterIdx == 4) {
-      this.amountOfTicks = 50;
+      this.amountOfTextTicks = 50;
     }
 
     if (this.currentLetterIdx == 7) {
-      this.amountOfTicks = 30;
+      this.amountOfTextTicks = 30;
     }
 
     ctx.font = 30 + "px KBSticktoIt";
     ctx.fillStyle = "rgba(187, 116, 251, 0.83)";
     ctx.fillText(this.curText, 0, 30);
 
-    if (this.curTextTick < this.amountOfTicks) {
+    if (this.curStickTick < this.amountOfStickTicks) {
+      ctx.beginPath();
+      ctx.moveTo(0, 30);
+      ctx.lineTo(0, 0);
+      ctx.stroke();
+      this.curStickTick++;
+    } else {
+      if (this.curIdle < this.idle) {
+        this.curIdle++;
+      } else {
+        this.curStickTick = 0;
+        this.curIdle = 0;
+      }
+    }
+
+    if (this.curTextTick < this.amountOfTextTicks) {
       this.curTextTick++;
     } else {
       this.curTextTick = 0;

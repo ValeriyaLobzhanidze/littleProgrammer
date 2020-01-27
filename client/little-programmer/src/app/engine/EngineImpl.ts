@@ -5,7 +5,6 @@ export default class EngineImpl implements Engine {
   private readonly canvas: any;
   private level: Level;
   private started: boolean;
-  private readonly msPerFrame = 1 / 60;
 
   constructor(canvas: any, level: any) {
     this.canvas = canvas;
@@ -17,19 +16,13 @@ export default class EngineImpl implements Engine {
     if (this.started == false) {
       return;
     }
-    let started = new Date();
     this.level.getRootComponent().render(this.canvas);
-    let taken = new Date().getTime() - started.getTime();
-    let nextDelay = 0;
-    if (taken < this.msPerFrame) {
-      nextDelay = this.msPerFrame - taken;
-    }
-    window.setTimeout(this.loop.bind(this), nextDelay);
+    window.requestAnimationFrame(this.loop.bind(this));
   }
 
   public start() {
     this.started = true;
-    window.setTimeout(this.loop.bind(this), 0);
+    window.requestAnimationFrame(this.loop.bind(this));
   }
 
   public stop() {

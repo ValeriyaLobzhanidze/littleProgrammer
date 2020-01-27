@@ -13,7 +13,7 @@ export default class SpriteComponent implements ComponentI {
   private readonly spriteHeight = 38;
 
   private readonly numberOfFrames = 6;
-  private readonly ticksPerFrame = 10;
+  private readonly ticksPerFrame = 3;
   private tickCount = 0;
 
   private frameIndex = 0;
@@ -23,7 +23,7 @@ export default class SpriteComponent implements ComponentI {
   private visitedCords = [];
 
   private animatedTargets = [];
-  private targetAnimateDy = 0.2;
+  private targetAnimateDy = 1.2;
 
   private readonly numOfCols: number;
   private readonly numOfRows: number;
