@@ -65,15 +65,16 @@ export default class Ball {
     switch (this.currentState) {
       case BallState.FLY:
         if (this.barrierCounter < this.amountOfFlyBarriers + 1) {
+          if (this.currentX < 0) {
+            this.currentX = 0;
+            this.currentY = this.currentUpdateFuncY(this.currentX);
+
+            this.currentUpdateFuncX = this.positiveDirection;
+            this.currentUpdateFuncY = this.positiveYFlyDirection;
+
+          }
           if (this.barrierCounter == this.amountOfFlyBarriers) {
-            if (this.currentX < 0) {
-              this.currentX = 0;
-              this.currentY = this.currentUpdateFuncY(this.currentX);
-
-              this.currentUpdateFuncX = this.positiveDirection;
-              this.currentUpdateFuncY = this.positiveYFlyDirection;
-
-            } else if (this.currentX > this.startRollHorizontallyX && this.currentUpdateFuncY == this.positiveYFlyDirection) {
+            if (this.currentX > this.startRollHorizontallyX && this.currentUpdateFuncY == this.positiveYFlyDirection) {
               this.currentState = BallState.ROLL_HOR;
 
               this.currentX = this.startRollHorizontallyX;
@@ -84,13 +85,6 @@ export default class Ball {
               this.speed = 1.2;
             }
           } else {
-            if (this.currentX < 0) {
-              this.currentX = 0;
-              this.currentY = this.currentUpdateFuncY(this.currentX);
-
-              this.currentUpdateFuncX = this.positiveDirection;
-              this.currentUpdateFuncY = this.positiveYFlyDirection;
-            }
             if (this.currentX > this.flyBarrierX) {
               this.currentX = this.flyBarrierX;
               this.currentY = this.currentUpdateFuncY(this.currentX);
