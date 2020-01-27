@@ -132,7 +132,7 @@ export default class Ball {
 
       if (this.currentUpdateFuncX) {
         this.currentX = this.currentUpdateFuncX(this.x);
-        if (this.currentUpdateFuncX && this.currentUpdateFuncY && this.currentX > 0) {
+        if (this.currentUpdateFuncY && this.currentX > 0) {
           this.currentY = this.currentUpdateFuncY(this.currentX);
         }
       } else if (this.currentUpdateFuncY) {
