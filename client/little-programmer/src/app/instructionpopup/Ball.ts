@@ -10,10 +10,10 @@ export default class Ball {
   private currentX = 0;
   private currentY = 0;
 
-  private tickPerFrame = 6;
+  private tickPerFrame = 3;
   private startAngel = 0;
   private curTick = 0;
-  private speed = 1.8;
+  private speed = 5.5;
   public static TRAJECTORY_STEP = 2;
 
   private currentShiftOfTrajectory = 0;
@@ -33,7 +33,7 @@ export default class Ball {
   private currentUpdateFuncX: (value: number) => number = this.positiveDirection;
 
   private minRadiusSize = 1;
-  private radiusStep = 0.2;
+  private radiusStep = 0.5;
 
   constructor(flyBarrierX: number, amountOfFlyBarriers: number, startRollHorizontallyX: number, rollVerticallyBarrierY: number, lengthOfHorizontallyRoll: number) {
     this.flyBarrierX = flyBarrierX;
@@ -82,7 +82,7 @@ export default class Ball {
 
               this.currentUpdateFuncY = null;
               this.currentUpdateFuncX = this.positiveDirection;
-              this.speed = 1.2;
+              this.speed = 3;
             }
           } else {
             if (this.currentX > this.flyBarrierX) {
