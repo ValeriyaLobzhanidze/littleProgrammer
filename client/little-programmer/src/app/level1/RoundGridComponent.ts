@@ -27,7 +27,7 @@ export default class RoundGridComponent implements ComponentI {
   private readonly startCanvasY: number;
 
   constructor(width: number, height: number, isDefaultRoute: boolean = true, sharedService?: SharedService,
-              startCanvasX?: number, startCanvasY?: number, isDefaultTarget: boolean = true) {
+              startCanvasX?: number, startCanvasY?: number, isDefaultTarget: boolean = true, isPopUpUsed = true) {
     this.width = width;
     this.height = height;
 
@@ -58,14 +58,14 @@ export default class RoundGridComponent implements ComponentI {
 
     if (isDefaultRoute) {
       let route = this.buildDefaultRoute(targetRectTop, targetRectLeft, targetRectHeight);
-      this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, route);
+      this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, route, null, isPopUpUsed);
     } else {
-      this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, null, sharedService);
+      this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, null, sharedService, isPopUpUsed);
     }
   }
 
-  public getChildComponent(): SpriteComponent {
-    return this.childComponent;
+  public unsubscribeFromGettingCodeLines(){
+    this.childComponent.unsubscribe();
   }
 
   private buildDefaultRoute(top: number, left: number, height: number): { direction: DirectMoveFunction, val: number } [] {

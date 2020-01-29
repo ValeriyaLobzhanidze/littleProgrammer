@@ -5,6 +5,7 @@ import {ComponentI} from "../engine/ComponentI";
 import {DirectMoveFunction} from "./DirectMoveFunction";
 import {SharedService} from "../SharedService";
 import PopUpContent from "../popup/PopUpContent";
+import {Subscription} from "rxjs";
 
 export default class SpriteComponent implements ComponentI {
   private state: State = State.STABLE;
@@ -34,8 +35,12 @@ export default class SpriteComponent implements ComponentI {
   private dy: number = 0;
   private readonly sharedService: SharedService;
 
+  private subscription: Subscription;
+  private isPopUpUsed: boolean;
+
   constructor(matrixCords: { x: number, y: number }[], targetCords: { x: number, y: number }[],
-              numOfRows: number, numOfCols: number, route ?: { direction: DirectMoveFunction, val: number } [], sharedService?: SharedService) {
+              numOfRows: number, numOfCols: number, route ?: { direction: DirectMoveFunction, val: number } [],
+              sharedService?: SharedService, isPopUpUsed = true) {
     this.image = new Image(0, 0);
     this.image.src = "/assets/images/radish.png";
 
@@ -47,12 +52,13 @@ export default class SpriteComponent implements ComponentI {
     this.numOfCols = numOfCols;
     this.numOfRows = numOfRows;
     this.sharedService = sharedService;
+    this.isPopUpUsed = isPopUpUsed;
 
     if (route) {
       this.setAnimation(route);
     } else {
       if (sharedService) {
-        this.sharedService.codeLineData$.subscribe(directionList => {
+        this.subscription = this.sharedService.codeLineData$.subscribe(directionList => {
           this.setAnimation(directionList);
         });
       }
@@ -60,8 +66,7 @@ export default class SpriteComponent implements ComponentI {
   }
 
   public unsubscribe() {
-    this.sharedService.codeLineData$.subscribe(() => {
-    });
+    this.subscription.unsubscribe();
   }
 
   public setAnimation(route: { direction: DirectMoveFunction, val: number } []) {
@@ -149,7 +154,7 @@ export default class SpriteComponent implements ComponentI {
 
       } else {
         this.state = State.STABLE;
-        if (this.sharedService) {
+        if (this.sharedService && this.isPopUpUsed) {
           let popUpProps;
           let headerContent = "Wonderful!";
           let buttonValue = "Thanks!";

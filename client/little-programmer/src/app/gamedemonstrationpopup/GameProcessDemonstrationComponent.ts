@@ -20,13 +20,13 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
   private isButtonStopWorked = false;
   public sharedService: SharedService;
 
-  constructor(gridWidth: number, gridHeight: number, sharedService: SharedService) {
+  constructor(gridWidth: number, gridHeight: number, sharedService: SharedService, isPopUpUsed = true) {
     this.sharedService = sharedService;
     this.roundGrid = new RoundGridComponent(gridWidth, gridHeight, false, this.sharedService, 0,
-      this.typeCanvasHeight, false);
+      this.typeCanvasHeight, false, isPopUpUsed);
     this.textComponent = new TextComponent(100, 5, this.typingText, 30);
-    this.buttonComponent = new ButtonComponent(140, 50, "Execute!", 115, 40);
-    this.mouseComponent = new MousePointerComponent(350, 5, 75, 140 + 115/2);
+    this.buttonComponent = new ButtonComponent(140, 60, "Execute!", 115, 40);
+    this.mouseComponent = new MousePointerComponent(350, 5, 85, 140 + 115/2);
   }
 
   render(canvas: any) {

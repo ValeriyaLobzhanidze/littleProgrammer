@@ -31,12 +31,11 @@ export class CodeViewerComponent implements OnInit {
       this.currentScore++;
     });
     document.addEventListener("DOMContentLoaded", this.load.bind(this));
-    this.sharedService.isPopUpOpened$.subscribe(() => {this.rootComponent.getChildComponent().unsubscribe()})
+    this.sharedService.isPopUpOpened$.subscribe(() => {this.rootComponent.unsubscribeFromGettingCodeLines()})
   }
 
   private load(): void {
     let canvas = document.getElementById('code-viewer') as any;
-    // let rootComponent = new RoundGridComponent(this.canvasWidth, this.canvasHeight, false, this.sharedService);
     let level = new Level(this.rootComponent);
 
     this.targetScore = this.rootComponent.getAmountOfTargets();
