@@ -59,6 +59,11 @@ export default class SpriteComponent implements ComponentI {
     }
   }
 
+  public unsubscribe() {
+    this.sharedService.codeLineData$.subscribe(() => {
+    });
+  }
+
   public setAnimation(route: { direction: DirectMoveFunction, val: number } []) {
     this.animation = new SpriteAnimation(this.matrixCords, this.numOfRows, this.numOfCols, route);
     this.state = State.ACTIVE;

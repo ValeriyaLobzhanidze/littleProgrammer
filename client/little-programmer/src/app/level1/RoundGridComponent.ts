@@ -18,7 +18,7 @@ export default class RoundGridComponent implements ComponentI {
   private readonly diffY: number;
   private readonly backArcsColor: string = "rgb(75,191,151, 0.1)";
   private readonly targetArcsColor: string = "rgba(159, 146, 255, 0.64)";
-  private childComponent: ComponentI;
+  private childComponent: SpriteComponent;
 
   private readonly arcRadius: number = 12;
   private targetNums: { x: number, y: number }[] = [];
@@ -62,6 +62,10 @@ export default class RoundGridComponent implements ComponentI {
     } else {
       this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, null, sharedService);
     }
+  }
+
+  public getChildComponent(): SpriteComponent {
+    return this.childComponent;
   }
 
   private buildDefaultRoute(top: number, left: number, height: number): { direction: DirectMoveFunction, val: number } [] {

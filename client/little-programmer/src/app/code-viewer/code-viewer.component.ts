@@ -17,26 +17,29 @@ export class CodeViewerComponent implements OnInit {
   public currentScore: number = 0;
   public sharedService: SharedService;
 
+  private readonly rootComponent: RoundGridComponent;
+
   private engine: Engine;
 
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
+    this.rootComponent = new RoundGridComponent(this.canvasWidth, this.canvasHeight, false, this.sharedService);
   }
 
   ngOnInit() {
     this.sharedService.score$.subscribe(() => {
       this.currentScore++;
     });
-
     document.addEventListener("DOMContentLoaded", this.load.bind(this));
+    this.sharedService.isPopUpOpened$.subscribe(() => {this.rootComponent.getChildComponent().unsubscribe()})
   }
 
   private load(): void {
     let canvas = document.getElementById('code-viewer') as any;
-    let rootComponent = new RoundGridComponent(this.canvasWidth, this.canvasHeight, false, this.sharedService);
-    let level = new Level(rootComponent);
+    // let rootComponent = new RoundGridComponent(this.canvasWidth, this.canvasHeight, false, this.sharedService);
+    let level = new Level(this.rootComponent);
 
-    this.targetScore = rootComponent.getAmountOfTargets();
+    this.targetScore = this.rootComponent.getAmountOfTargets();
     this.engine = new EngineImpl(canvas, level);
     this.engine.start();
   }

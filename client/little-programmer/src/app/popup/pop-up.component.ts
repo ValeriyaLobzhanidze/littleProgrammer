@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import EngineImpl from "../engine/EngineImpl";
 import PopUpContent from "./PopUpContent";
 import {Engine} from "../engine/Engine";
+import {SharedService} from "../SharedService";
 
 @Component({
   selector: 'app-pop-up',
@@ -17,11 +18,18 @@ export class PopUpComponent implements OnInit {
   public currentContent: PopUpContent;
   private currentContentNo: number = 0;
 
+  public sharesService: SharedService;
+
+  constructor(sharesService: SharedService) {
+    this.sharesService = sharesService;
+  }
+
   ngOnInit() {
     this.currentContent = this.content[this.currentContentNo];
     if (this.currentContent.getLevel) {
       this.runEngine();
     }
+    this.sharesService.openPopUp();
   }
 
   private stopEngine() {
