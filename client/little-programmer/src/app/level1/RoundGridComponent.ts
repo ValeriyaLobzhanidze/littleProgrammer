@@ -27,7 +27,7 @@ export default class RoundGridComponent implements ComponentI {
   private readonly startCanvasY: number;
 
   constructor(width: number, height: number, isDefaultRoute: boolean = true, sharedService?: SharedService,
-              startCanvasX?: number, startCanvasY?: number) {
+              startCanvasX?: number, startCanvasY?: number, isDefaultTarget: boolean = true) {
     this.width = width;
     this.height = height;
 
@@ -48,9 +48,12 @@ export default class RoundGridComponent implements ComponentI {
     let targetRectTop = 2;
     let targetRectLeft = 2;
 
-    this.targetNums = this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop, targetRectLeft, targetRectHeight);
-    this.targetNums = this.targetNums.concat(this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop + 2,
-      targetRectLeft + 2, targetRectHeight - 4));
+    if (isDefaultTarget) {
+      this.targetNums = this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop, targetRectLeft, targetRectHeight);
+      this.targetNums = this.targetNums.concat(this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop + 2,
+        targetRectLeft + 2, targetRectHeight - 4));
+    }
+
     this.calculateCords();
 
     if (isDefaultRoute) {
@@ -95,10 +98,13 @@ export default class RoundGridComponent implements ComponentI {
         let cord = {x: dx, y: dy};
         this.cords.push(cord);
 
-        let res = this.targetNums.filter(target => target && target.x == i && target.y == j);
-        if (res.length > 0) {
-          this.targetCords.push({x: dx, y: dy});
+        if (this.targetNums) {
+          let res = this.targetNums.filter(target => target && target.x == i && target.y == j);
+          if (res.length > 0) {
+            this.targetCords.push({x: dx, y: dy});
+          }
         }
+
         dx += this.diffX;
       }
       dx = this.startCanvasX + this.startX;

@@ -4,7 +4,7 @@ import {MouseState} from "./MouseState";
 export default class MousePointerComponent implements ComponentI {
   private curState: MouseState;
   private readonly image;
-  private speed = 1.0;
+  private speed = 2.1;
   private x;
   private y;
 
@@ -37,6 +37,14 @@ export default class MousePointerComponent implements ComponentI {
     this.currentCordY = true;
   }
 
+  public isActive(): boolean {
+    return !(this.curState == MouseState.STABLE);
+  }
+
+  // public getCords(): { x: number, y: number } {
+  //   return {x: this.x, y: this.y};
+  // }
+
   private _render(canvas: any) {
     let ctx = canvas.getContext('2d');
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
@@ -45,12 +53,13 @@ export default class MousePointerComponent implements ComponentI {
   private update() {
     if (this.curState == MouseState.MOVE_DOWN) {
       if (this.curY >= this.moveDownBarrier) {
-        this.curY -= this.speed;
-        this.currentCordY = false;
-        this.curState = MouseState.MOVE_LEFT;
         if (this.speed > 0) {
           this.speed *= -1;
         }
+        this.curX += this.speed;
+        this.curY += this.speed;
+        this.currentCordY = false;
+        this.curState = MouseState.MOVE_LEFT;
       }
 
     } else if (this.curState == MouseState.MOVE_LEFT) {

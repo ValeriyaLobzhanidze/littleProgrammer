@@ -13,7 +13,7 @@ import GameProcessDemonstrationComponent from "../gamedemonstrationpopup/GamePro
   styleUrls: ['./control-panel.component.css']
 })
 export class ControlPanelComponent implements OnInit {
-  private sharedService: SharedService;
+  public sharedService: SharedService;
   private taskPopUpContent: PopUpContent[];
   private isTaskContentInit = false;
 
@@ -50,7 +50,7 @@ export class ControlPanelComponent implements OnInit {
   }
 
   private createExamplePageLevel(): Level {
-    let rootComponent = new GameProcessDemonstrationComponent(this.canvasWidth, this.canvasHeight);
+    let rootComponent = new GameProcessDemonstrationComponent(this.canvasWidth, this.canvasHeight, this.sharedService);
     return new Level(rootComponent);
   }
 
@@ -74,7 +74,10 @@ export class ControlPanelComponent implements OnInit {
     content.push(new PopUpContent(instructionPageProps));
 
     let examplePageProps = {
-      getLevel: this.createExamplePageLevel
+      headerContent: "For example, to force radish make 5 steps to the right:",
+      getLevel: this.createExamplePageLevel.bind(this),
+      canvasWidth: this.canvasWidth,
+      canvasHeight: this.canvasHeight
     };
     content.push(new PopUpContent(examplePageProps));
     return content;

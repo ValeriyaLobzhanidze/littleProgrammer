@@ -60,7 +60,7 @@ export default class SpriteComponent implements ComponentI {
   }
 
   public setAnimation(route: { direction: DirectMoveFunction, val: number } []) {
-    this.animation = new SpriteAnimation(this.matrixCords, this.numOfRows, this.numOfCols, route); //TODO: reuse Sprite animation, just set new route and start point instead of creating new obj
+    this.animation = new SpriteAnimation(this.matrixCords, this.numOfRows, this.numOfCols, route);
     this.state = State.ACTIVE;
   }
 

@@ -19,20 +19,9 @@ export default class ButtonComponent implements ComponentI {
   private buttonSelectedColor = "#FBE335";
 
   private currentColor = this.buttonRegularColor;
-  private selectedTime = 10;
+  private selectedTime = 25;
   private curTime = 0;
   private curState = ButtonState.REGULAR;
-
-  private readonly startSelectedX: number;
-  private readonly startSelectedY: number;
-
-  private collidedBodyX = 0;
-  private collideBodyY = 0;
-
-  public setCollidedBodyCords(x: number, y: number) {
-    this.collidedBodyX = x;
-    this.collideBodyY = y;
-  }
 
   constructor(x, y, text, width, height) {
     this.x = x;
@@ -40,8 +29,15 @@ export default class ButtonComponent implements ComponentI {
     this.text = text;
     this.width = width;
     this.height = height;
-    this.startSelectedX = this.width / 2;
-    this.startSelectedY = this.height / 2;
+  }
+
+  public makeSelected() {
+    this.curState = ButtonState.SELECTED;
+    this.currentColor = this.buttonSelectedColor;
+  }
+
+  public isSelected() {
+    return this.curState == ButtonState.SELECTED;
   }
 
   private renderButton(canvas: any) {
@@ -57,12 +53,7 @@ export default class ButtonComponent implements ComponentI {
   }
 
   private update() {
-    if (this.curState == ButtonState.REGULAR) {
-      if (this.collidedBodyX >= this.startSelectedX && this.collideBodyY >= this.startSelectedY) {
-        this.curState = ButtonState.SELECTED;
-        this.currentColor = this.buttonSelectedColor;
-      }
-    } else if (this.curState == ButtonState.SELECTED) {
+    if (this.curState == ButtonState.SELECTED) {
       if (this.curTime < this.selectedTime) {
         this.curTime++;
       } else {

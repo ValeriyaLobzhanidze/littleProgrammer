@@ -1,10 +1,14 @@
 import {ComponentI} from "../engine/ComponentI";
-import {State} from "../level1/State";
 import VerticalLineComponent from "./VerticalLineComponent";
+import {TextState} from "./TextState";
+import CanvasShapesLib from "../lib/CanvasShapesLib";
 
 export default class TextComponent implements ComponentI {
-  private fonSize = 30;
-  private curState: State;
+  private readonly x;
+  private readonly y;
+
+  private readonly fonSize;
+  private curState: TextState;
   private readonly text: string;
   private curLetterIdx = 0;
   private curText = "";
@@ -21,27 +25,29 @@ export default class TextComponent implements ComponentI {
   private inputFieldColor = "grey";
   private textColor = "rgba(187, 116, 251, 0.83)";
 
-  constructor(text: string) {
+  constructor(x: number, y: number, text: string, fontSize: number) {
+    this.x = x;
+    this.y = y;
     this.text = text;
+    this.fonSize = fontSize;
     this.slowDownStep = Math.floor(text.length * 0.5);
     this.speedUpStep = Math.floor(text.length * 0.75);
     this.verticalLine = new VerticalLineComponent(this.fonSize);
-    this.curState = State.ACTIVE;
+    this.curState = TextState.NORMAL_SPEED;
   }
 
   private renderInputField(canvas: any) {
     let ctx = canvas.getContext('2d');
-    ctx.beginPath();
-    ctx.rect(0, 0, ctx.measureText(this.text).width, this.fonSize);
-    ctx.strokeStyle = this.inputFieldColor;
-    ctx.stroke();
+    ctx.font = this.fonSize + "px KBSticktoIt";
+    CanvasShapesLib.roundStrokeRect(canvas, this.x, this.y, ctx.measureText(this.text).width + 5,
+      this.fonSize + 10, 5, this.inputFieldColor, "white");
   }
 
   private renderText(canvas: any) {
     let ctx = canvas.getContext('2d');
     ctx.font = this.fonSize + "px KBSticktoIt";
     ctx.fillStyle = this.textColor;
-    ctx.fillText(this.curText, 0, this.fonSize);
+    ctx.fillText(this.curText, this.x, this.y + this.fonSize);
   }
 
   private update() {
@@ -49,15 +55,23 @@ export default class TextComponent implements ComponentI {
       if (this.curLetterIdx < this.text.length) {
         this.curText += this.text[this.curLetterIdx++];
       } else {
-        this.curState = State.STABLE;
+        this.curState = TextState.STABLE;
         return;
       }
     }
 
-    if (this.curLetterIdx == this.slowDownStep) {
-      this.amountOfTicks += this.changeTickStep;
-    } else if (this.curLetterIdx == this.speedUpStep) {
-      this.amountOfTicks -= this.changeTickStep;
+    if (this.curState == TextState.NORMAL_SPEED) {
+      if (this.curLetterIdx == this.slowDownStep) {
+        this.amountOfTicks += this.changeTickStep;
+        this.curState = TextState.DELAYED;
+      }
+    }
+
+    if (this.curState == TextState.DELAYED) {
+      if (this.curLetterIdx == this.speedUpStep) {
+        this.amountOfTicks -= this.changeTickStep;
+        this.curState = TextState.NORMAL_SPEED;
+      }
     }
 
     if (this.curTick < this.amountOfTicks) {
@@ -74,7 +88,7 @@ export default class TextComponent implements ComponentI {
   }
 
   public render(canvas: any) {
-    if (this.curState == State.ACTIVE) {
+    if (this.curState != TextState.STABLE) {
       this.update();
     }
     this.renderInputField(canvas);
