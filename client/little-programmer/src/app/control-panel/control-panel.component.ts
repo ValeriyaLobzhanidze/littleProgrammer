@@ -50,7 +50,7 @@ export class ControlPanelComponent implements OnInit {
   }
 
   private createExamplePageLevel(): Level {
-    let rootComponent = new GameProcessDemonstrationComponent("moveRight(4);", this.canvasWidth, this.canvasHeight);
+    let rootComponent = new GameProcessDemonstrationComponent(this.canvasWidth, this.canvasHeight);
     return new Level(rootComponent);
   }
 
