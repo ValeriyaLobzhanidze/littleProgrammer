@@ -17,15 +17,16 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
 
   private isMouseActivated = false;
   private isButtonActivated = false;
+  private isButtonStopWorked = false;
   public sharedService: SharedService;
 
   constructor(gridWidth: number, gridHeight: number, sharedService: SharedService) {
     this.sharedService = sharedService;
     this.roundGrid = new RoundGridComponent(gridWidth, gridHeight, false, this.sharedService, 0,
       this.typeCanvasHeight, false);
-    this.textComponent = new TextComponent(5, 5, this.typingText, 30);
-    this.buttonComponent = new ButtonComponent(40, 50, "Execute!", 115, 40);
-    this.mouseComponent = new MousePointerComponent(250, 5, 75, (15 + 100) / 2);
+    this.textComponent = new TextComponent(100, 5, this.typingText, 30);
+    this.buttonComponent = new ButtonComponent(140, 50, "Execute!", 115, 40);
+    this.mouseComponent = new MousePointerComponent(350, 5, 75, 140 + 115/2);
   }
 
   render(canvas: any) {
@@ -45,8 +46,9 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
     }
 
     if(this.isButtonActivated){
-      if (!this.buttonComponent.isSelected()) {
+      if (!this.buttonComponent.isSelected() && !this.isButtonStopWorked) {
         this.sharedService.setCodeLineData([{direction: DirectMoveFunction.MOVE_RIGHT, val: 5}]);
+        this.isButtonStopWorked = true;
       }
     }
   }
