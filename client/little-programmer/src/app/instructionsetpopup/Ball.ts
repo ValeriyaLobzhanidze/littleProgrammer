@@ -33,7 +33,7 @@ export default class Ball {
   private currentUpdateFuncX: (value: number) => number = this.positiveDirection;
 
   private minRadiusSize = 1;
-  private radiusStep = 0.5;
+  private radiusStep = 0.4;
 
   constructor(flyBarrierX: number, amountOfFlyBarriers: number, startRollHorizontallyX: number, rollVerticallyBarrierY: number, lengthOfHorizontallyRoll: number) {
     this.flyBarrierX = flyBarrierX;

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
 import {DirectMoveFunction} from "./level1/DirectMoveFunction";
-import PopUpContent from "./pop-up/PopUpContent";
+import PopUpContent from "./popup/PopUpContent";
 
 @Injectable()
 export class SharedService {

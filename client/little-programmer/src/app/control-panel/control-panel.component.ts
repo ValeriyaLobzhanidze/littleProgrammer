@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {SharedService} from "../SharedService";
-import PopUpContent from "../pop-up/PopUpContent";
+import PopUpContent from "../popup/PopUpContent";
 import RoundGridComponent from "../level1/RoundGridComponent";
 import Level from "../engine/Level";
-import CommandDemonstrationComponent from "../instructionpopup/CommandDemonstrationComponent";
-import Instruction from "../instructionpopup/Instruction";
-import DemonstrationComponent from "../demonstrationpopup/DemonstrationComponent";
+import CommandDemonstrationComponent from "../instructionsetpopup/CommandDemonstrationComponent";
+import Instruction from "../instructionsetpopup/Instruction";
+import GameProcessDemonstrationComponent from "../gamedemonstrationpopup/GameProcessDemonstrationComponent";
 
 @Component({
   selector: 'app-control-panel',
@@ -50,7 +50,7 @@ export class ControlPanelComponent implements OnInit {
   }
 
   private createExamplePageLevel(): Level {
-    let rootComponent = new DemonstrationComponent("moveRight(4);", this.canvasWidth, this.canvasHeight);
+    let rootComponent = new GameProcessDemonstrationComponent("moveRight(4);", this.canvasWidth, this.canvasHeight);
     return new Level(rootComponent);
   }
 

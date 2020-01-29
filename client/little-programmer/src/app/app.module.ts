@@ -8,7 +8,7 @@ import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { CodeViewerComponent } from './code-viewer/code-viewer.component';
 import { CodeLineComponent } from './code-line/code-line.component';
 import {SharedService} from "./SharedService";
-import { PopUpComponent } from './pop-up/pop-up.component';
+import { PopUpComponent } from './popup/pop-up.component';
 import { ControlPanelComponent } from './control-panel/control-panel.component';
 
 @NgModule({

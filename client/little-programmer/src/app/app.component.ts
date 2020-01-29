@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {SharedService} from "./SharedService";
-import {PopUpComponent} from "./pop-up/pop-up.component";
-import PopUpContent from "./pop-up/PopUpContent";
+import {PopUpComponent} from "./popup/pop-up.component";
+import PopUpContent from "./popup/PopUpContent";
 
 @Component({
   selector: 'app-root',
