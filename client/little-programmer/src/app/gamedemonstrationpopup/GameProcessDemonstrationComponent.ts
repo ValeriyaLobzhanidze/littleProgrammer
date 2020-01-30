@@ -9,7 +9,6 @@ import {DirectMoveFunction} from "../level1/DirectMoveFunction";
 export default class GameProcessDemonstrationComponent implements ComponentI {
   private roundGrid: RoundGridComponent;
   private typeCanvasHeight = 120;
-  private typingText = "MoveRight(5);";
 
   private mouseComponent: MousePointerComponent;
   private textComponent: TextComponent;
@@ -20,11 +19,11 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
   private isButtonStopWorked = false;
   public sharedService: SharedService;
 
-  constructor(gridWidth: number, gridHeight: number, sharedService: SharedService, isPopUpUsed = true) {
+  constructor(gridWidth: number, gridHeight: number, textArr: string[], sharedService: SharedService, isPopUpUsed = true) {
     this.sharedService = sharedService;
     this.roundGrid = new RoundGridComponent(gridWidth, gridHeight, false, this.sharedService, 0,
       this.typeCanvasHeight, false, isPopUpUsed);
-    this.textComponent = new TextComponent(100, 5, this.typingText, 30);
+    this.textComponent = new TextComponent(100, 5, textArr, 30);
     this.buttonComponent = new ButtonComponent(140, 60, "Execute!", 115, 40);
     this.mouseComponent = new MousePointerComponent(350, 5, 85, 140 + 115/2);
   }

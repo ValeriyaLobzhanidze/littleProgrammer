@@ -3,9 +3,10 @@ import {SharedService} from "../SharedService";
 import PopUpContent from "../popup/PopUpContent";
 import RoundGridComponent from "../level1/RoundGridComponent";
 import Level from "../engine/Level";
-import CommandDemonstrationComponent from "../instructionsetpopup/CommandDemonstrationComponent";
+import InstructionSetComponent from "../instructionsetpopup/InstructionSetComponent";
 import Instruction from "../instructionsetpopup/Instruction";
 import GameProcessDemonstrationComponent from "../gamedemonstrationpopup/GameProcessDemonstrationComponent";
+import SyntaxDemonstrationComponent from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponent";
 
 @Component({
   selector: 'app-control-panel',
@@ -45,12 +46,18 @@ export class ControlPanelComponent implements OnInit {
       new Instruction("moveDown(*)"),
       new Instruction("moveUp(*)")];
     let comment = new Instruction("Instead of * write amount of steps", "rgba(187, 116, 251, 0.83)", 20);
-    let rootComponent = new CommandDemonstrationComponent(instructions, comment);
+    let rootComponent = new InstructionSetComponent(instructions, comment);
     return new Level(rootComponent);
   }
 
   private createExamplePageLevel(): Level {
-    let rootComponent = new GameProcessDemonstrationComponent(this.canvasWidth, this.canvasHeight, this.sharedService, false);
+    let rootComponent = new GameProcessDemonstrationComponent(this.canvasWidth, this.canvasHeight, ["moveRight(5);"], this.sharedService, false);
+    return new Level(rootComponent);
+  }
+
+  private createSyntaxDemonstrationLevel(): Level {
+    let textArr = ["moveRight(5", "moveRight(5)", "moveRight(5);"];
+    let rootComponent = new SyntaxDemonstrationComponent("If you are wrong, commands become red", textArr);
     return new Level(rootComponent);
   }
 
@@ -74,12 +81,21 @@ export class ControlPanelComponent implements OnInit {
     content.push(new PopUpContent(instructionPageProps));
 
     let examplePageProps = {
-      headerContent: "For example, to force radish make 5 steps to the right:",
+      headerContent: "For example:",
       getLevel: this.createExamplePageLevel.bind(this),
       canvasWidth: this.canvasWidth,
       canvasHeight: this.canvasHeight
     };
     content.push(new PopUpContent(examplePageProps));
+
+    let syntaxPageProps = {
+      headerContent: "Be careful!",
+      getLevel: this.createSyntaxDemonstrationLevel.bind(this),
+      canvasWidth: this.canvasWidth,
+      canvasHeight: this.canvasHeight
+    };
+    content.push(new PopUpContent(syntaxPageProps));
+
     return content;
   }
 

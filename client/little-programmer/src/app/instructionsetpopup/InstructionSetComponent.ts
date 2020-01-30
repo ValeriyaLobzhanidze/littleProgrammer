@@ -3,7 +3,7 @@ import Instruction from "./Instruction";
 import InstructionSet from "./InstructionSet";
 import Ball from "./Ball";
 
-export default class CommandDemonstrationComponent implements ComponentI {
+export default class InstructionSetComponent implements ComponentI {
   private instructionSet: InstructionSet;
   private ball: Ball;
 

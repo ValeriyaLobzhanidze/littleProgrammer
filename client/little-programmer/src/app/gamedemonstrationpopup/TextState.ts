@@ -1,5 +1,7 @@
 export enum TextState{
   NORMAL_SPEED,
   DELAYED,
-  STABLE
+  STABLE,
+  REVERSED,
+  FROZEN
 }

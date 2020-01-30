@@ -4,19 +4,21 @@ import {LineState} from "./LineState";
 export default class VerticalLineComponent implements ComponentI {
   private curRenderTime = 0;
   private maxRenderTime = 30;
+
   private curHideTime = 0;
   private maxHideTime = 30;
 
   private curPos = 0;
-  private startPosY = 5;
+  private readonly startPosY: number;
   private color = "black";
 
   private curState: LineState;
   private readonly length: number;
 
-  constructor(length: number) {
+  constructor(length: number, y: number) {
     this.length = length;
     this.curState = LineState.RENDERED;
+    this.startPosY = y;
   }
 
   public setCurPos(value: number) {
