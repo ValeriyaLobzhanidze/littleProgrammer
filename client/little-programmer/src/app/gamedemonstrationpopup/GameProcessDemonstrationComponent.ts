@@ -25,11 +25,14 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
       this.typeCanvasHeight, false, isPopUpUsed);
     this.textComponent = new TextComponent(100, 5, textArr, 30);
     this.buttonComponent = new ButtonComponent(140, 60, "Execute!", 115, 40);
-    this.mouseComponent = new MousePointerComponent(350, 5, 85, 140 + 115/2);
+    this.mouseComponent = new MousePointerComponent(350, 5, 85, 140 + 115 / 2);
   }
 
   render(canvas: any) {
     this.roundGrid.render(canvas);
+    if (!this.textComponent.wasActivated()) {
+      this.textComponent.activate();
+    }
     this.textComponent.render(canvas);
     this.buttonComponent.render(canvas);
     this.mouseComponent.render(canvas);
@@ -44,7 +47,7 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
       this.isButtonActivated = true;
     }
 
-    if(this.isButtonActivated){
+    if (this.isButtonActivated) {
       if (!this.buttonComponent.isSelected() && !this.isButtonStopWorked) {
         this.sharedService.setCodeLineData([{direction: DirectMoveFunction.MOVE_RIGHT, val: 5}]);
         this.isButtonStopWorked = true;

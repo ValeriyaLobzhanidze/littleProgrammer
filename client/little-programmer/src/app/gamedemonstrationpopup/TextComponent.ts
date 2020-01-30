@@ -38,6 +38,7 @@ export default class TextComponent implements ComponentI {
   private readonly isReverseNeeded: boolean;
   private readonly isFreezingNeeded: boolean;
   private readonly isSyntaxHighlightingNeeded: boolean;
+  private isActivated: boolean = false;
 
   private readonly freezingTime = 30;
   private curFreezingTime = 0;
@@ -51,15 +52,24 @@ export default class TextComponent implements ComponentI {
     this.slowDownStep = Math.floor(textArr.length * 0.5);
     this.speedUpStep = Math.floor(textArr.length * 0.75);
     this.verticalLine = new VerticalLineComponent(this.fonSize, this.y + 2);
-    this.curState = TextState.NORMAL_SPEED;
+    this.curState = TextState.STABLE;
     this.isReverseNeeded = isReverseNeeded;
     this.curLineOfTextArr = this.textArr[this.curTextArrIdx++];
     this.maxLine = this.findMaxLineLength();
     this.isFreezingNeeded = isFreezingNeeded;
     this.isSyntaxHighlightingNeeded = isSyntaxHighlightingNeeded;
-    if(this.isSyntaxHighlightingNeeded){
+    if (this.isSyntaxHighlightingNeeded) {
       this.curTextColor = this.wrongColor;
     }
+  }
+
+  public activate() {
+    this.curState = TextState.NORMAL_SPEED;
+    this.isActivated = true;
+  }
+
+  public wasActivated(): boolean {
+    return this.isActivated;
   }
 
   private findMaxLineLength(): string {
@@ -93,14 +103,13 @@ export default class TextComponent implements ComponentI {
         if (this.curLetterIdx < this.curLineOfTextArr.length) {
           this.curText += this.curLineOfTextArr[this.curLetterIdx++];
         } else {
-          if(!(this.curTextArrIdx < this.textArr.length)){
+          if (!(this.curTextArrIdx < this.textArr.length)) {
             this.curState = TextState.STABLE;
-            if(this.isSyntaxHighlightingNeeded){
+            if (this.isSyntaxHighlightingNeeded) {
               this.curTextColor = this.rightColor;
             }
             return;
-          }
-          else if (this.isFreezingNeeded) {
+          } else if (this.isFreezingNeeded) {
             this.curState = TextState.FROZEN;
           }
 
@@ -118,7 +127,7 @@ export default class TextComponent implements ComponentI {
                 this.curLineOfTextArr = this.textArr[this.curTextArrIdx++];
               } else {
                 this.curState = TextState.STABLE;
-                if(this.isSyntaxHighlightingNeeded){
+                if (this.isSyntaxHighlightingNeeded) {
                   this.curTextColor = this.rightColor;
                 }
                 return;
@@ -138,7 +147,7 @@ export default class TextComponent implements ComponentI {
             this.curState = TextState.NORMAL_SPEED;
           } else {
             this.curState = TextState.STABLE;
-            if(this.isSyntaxHighlightingNeeded){
+            if (this.isSyntaxHighlightingNeeded) {
               this.curTextColor = this.rightColor;
             }
             return;
@@ -165,7 +174,7 @@ export default class TextComponent implements ComponentI {
             this.curLineOfTextArr = this.textArr[this.curTextArrIdx++];
           } else {
             this.curState = TextState.STABLE;
-            if(this.isSyntaxHighlightingNeeded){
+            if (this.isSyntaxHighlightingNeeded) {
               this.curTextColor = this.rightColor;
             }
             return;

@@ -57,7 +57,13 @@ export class ControlPanelComponent implements OnInit {
 
   private createSyntaxDemonstrationLevel(): Level {
     let textArr = ["moveRight(5", "moveRight(5)", "moveRight(5);"];
-    let rootComponent = new SyntaxDemonstrationComponent("If you are wrong, commands become red", textArr);
+    let rootComponent = new SyntaxDemonstrationComponent(["If you are wrong,", "commands become red"], textArr);
+    return new Level(rootComponent);
+  }
+
+  private createSeveralLinesDemonstrationLevel(): Level {
+    let textArr = ["moveRight(5);", "moveLeft(5);", "moveDown(5);"];
+    let rootComponent = new SyntaxDemonstrationComponent([], textArr, true);
     return new Level(rootComponent);
   }
 
@@ -95,6 +101,14 @@ export class ControlPanelComponent implements OnInit {
       canvasHeight: this.canvasHeight
     };
     content.push(new PopUpContent(syntaxPageProps));
+
+    let severalLinesPageProps = {
+      headerContent: "Note, one line - one command!",
+      getLevel: this.createSeveralLinesDemonstrationLevel.bind(this),
+      canvasWidth: this.canvasWidth,
+      canvasHeight: this.canvasHeight
+    };
+    content.push(new PopUpContent(severalLinesPageProps));
 
     return content;
   }
