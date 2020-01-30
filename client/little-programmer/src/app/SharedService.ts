@@ -14,8 +14,8 @@ export class SharedService {
   private showPopUpEvent: Subject<PopUpContent[]> = new Subject<PopUpContent[]>();
   public showPopUp$ = this.showPopUpEvent.asObservable();
 
-  private isPopUpOpened: Subject<void> = new Subject();
-  public isPopUpOpened$ = this.isPopUpOpened.asObservable();
+  private closePopUpEvent: Subject<void> = new Subject<void>();
+  public closePopUp$ = this.closePopUpEvent.asObservable();
 
   public setCodeLineData(data: { direction: DirectMoveFunction, val: number }[]): void {
     this.codeLineData.next(data);
@@ -29,7 +29,7 @@ export class SharedService {
     this.showPopUpEvent.next(content);
   }
 
-  public openPopUp(): void {
-    this.isPopUpOpened.next();
+  public closePopUp(): void {
+    this.closePopUpEvent.next();
   }
 }

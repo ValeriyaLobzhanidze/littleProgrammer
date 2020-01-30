@@ -58,14 +58,18 @@ export default class SpriteComponent implements ComponentI {
       this.setAnimation(route);
     } else {
       if (sharedService) {
-        this.subscription = this.sharedService.codeLineData$.subscribe(directionList => {
-          this.setAnimation(directionList);
-        });
+        this.subscribeForGettingCodeLines();
       }
     }
   }
 
-  public unsubscribe() {
+  public subscribeForGettingCodeLines(){
+    this.subscription = this.sharedService.codeLineData$.subscribe(directionList => {
+      this.setAnimation(directionList);
+    });
+  }
+
+  public unsubscribeFromGettingCodeLines() {
     this.subscription.unsubscribe();
   }
 

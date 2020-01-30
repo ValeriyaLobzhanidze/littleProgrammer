@@ -29,7 +29,6 @@ export class PopUpComponent implements OnInit {
     if (this.currentContent.getLevel) {
       this.runEngine();
     }
-    this.sharesService.openPopUp();
   }
 
   private stopEngine() {
@@ -49,6 +48,7 @@ export class PopUpComponent implements OnInit {
       this.engine.stop();
     }
     this.eventEmitter.emit("close");
+    this.sharesService.closePopUp();
   }
 
   public onNext() {

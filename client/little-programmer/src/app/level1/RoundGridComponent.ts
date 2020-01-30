@@ -64,8 +64,12 @@ export default class RoundGridComponent implements ComponentI {
     }
   }
 
-  public unsubscribeFromGettingCodeLines(){
-    this.childComponent.unsubscribe();
+  public unsubscribeFromGettingCodeLines() {
+    this.childComponent.unsubscribeFromGettingCodeLines();
+  }
+
+  public subscribeForGettingCodeLines() {
+    this.childComponent.subscribeForGettingCodeLines();
   }
 
   private buildDefaultRoute(top: number, left: number, height: number): { direction: DirectMoveFunction, val: number } [] {
