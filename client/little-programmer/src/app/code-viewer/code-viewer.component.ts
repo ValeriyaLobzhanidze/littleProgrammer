@@ -13,6 +13,8 @@ import Level from "../engine/Level";
 export class CodeViewerComponent implements OnInit {
   public readonly canvasWidth: number = 600;
   public readonly canvasHeight: number = 600;
+  private canvasTop: number;
+  private canvasLeft: number;
   public targetScore: number = 0;
   public currentScore: number = 0;
   public sharedService: SharedService;
@@ -43,8 +45,23 @@ export class CodeViewerComponent implements OnInit {
     let canvas = document.getElementById('code-viewer') as any;
     let level = new Level(this.rootComponent);
 
+    this.canvasTop = canvas.getBoundingClientRect().top;
+    this.canvasLeft = canvas.getBoundingClientRect().left;
+
     this.targetScore = this.rootComponent.getAmountOfTargets();
     this.engine = new EngineImpl(canvas, level);
     this.engine.start();
+  }
+
+  private onMouseDown(event: MouseEvent): void {
+    this.rootComponent.onMouseDown(event.clientX - this.canvasLeft, event.clientY - this.canvasTop);
+  }
+
+  private onMouseMove(event: MouseEvent): void {
+    this.rootComponent.onMouseMove(event.clientX - this.canvasLeft, event.clientY - this.canvasTop);
+  }
+
+  private onMouseUp(): void {
+    this.rootComponent.onMouseUp();
   }
 }

@@ -21,10 +21,14 @@ export default class RoundGridComponent implements ComponentI {
   private childComponent: SpriteComponent;
 
   private readonly arcRadius: number = 12;
-  private targetNums: { x: number, y: number }[] = [];
+  private readonly targetNums: { x: number, y: number }[] = [];
   private targetCords: { x: number, y: number }[] = [];
   private readonly startCanvasX: number;
   private readonly startCanvasY: number;
+
+  private startDragRoundCords: { x: number, y: number };
+  private horizontalDrag: boolean;
+  private dragAmountOfSteps: number;
 
   constructor(width: number, height: number, isDefaultRoute: boolean = true, sharedService?: SharedService,
               startCanvasX?: number, startCanvasY?: number, isDefaultTarget: boolean = true, isPopUpUsed = true) {
@@ -129,15 +133,93 @@ export default class RoundGridComponent implements ComponentI {
     }
   }
 
+  private renderRectLine(canvas: any) {
+    let width;
+    let height;
+    if (this.horizontalDrag) {
+      width = this.arcRadius * 1.5;
+      height = this.arcRadius / 2;
+    } else {
+      width = this.arcRadius / 2;
+      height = this.arcRadius * 1.5;
+    }
+    let curX = this.startDragRoundCords.x;
+    let curY = this.startDragRoundCords.y;
+    for (let i = 0; i < this.dragAmountOfSteps; i++) {
+      let ctx = canvas.getContext('2d');
+      ctx.fillStyle = "grey";
+      ctx.fillRect(curX, curY, width, height);
+      if (this.horizontalDrag) {
+        curX += this.arcRadius * 2;
+      } else {
+        curY += this.arcRadius * 2;
+      }
+    }
+  }
+
   public render(canvas: any): void {
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     this._render(ctx, this.cords, this.backArcsColor);
     this._render(ctx, this.targetCords, this.targetArcsColor);
+    if (this.startDragRoundCords && this.dragAmountOfSteps) {
+      this.renderRectLine(canvas);
+    }
     this.childComponent.render(canvas);
   }
 
   public getAmountOfTargets(): number {
     return this.targetCords.length;
+  }
+
+  private isPointInsideRound(x0: number, y0: number, xPoint: number, yPoint: number): boolean {
+    return Math.sqrt((xPoint - x0) * (xPoint - x0) + (yPoint - y0) * (yPoint - y0)) <= this.arcRadius;
+  }
+
+  private startPointIdentityCheck(x: number, y: number): boolean {
+    if (this.startDragRoundCords) {
+      return x == this.startDragRoundCords.x && y == this.startDragRoundCords.y
+    } else {
+      return false;
+    }
+  }
+
+  private findClosestRound(x: number, y: number): { x: number, y: number } {
+    for (let round of this.cords) {
+      if (this.isPointInsideRound(round.x, round.y, x, y) && !this.startPointIdentityCheck(round.x, round.y)) {
+        return {x: round.x, y: round.y};
+      }
+    }
+    return null;
+  }
+
+  private calculateDistanceInSteps(value: number): number {
+    return value / (this.arcRadius * 3);
+  }
+
+  public onMouseDown(x: number, y: number): void {
+    this.startDragRoundCords = this.findClosestRound(x, y);
+  }
+
+  public onMouseMove(x: number, y: number): void {
+    if (this.startDragRoundCords) {
+      let closestRoundCords = this.findClosestRound(x, y);
+      if (closestRoundCords) {
+        if (closestRoundCords.x == this.startDragRoundCords.x) {
+          let distance = Math.abs(this.startDragRoundCords.y - closestRoundCords.y);
+          this.dragAmountOfSteps = this.calculateDistanceInSteps(distance);
+          this.horizontalDrag = false;
+
+        } else if (closestRoundCords.y == this.startDragRoundCords.y) {
+          let distance = Math.abs(this.startDragRoundCords.x - closestRoundCords.x);
+          this.dragAmountOfSteps = this.calculateDistanceInSteps(distance);
+          this.horizontalDrag = true;
+        }
+      }
+    }
+  }
+
+  public onMouseUp(): void {
+    this.startDragRoundCords = null;
   }
 }
