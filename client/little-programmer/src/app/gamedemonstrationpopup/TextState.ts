@@ -1,6 +1,6 @@
-export enum TextState{
-  NORMAL_SPEED,
-  DELAYED,
+export enum TextState {
+  DIRECT_MOVE_NORMAL_SPEED,
+  DIRECT_MOVE_DELAYED,
   STABLE,
   REVERSED,
   FROZEN

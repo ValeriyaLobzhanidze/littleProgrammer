@@ -18,9 +18,10 @@ export default class TextComponent implements ComponentI {
   private curText = "";
 
   private curTick = 0;
-  private amountOfTicks = 10;
-  private changeTickStep = 10;
+  private normalSpeedTicks = 10;
+  private delayedSpeedTicks = 20;
   private reversedAmountOfTick = 5;
+  private curAmountOfTicks: number;
 
   private readonly slowDownStep: number;
   private readonly speedUpStep: number;
@@ -34,13 +35,14 @@ export default class TextComponent implements ComponentI {
   private curTextColor = this.textColor1;
 
   private maxLine: string;
+  private minLine: string;
 
   private readonly isReverseNeeded: boolean;
   private readonly isFreezingNeeded: boolean;
   private readonly isSyntaxHighlightingNeeded: boolean;
   private isActivated: boolean = false;
 
-  private readonly freezingTime = 30;
+  private readonly freezingTime = 2;
   private curFreezingTime = 0;
 
   constructor(x: number, y: number, textArr: string[], fontSize: number, isReverseNeeded = false,
@@ -49,13 +51,19 @@ export default class TextComponent implements ComponentI {
     this.y = y;
     this.textArr = textArr;
     this.fonSize = fontSize;
-    this.slowDownStep = Math.floor(textArr.length * 0.5);
-    this.speedUpStep = Math.floor(textArr.length * 0.75);
+
     this.verticalLine = new VerticalLineComponent(this.fonSize, this.y + 2);
     this.curState = TextState.STABLE;
     this.isReverseNeeded = isReverseNeeded;
     this.curLineOfTextArr = this.textArr[this.curTextArrIdx++];
-    this.maxLine = this.findMaxLineLength();
+
+    let minMaxLines = this.findMinMaxLinesLength();
+    this.maxLine = minMaxLines.max;
+    this.minLine = minMaxLines.min;
+
+    this.slowDownStep = Math.floor(this.minLine.length * 0.5);
+    this.speedUpStep = Math.floor(this.minLine.length * 0.75);
+
     this.isFreezingNeeded = isFreezingNeeded;
     this.isSyntaxHighlightingNeeded = isSyntaxHighlightingNeeded;
     if (this.isSyntaxHighlightingNeeded) {
@@ -64,22 +72,29 @@ export default class TextComponent implements ComponentI {
   }
 
   public activate() {
-    this.curState = TextState.NORMAL_SPEED;
     this.isActivated = true;
+    this.curAmountOfTicks = this.normalSpeedTicks;
+    this.curState = TextState.DIRECT_MOVE_NORMAL_SPEED;
   }
 
   public wasActivated(): boolean {
     return this.isActivated;
   }
 
-  private findMaxLineLength(): string {
+  private findMinMaxLinesLength(): { min: string, max: string } {
     let maxLine = "";
+    let minLine = "";
+    let minLineLen = Number.MAX_VALUE;
     for (let line of this.textArr) {
       if (line.length > maxLine.length) {
         maxLine = line;
       }
+      if (line.length < minLineLen) {
+        minLineLen = line.length;
+        minLine = line;
+      }
     }
-    return maxLine;
+    return {min: minLine, max: maxLine};
   }
 
   private renderInputField(canvas: any) {
@@ -96,111 +111,93 @@ export default class TextComponent implements ComponentI {
     ctx.fillText(this.curText, this.x, this.y + this.fonSize);
   }
 
-  private update() {
-    if (this.curTick == 0) {
-
-      if (this.curState != TextState.REVERSED) {
-        if (this.curLetterIdx < this.curLineOfTextArr.length) {
-          this.curText += this.curLineOfTextArr[this.curLetterIdx++];
-        } else {
-          if (!(this.curTextArrIdx < this.textArr.length)) {
-            this.curState = TextState.STABLE;
-            if (this.isSyntaxHighlightingNeeded) {
-              this.curTextColor = this.rightColor;
-            }
-            return;
-          } else if (this.isFreezingNeeded) {
-            this.curState = TextState.FROZEN;
-          }
-
-          if (this.curState != TextState.FROZEN) {
-            if (this.isReverseNeeded && this.curTextArrIdx < this.textArr.length) {
-              this.curState = TextState.REVERSED;
-              this.curLetterIdx--;
-              this.amountOfTicks = this.reversedAmountOfTick;
-              this.curText = this.curLineOfTextArr.slice(0, this.curLetterIdx - 1);
-              this.curLetterIdx--;
-            } else {
-              if (this.curTextArrIdx < this.textArr.length) {
-                this.curLetterIdx = 0;
-                this.curText = "";
-                this.curLineOfTextArr = this.textArr[this.curTextArrIdx++];
-              } else {
-                this.curState = TextState.STABLE;
-                if (this.isSyntaxHighlightingNeeded) {
-                  this.curTextColor = this.rightColor;
-                }
-                return;
-              }
-            }
-          }
-        }
-      } else {
-        if (this.curLetterIdx >= 2) {
-          this.curText = this.curLineOfTextArr.slice(0, this.curLetterIdx - 1);
-          this.curLetterIdx--;
-        } else {
-          this.curLetterIdx = 0;
-          this.curText = "";
-          if (this.curTextArrIdx < this.textArr.length) {
-            this.curLineOfTextArr = this.textArr[this.curTextArrIdx++];
-            this.curState = TextState.NORMAL_SPEED;
-          } else {
-            this.curState = TextState.STABLE;
-            if (this.isSyntaxHighlightingNeeded) {
-              this.curTextColor = this.rightColor;
-            }
-            return;
-          }
-        }
-      }
+  private decrementLetter(): boolean {
+    if (this.curLetterIdx == this.curLineOfTextArr.length) {
+      this.curLetterIdx = this.curLineOfTextArr.length - 2;
     }
 
-    if (this.curState == TextState.FROZEN) {
-      if (this.curFreezingTime < this.freezingTime) {
-        this.curFreezingTime++;
-      } else {
-        if (this.isReverseNeeded && this.curTextArrIdx < this.textArr.length) {
-          this.curFreezingTime = 0;
-          this.curState = TextState.REVERSED;
-          this.curLetterIdx--;
-          this.amountOfTicks = this.reversedAmountOfTick;
-          this.curText = this.curLineOfTextArr.slice(0, this.curLetterIdx - 1);
-          this.curLetterIdx--;
-        } else {
-          if (this.curTextArrIdx < this.textArr.length) {
-            this.curLetterIdx = 0;
-            this.curText = "";
-            this.curLineOfTextArr = this.textArr[this.curTextArrIdx++];
-          } else {
-            this.curState = TextState.STABLE;
-            if (this.isSyntaxHighlightingNeeded) {
-              this.curTextColor = this.rightColor;
-            }
-            return;
-          }
-        }
-      }
-    }
-
-    if (this.curState == TextState.NORMAL_SPEED) {
-      if (this.curLetterIdx == this.slowDownStep) {
-        this.amountOfTicks += this.changeTickStep;
-        this.curState = TextState.DELAYED;
-      }
-    }
-
-    if (this.curState == TextState.DELAYED) {
-      if (this.curLetterIdx == this.speedUpStep) {
-        this.amountOfTicks -= this.changeTickStep;
-        this.curState = TextState.NORMAL_SPEED;
-      }
-    }
-
-    if (this.curTick < this.amountOfTicks) {
-      this.curTick++;
+    if (this.curLetterIdx > 0) {
+      this.curText = this.curLineOfTextArr.slice(0, this.curLetterIdx);
+      this.curLetterIdx--;
+      return true;
     } else {
-      this.curTick = 0;
+      this.curText = "";
+      return false;
+    }
+  }
+
+  private incrementLetter(): boolean {
+    if (this.curLetterIdx < this.curLineOfTextArr.length) {
+      this.curText += this.curLineOfTextArr[this.curLetterIdx++];
+      return true;
+    }
+    return false;
+  }
+
+  private updateLineInTextArr(): boolean {
+    if (this.curTextArrIdx < this.textArr.length) {
+      this.curLineOfTextArr = this.textArr[this.curTextArrIdx++];
+      return true;
+    }
+    return false;
+  }
+
+  private changeState() {
+    switch (this.curState) {
+      case TextState.REVERSED:
+        if (!this.decrementLetter()) {
+          if (!this.updateLineInTextArr()) {
+            this.curState = TextState.STABLE;
+            if (this.isSyntaxHighlightingNeeded) {
+              this.curTextColor = this.rightColor;
+            }
+          } else {
+            this.curState = TextState.DIRECT_MOVE_NORMAL_SPEED;
+          }
+        }
+        break;
+
+      case TextState.FROZEN:
+        if (this.curFreezingTime < this.freezingTime) {
+          this.curFreezingTime++;
+        } else {
+          this.curState = TextState.REVERSED;
+          this.curAmountOfTicks = this.reversedAmountOfTick;
+        }
+        break;
+
+      case TextState.STABLE:
+        return;
+
+      case TextState.DIRECT_MOVE_NORMAL_SPEED:
+        if (this.curLetterIdx == this.slowDownStep) {
+          this.curState = TextState.DIRECT_MOVE_DELAYED;
+          this.curAmountOfTicks = this.delayedSpeedTicks;
+        }
+        if (!this.incrementLetter()) {
+          if (this.curTextArrIdx >= this.textArr.length) {
+            this.curState = TextState.STABLE;
+            if (this.isSyntaxHighlightingNeeded) {
+              this.curTextColor = this.rightColor;
+            }
+            return;
+          }
+          if (this.isFreezingNeeded) {
+            this.curState = TextState.FROZEN
+          } else {//TODO: if reversed isn't needed
+            this.curState = TextState.REVERSED;
+            this.curAmountOfTicks = this.reversedAmountOfTick;
+          }
+        }
+        break;
+
+      case TextState.DIRECT_MOVE_DELAYED:
+        if (this.curLetterIdx == this.speedUpStep) {
+          this.curState = TextState.DIRECT_MOVE_NORMAL_SPEED;
+          this.curAmountOfTicks = this.normalSpeedTicks;
+        }
+        this.incrementLetter();
+        break;
     }
   }
 
@@ -211,8 +208,13 @@ export default class TextComponent implements ComponentI {
   }
 
   public render(canvas: any) {
-    if (this.curState != TextState.STABLE) {
-      this.update();
+    if (this.curTick == 0) {
+      this.changeState();
+    }
+    if (this.curTick < this.curAmountOfTicks) {
+      this.curTick++
+    } else {
+      this.curTick = 0;
     }
     this.renderInputField(canvas);
     this.renderText(canvas);
