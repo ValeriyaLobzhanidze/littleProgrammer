@@ -2,6 +2,7 @@ import SpriteComponent from "./SpriteComponent";
 import {DirectMoveFunction} from "./DirectMoveFunction";
 import {ComponentI} from "../engine/ComponentI";
 import {SharedService} from "../SharedService";
+import CanvasShapesLib from "../lib/CanvasShapesLib";
 
 export default class RoundGridComponent implements ComponentI {
 
@@ -137,22 +138,21 @@ export default class RoundGridComponent implements ComponentI {
     let width;
     let height;
     if (this.horizontalDrag) {
-      width = this.arcRadius * 1.5;
+      width = this.arcRadius;
       height = this.arcRadius / 2;
     } else {
       width = this.arcRadius / 2;
-      height = this.arcRadius * 1.5;
+      height = this.arcRadius ;
     }
     let curX = this.startDragRoundCords.x;
-    let curY = this.startDragRoundCords.y;
+    let curY = this.startDragRoundCords.y - 2;
     for (let i = 0; i < this.dragAmountOfSteps; i++) {
-      let ctx = canvas.getContext('2d');
-      ctx.fillStyle = "grey";
-      ctx.fillRect(curX, curY, width, height);
+      CanvasShapesLib.roundStrokeRect(canvas, curX, curY, width, height, 2, "rgba(159, 146, 255, 0.4)",
+        "rgba(159, 146, 255, 0.4)");
       if (this.horizontalDrag) {
-        curX += this.arcRadius * 2;
+        curX += this.arcRadius * 3;
       } else {
-        curY += this.arcRadius * 2;
+        curY += this.arcRadius * 3;
       }
     }
   }
@@ -221,5 +221,6 @@ export default class RoundGridComponent implements ComponentI {
 
   public onMouseUp(): void {
     this.startDragRoundCords = null;
+    this.dragAmountOfSteps = null;
   }
 }
