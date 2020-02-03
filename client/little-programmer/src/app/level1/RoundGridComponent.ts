@@ -137,24 +137,45 @@ export default class RoundGridComponent implements ComponentI {
   private renderRectLine(canvas: any) {
     let width;
     let height;
+
+    let stepX = 0;
+    let stepY = 0;
+
+    let shiftX = 0;
+    let shiftY = 0;
+
+    let shiftTextY = 0;
+    let shiftTextX = 0;
+
     if (this.horizontalDrag) {
-      width = this.arcRadius;
-      height = this.arcRadius / 2;
-    } else {
       width = this.arcRadius / 2;
-      height = this.arcRadius ;
+      height = this.arcRadius / 3;
+      stepX = this.arcRadius + this.arcRadius / 4;
+      shiftX = this.arcRadius / 4;
+      shiftTextY = 4;
+    } else {
+      width = this.arcRadius / 3;
+      height = this.arcRadius / 2;
+      stepY = this.arcRadius + this.arcRadius / 4;
+      shiftY = this.arcRadius / 4;
+      shiftTextX = 6;
+      shiftTextY = -5;
     }
     let curX = this.startDragRoundCords.x;
     let curY = this.startDragRoundCords.y - 2;
+
     for (let i = 0; i < this.dragAmountOfSteps; i++) {
-      CanvasShapesLib.roundStrokeRect(canvas, curX, curY, width, height, 2, "rgba(159, 146, 255, 0.4)",
-        "rgba(159, 146, 255, 0.4)");
+      CanvasShapesLib.roundStrokeRect(canvas, curX - shiftX, curY - shiftY, width, height, 2, "rgb(85,85,169)", "rgba(159, 146, 255, 0.4)");
+      CanvasShapesLib.roundStrokeRect(canvas, curX + stepX, curY + stepY, width, height, 2, "rgb(85,85,169)", "rgba(159, 146, 255, 0.4)");
+      CanvasShapesLib.text(canvas, i + 1 as unknown as string, curX + stepX + shiftTextX, curY + stepY - shiftTextY, 10, "KBSticktoIt", "rgb(85,85,169)");
+
       if (this.horizontalDrag) {
-        curX += this.arcRadius * 3;
+        curX += this.arcRadius * 1.5 + this.arcRadius / 4 + stepX;
       } else {
-        curY += this.arcRadius * 3;
+        curY += this.arcRadius * 1.5 + this.arcRadius / 4 + stepY;
       }
     }
+    CanvasShapesLib.roundStrokeRect(canvas, curX - shiftX, curY - shiftY, width, height, 2, "rgb(85,85,169)", "rgba(159, 146, 255, 0.4)");
   }
 
   public render(canvas: any): void {

@@ -20,4 +20,11 @@ export default class CanvasShapesLib {
     ctx.stroke();
     ctx.fill();
   }
+
+  public static text(canvas: any, text: string, x: number, y: number, fontSize: number, font: string, color: string) {
+    let ctx = canvas.getContext('2d');
+    ctx.font = fontSize + "px " + font;
+    ctx.fillStyle = color;
+    ctx.fillText(text, x, y);
+  }
 }
