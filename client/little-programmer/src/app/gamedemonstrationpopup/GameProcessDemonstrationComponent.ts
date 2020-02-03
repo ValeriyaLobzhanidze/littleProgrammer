@@ -1,6 +1,6 @@
 import RoundGridComponent from "../level1/RoundGridComponent";
 import {ComponentI} from "../engine/ComponentI";
-import MousePointerComponent from "./MousePointerComponent";
+import MousePointerComponent from "../mousepointer/MousePointerComponent";
 import TextComponent from "./TextComponent";
 import ButtonComponent from "./ButtonComponent";
 import {SharedService} from "../SharedService";
@@ -25,7 +25,9 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
       this.typeCanvasHeight, false, isPopUpUsed);
     this.textComponent = new TextComponent(100, 5, textArr, 30);
     this.buttonComponent = new ButtonComponent(140, 60, "Execute!", 115, 40);
-    this.mouseComponent = new MousePointerComponent(350, 5, 85, 140 + 115 / 2);
+    this.mouseComponent = new MousePointerComponent(
+      [DirectMoveFunction.MOVE_DOWN, DirectMoveFunction.MOVE_LEFT],
+      [{x: 350, y: 5}, {x: 350, y: 85}, {x: 140 + 115 / 2, y: 85}]);
   }
 
   render(canvas: any) {

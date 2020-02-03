@@ -1,102 +1,49 @@
 import {ComponentI} from "../engine/ComponentI";
 import RoundGridComponent from "../level1/RoundGridComponent";
-import {HintComponentState} from "./HintComponentState";
+import MousePointerComponent from "../mousepointer/MousePointerComponent";
+import {DirectMoveFunction} from "../level1/DirectMoveFunction";
 
 export default class HintComponent implements ComponentI {
   private roundGridComponent;
-  private curTick = 0;
-  private amountOfTicks = 12;
+  private mousePointer;
 
-  private readonly amountOfHorDragStep: number;
-  private readonly amountOfVertDragStep: number;
-  private curStep = 0;
-
-  private curState = HintComponentState.DRAG_RIGHT;
+  private curMouseState;
+  private readonly mouseCords;
+  private mouseCordsIdx = 0;
 
   constructor(gridWidth: number, gridHeight) {
     this.roundGridComponent = new RoundGridComponent(gridWidth, gridHeight, false, null,
       0, 0, false, false);
-    this.roundGridComponent.setHorizontalDirOfDrag();
-    this.roundGridComponent.setStartDragPoint(this.roundGridComponent.getCords()[this.roundGridComponent.getAmountOfCols() * 2].x,
-      this.roundGridComponent.getCords()[this.roundGridComponent.getAmountOfCols() * 2].y);
-    this.amountOfHorDragStep = this.roundGridComponent.getAmountOfCols() - 1;
-    this.amountOfVertDragStep = this.roundGridComponent.getAmountOfRows() - 3;
+    let cords = this.roundGridComponent.getCords();
+    let cols = this.roundGridComponent.getAmountOfCols();
+    let rows = this.roundGridComponent.getAmountOfRows();
+    let firstPoint = cords[cols * 2];
+    let secondPoint = cords[cols * 2 + cols - 1];
+    let thirdPoint = cords[cols * rows - 1];
+    let forthPoint = cords[cols * rows - 1 - (cols - 1)];
+    this.mouseCords = [firstPoint, secondPoint, thirdPoint, forthPoint, firstPoint];
+    this.mousePointer = new MousePointerComponent(
+      [DirectMoveFunction.MOVE_RIGHT, DirectMoveFunction.MOVE_DOWN, DirectMoveFunction.MOVE_LEFT, DirectMoveFunction.MOVE_UP],
+      this.mouseCords);
+    this.mousePointer.activate();
+    this.roundGridComponent.onMouseDown(this.mouseCords[this.mouseCordsIdx++]);
+    this.curMouseState = this.mousePointer.getState();
   }
 
-  private changeState(): void {
-    switch (this.curState) {
-      case HintComponentState.DRAG_RIGHT:
-        if (this.curStep < this.amountOfHorDragStep) {
-          this.roundGridComponent.setDragAmountOfSteps(this.curStep + 1);
-          this.curStep++;
-        } else {
-          this.roundGridComponent.setDragAmountOfSteps(0);
-          let startCord = this.roundGridComponent.getAmountOfCols() * 2;
-          let lastCordX = this.roundGridComponent.getCords()[startCord + this.amountOfHorDragStep].x;
-          let lastCordY = this.roundGridComponent.getCords()[startCord + this.amountOfHorDragStep].y;
-          this.roundGridComponent.setStartDragPoint(lastCordX, lastCordY);
-          this.roundGridComponent.setVerticalDirOfDrag();
-          this.curState = HintComponentState.DRAG_DOWN;
-          this.curStep = 0;
-        }
-        break;
-      case HintComponentState.DRAG_DOWN:
-        if (this.curStep < this.amountOfVertDragStep) {
-          this.roundGridComponent.setDragAmountOfSteps(this.curStep + 1);
-          this.curStep++;
-        } else {
-          this.roundGridComponent.setDragAmountOfSteps(0);
-          let startCord = this.roundGridComponent.getAmountOfCols() * (2 + this.amountOfVertDragStep);
-          let lastCordX = this.roundGridComponent.getCords()[startCord + this.amountOfHorDragStep].x;
-          let lastCordY = this.roundGridComponent.getCords()[startCord + this.amountOfHorDragStep].y;
-          this.roundGridComponent.setStartDragPoint(lastCordX, lastCordY);
-          this.roundGridComponent.setHorizontalDirOfDrag();
-          this.curState = HintComponentState.DRAG_LEFT;
-          this.curStep = 0;
-        }
-        break;
-      case HintComponentState.DRAG_LEFT:
-        if (this.curStep < this.amountOfHorDragStep) {
-          this.roundGridComponent.setDragAmountOfSteps((this.curStep + 1) * -1);
-          this.curStep++;
-        } else {
-          this.roundGridComponent.setDragAmountOfSteps(0);
-          let startCord = this.roundGridComponent.getAmountOfCols() * (2 + this.amountOfVertDragStep + 1);//TODO:refactor
-          let lastCordX = this.roundGridComponent.getCords()[startCord - this.amountOfHorDragStep - 1].x;
-          let lastCordY = this.roundGridComponent.getCords()[startCord - this.amountOfHorDragStep - 1].y;
-          this.roundGridComponent.setStartDragPoint(lastCordX, lastCordY);
-          this.roundGridComponent.setVerticalDirOfDrag();
-          this.curState = HintComponentState.DRAG_UP;
-          this.curStep = 0;
-        }
-        break;
-      case HintComponentState.DRAG_UP:
-        if (this.curStep < this.amountOfVertDragStep) {
-          this.roundGridComponent.setDragAmountOfSteps((this.curStep + 1) * -1);
-          this.curStep++;
-        } else {
-          this.roundGridComponent.setDragAmountOfSteps(0);
-          this.curState = HintComponentState.STABLE;
-          return;
-        }
-        break;
-      case HintComponentState.STABLE:
-        return;
+  private update(): void {
+    let curMouseState = this.mousePointer.getState();
+    if (curMouseState != this.curMouseState && this.mouseCordsIdx < this.mouseCords.length) {
+      this.roundGridComponent.onMouseDown(this.mouseCords[this.mouseCordsIdx].x, this.mouseCords[this.mouseCordsIdx].y);
+      this.mouseCordsIdx++;
+      this.curMouseState = curMouseState;
     }
   }
 
   render(canvas: any) {
-    if (this.curTick == 0) {
-      this.changeState();
-    }
-
+    this.update();
     this.roundGridComponent.render(canvas);
-
-    if (this.curTick < this.amountOfTicks) {
-      this.curTick++;
-    } else {
-      this.curTick = 0;
-    }
+    this.mousePointer.render(canvas);
+    this.roundGridComponent.onMouseMove(this.mousePointer.getCords().x, this.mousePointer.getCords().y);
   }
 
 }
