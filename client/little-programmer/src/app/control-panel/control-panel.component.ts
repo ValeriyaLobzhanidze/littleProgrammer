@@ -50,7 +50,7 @@ export class ControlPanelComponent implements OnInit {
   private createHintContent(): PopUpContent[] {
     let content = [];
     let hintPageProps = {
-      headerContent: "Use line to find out amount of steps",
+      headerContent: "Hint",
       getLevel: this.createHintLevel.bind(this),
       canvasWidth: this.canvasWidth,
       canvasHeight: this.canvasHeight

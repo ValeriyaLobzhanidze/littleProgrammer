@@ -7,8 +7,8 @@ export default class MousePointerComponent implements ComponentI {
   private x;
   private y;
 
-  private width = 30;
-  private height = 30;
+  private width = 24;
+  private height = 24;
 
   private animation;
 
