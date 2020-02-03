@@ -7,6 +7,7 @@ import InstructionSetComponent from "../instructionsetpopup/InstructionSetCompon
 import Instruction from "../instructionsetpopup/Instruction";
 import GameProcessDemonstrationComponent from "../gamedemonstrationpopup/GameProcessDemonstrationComponent";
 import SyntaxDemonstrationComponent from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponent";
+import HintComponent from "../hintpopup/HintComponent";
 
 @Component({
   selector: 'app-control-panel',
@@ -16,6 +17,8 @@ import SyntaxDemonstrationComponent from "../syntaxdemonstrationpopup/SyntaxDemo
 export class ControlPanelComponent implements OnInit {
   public sharedService: SharedService;
   private taskPopUpContent: PopUpContent[];
+  private hintPopUpContent: PopUpContent[];
+  private isHintContentInit = false;
   private isTaskContentInit = false;
 
   private canvasWidth = 400;
@@ -28,11 +31,37 @@ export class ControlPanelComponent implements OnInit {
   ngOnInit() {
   }
 
-  onTask(): void {
+  public onTask(): void {
     if (!this.isTaskContentInit) {
       this.taskPopUpContent = this.createPopUpContent();
+      this.isTaskContentInit = true;
     }
     this.sharedService.showPopUp(this.taskPopUpContent);
+  }
+
+  public onHint(): void {
+    if (!this.isHintContentInit) {
+      this.hintPopUpContent = this.createHintContent();
+      this.isHintContentInit = true;
+    }
+    this.sharedService.showPopUp(this.hintPopUpContent);
+  }
+
+  private createHintContent(): PopUpContent[] {
+    let content = [];
+    let hintPageProps = {
+      headerContent: "Use line to find out amount of steps",
+      getLevel: this.createHintLevel.bind(this),
+      canvasWidth: this.canvasWidth,
+      canvasHeight: this.canvasHeight
+    };
+    content.push(new PopUpContent(hintPageProps));
+    return content;
+  }
+
+  private createHintLevel(): Level {
+    let rootComponent = new HintComponent(this.canvasWidth, this.canvasHeight);
+    return new Level(rootComponent);
   }
 
   private createGameDemonstrationLevel(): Level {

@@ -41,10 +41,6 @@ export default class MousePointerComponent implements ComponentI {
     return !(this.curState == MouseState.STABLE);
   }
 
-  // public getCords(): { x: number, y: number } {
-  //   return {x: this.x, y: this.y};
-  // }
-
   private _render(canvas: any) {
     let ctx = canvas.getContext('2d');
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);

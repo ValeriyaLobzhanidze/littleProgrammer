@@ -27,7 +27,7 @@ export default class RoundGridComponent implements ComponentI {
   private readonly startCanvasX: number;
   private readonly startCanvasY: number;
 
-  private startDragRoundCords: { x: number, y: number };
+  private startDragRoundCords: { x: number, y: number } = {x: 0, y: 0};
   private horizontalDrag: boolean;
   private dragAmountOfSteps: number;
 
@@ -156,7 +156,7 @@ export default class RoundGridComponent implements ComponentI {
       stepX = this.arcRadius + this.arcRadius / 4;
       shiftX = this.arcRadius / 4;
       shiftTextY = 4;
-      if(this.dragAmountOfSteps < 0){
+      if (this.dragAmountOfSteps < 0) {
         reverseShiftX = this.arcRadius / 2;
       }
     } else {
@@ -166,7 +166,7 @@ export default class RoundGridComponent implements ComponentI {
       shiftY = this.arcRadius / 4;
       shiftTextX = 6;
       shiftTextY = -5;
-      if(this.dragAmountOfSteps < 0){
+      if (this.dragAmountOfSteps < 0) {
         reverseShiftY = this.arcRadius / 2;
       }
     }
@@ -265,5 +265,34 @@ export default class RoundGridComponent implements ComponentI {
   public onMouseUp(): void {
     this.startDragRoundCords = null;
     this.dragAmountOfSteps = null;
+  }
+
+  public setStartDragPoint(x: number, y: number) {
+    this.startDragRoundCords.x = x;
+    this.startDragRoundCords.y = y;
+  }
+
+  public setDragAmountOfSteps(value: number) {
+    this.dragAmountOfSteps = value;
+  }
+
+  public setHorizontalDirOfDrag() {
+    this.horizontalDrag = true;
+  }
+
+  public setVerticalDirOfDrag() {
+    this.horizontalDrag = false;
+  }
+
+  public getCords(): { x: number, y: number }[] {
+    return this.cords;
+  }
+
+  public getAmountOfRows(): number {
+    return this.numOfRows;
+  }
+
+  public getAmountOfCols(): number {
+    return this.numOfCols;
   }
 }
