@@ -147,12 +147,18 @@ export default class RoundGridComponent implements ComponentI {
     let shiftTextY = 0;
     let shiftTextX = 0;
 
+    let reverseShiftX = 0;
+    let reverseShiftY = 0;
+
     if (this.horizontalDrag) {
       width = this.arcRadius / 2;
       height = this.arcRadius / 3;
       stepX = this.arcRadius + this.arcRadius / 4;
       shiftX = this.arcRadius / 4;
       shiftTextY = 4;
+      if(this.dragAmountOfSteps < 0){
+        reverseShiftX = this.arcRadius / 2;
+      }
     } else {
       width = this.arcRadius / 3;
       height = this.arcRadius / 2;
@@ -160,19 +166,35 @@ export default class RoundGridComponent implements ComponentI {
       shiftY = this.arcRadius / 4;
       shiftTextX = 6;
       shiftTextY = -5;
+      if(this.dragAmountOfSteps < 0){
+        reverseShiftY = this.arcRadius / 2;
+      }
     }
     let curX = this.startDragRoundCords.x;
     let curY = this.startDragRoundCords.y - 2;
 
-    for (let i = 0; i < this.dragAmountOfSteps; i++) {
+    if (this.dragAmountOfSteps < 0) {
+      stepX *= -1;
+      stepY *= -1;
+    }
+
+    for (let i = 0; i < Math.abs(this.dragAmountOfSteps); i++) {
       CanvasShapesLib.roundStrokeRect(canvas, curX - shiftX, curY - shiftY, width, height, 2, "rgb(85,85,169)", "rgba(159, 146, 255, 0.4)");
-      CanvasShapesLib.roundStrokeRect(canvas, curX + stepX, curY + stepY, width, height, 2, "rgb(85,85,169)", "rgba(159, 146, 255, 0.4)");
+      CanvasShapesLib.roundStrokeRect(canvas, curX + stepX - reverseShiftX, curY + stepY - reverseShiftY, width, height, 2, "rgb(85,85,169)", "rgba(159, 146, 255, 0.4)");
       CanvasShapesLib.text(canvas, i + 1 as unknown as string, curX + stepX + shiftTextX, curY + stepY - shiftTextY, 10, "KBSticktoIt", "rgb(85,85,169)");
 
       if (this.horizontalDrag) {
-        curX += this.arcRadius * 1.5 + this.arcRadius / 4 + stepX;
+        let diff = this.arcRadius * 1.5 + this.arcRadius / 4;
+        if (this.dragAmountOfSteps < 0) {
+          diff *= -1;
+        }
+        curX += diff + stepX;
       } else {
-        curY += this.arcRadius * 1.5 + this.arcRadius / 4 + stepY;
+        let diff = this.arcRadius * 1.5 + this.arcRadius / 4;
+        if (this.dragAmountOfSteps < 0) {
+          diff *= -1;
+        }
+        curY += diff + stepY;
       }
     }
     CanvasShapesLib.roundStrokeRect(canvas, curX - shiftX, curY - shiftY, width, height, 2, "rgb(85,85,169)", "rgba(159, 146, 255, 0.4)");
@@ -227,12 +249,12 @@ export default class RoundGridComponent implements ComponentI {
       let closestRoundCords = this.findClosestRound(x, y);
       if (closestRoundCords) {
         if (closestRoundCords.x == this.startDragRoundCords.x) {
-          let distance = Math.abs(this.startDragRoundCords.y - closestRoundCords.y);
+          let distance = closestRoundCords.y - this.startDragRoundCords.y;
           this.dragAmountOfSteps = this.calculateDistanceInSteps(distance);
           this.horizontalDrag = false;
 
         } else if (closestRoundCords.y == this.startDragRoundCords.y) {
-          let distance = Math.abs(this.startDragRoundCords.x - closestRoundCords.x);
+          let distance = closestRoundCords.x - this.startDragRoundCords.x;
           this.dragAmountOfSteps = this.calculateDistanceInSteps(distance);
           this.horizontalDrag = true;
         }
