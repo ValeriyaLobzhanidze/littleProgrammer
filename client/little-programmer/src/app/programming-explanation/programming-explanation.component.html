@@ -1,30 +1,14 @@
 <div id="container">
   <div class="inner-container inner-upper">
-    <img src="/assets/images/deep-learning.png" alt="robot">
-    <span class="upper-text">Some text
-      Some text
-      Some text
-      Some textSome text
-      Some textSome text
-      Some text
-      Some text
-      Some textSome text
-      Some textSome text
+    <img [src]="upperImageSource" alt="robot">
+    <span class="upper-text" [textContent]="upperTextContent">
     </span>
   </div>
 
   <div class="inner-container">
-    <span class="lower-text">Some text
-      Some text
-      Some text
-      Some textSome text
-      Some textSome text
-      Some text
-      Some text
-      Some textSome text
-      Some textSome text
+    <span class="lower-text" [textContent]="lowerTextContent">
     </span>
-    <img src="/assets/images/arm.png" alt="robot">
+    <img [src]="lowerImageSource" alt="robot">
   </div>
 </div>
 

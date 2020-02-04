@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-programming-explanation',
@@ -6,8 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./programming-explanation.component.css']
 })
 export class ProgrammingExplanationComponent implements OnInit {
+  private upperTextContent: string;
+  private lowerTextContent: string;
 
-  constructor() { }
+  private upperImageSource: string;
+  private lowerImageSource: string;
+
+  constructor(upperTextContent: string, lowerTextContent: string, upperImageSource: string, lowerImageSource: string) {
+    this.upperTextContent = upperTextContent;
+    this.lowerTextContent = lowerTextContent;
+    this.upperImageSource = upperImageSource;
+    this.lowerImageSource = lowerImageSource;
+  }
 
   ngOnInit() {
   }

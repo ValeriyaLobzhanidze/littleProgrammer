@@ -11,6 +11,8 @@ import {SharedService} from "./SharedService";
 import { PopUpComponent } from './popup/pop-up.component';
 import { ControlPanelComponent } from './control-panel/control-panel.component';
 import { ProgrammingExplanationComponent } from './programming-explanation/programming-explanation.component';
+import { ProgrammingExplanationListComponent } from './programming-explanation-list/programming-explanation-list.component';
+import { PagePanelComponent } from './page-panel/page-panel.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { ProgrammingExplanationComponent } from './programming-explanation/progr
     CodeLineComponent,
     PopUpComponent,
     ControlPanelComponent,
-    ProgrammingExplanationComponent
+    ProgrammingExplanationComponent,
+    ProgrammingExplanationListComponent,
+    PagePanelComponent
   ],
   imports: [
     BrowserModule,

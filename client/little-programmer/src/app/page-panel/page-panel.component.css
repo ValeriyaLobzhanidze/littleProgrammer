@@ -1,0 +1,28 @@
+#panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: row;
+
+  width: 300px;
+  height: 50px;
+}
+
+#button {
+  background-color: #58fbce;
+  font-family: KBSticktoIt;
+  color: white;
+  font-size: 20px;
+  width: 150px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.icon:hover {
+  color: #58fbce;
+}
+
+.disabled {
+  cursor: not-allowed;
+  color: rgba(0, 0, 0, 0.23);
+}

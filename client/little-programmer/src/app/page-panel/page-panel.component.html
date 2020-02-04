@@ -1,0 +1,11 @@
+<div id="panel">
+  <i *ngIf="amountOfPages > 1"
+     class="fa fa-caret-left fa-2x"
+     (click)="onPrev()"
+     [ngClass]="['fa fa-caret-left fa-2x', this.shouldGoBack() ? 'icon' : 'disabled']"></i>
+  <button id="button" [textContent]="buttonValue"></button>
+  <i *ngIf="amountOfPages > 1"
+     class="fa fa-caret-right fa-2x"
+     (click)="onNext()"
+     [ngClass]="['fa fa-caret-right fa-2x', this.shouldGoForward() ? 'icon' : 'disabled']"></i>
+</div>
