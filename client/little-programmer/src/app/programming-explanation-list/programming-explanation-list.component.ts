@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-programming-explanation-list',
@@ -9,7 +9,8 @@ export class ProgrammingExplanationListComponent implements OnInit {
 
   private explanationList: ProgrammingExplanationListComponent[];
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
