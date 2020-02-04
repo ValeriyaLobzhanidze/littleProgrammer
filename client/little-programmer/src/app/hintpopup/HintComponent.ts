@@ -26,13 +26,15 @@ export default class HintComponent implements ComponentI {
       [DirectMoveFunction.MOVE_RIGHT, DirectMoveFunction.MOVE_DOWN, DirectMoveFunction.MOVE_LEFT, DirectMoveFunction.MOVE_UP],
       this.mouseCords);
     this.mousePointer.activate();
-    this.roundGridComponent.onMouseDown(this.mouseCords[this.mouseCordsIdx++]);
+    this.roundGridComponent.onMouseDown(this.mouseCords[this.mouseCordsIdx].x, this.mouseCords[this.mouseCordsIdx].y);
+    this.mouseCordsIdx++;
     this.curMouseState = this.mousePointer.getState();
   }
 
   private update(): void {
     let curMouseState = this.mousePointer.getState();
     if (curMouseState != this.curMouseState && this.mouseCordsIdx < this.mouseCords.length) {
+      this.roundGridComponent.onMouseUp();
       this.roundGridComponent.onMouseDown(this.mouseCords[this.mouseCordsIdx].x, this.mouseCords[this.mouseCordsIdx].y);
       this.mouseCordsIdx++;
       this.curMouseState = curMouseState;

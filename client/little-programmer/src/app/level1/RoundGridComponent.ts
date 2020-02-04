@@ -267,23 +267,6 @@ export default class RoundGridComponent implements ComponentI {
     this.dragAmountOfSteps = null;
   }
 
-  // public setStartDragPoint(x: number, y: number) {
-  //   this.startDragRoundCords.x = x;
-  //   this.startDragRoundCords.y = y;
-  // }
-  //
-  // public setDragAmountOfSteps(value: number) {
-  //   this.dragAmountOfSteps = value;
-  // }
-  //
-  // public setHorizontalDirOfDrag() {
-  //   this.horizontalDrag = true;
-  // }
-  //
-  // public setVerticalDirOfDrag() {
-  //   this.horizontalDrag = false;
-  // }
-
   public getCords(): { x: number, y: number }[] {
     return this.cords;
   }

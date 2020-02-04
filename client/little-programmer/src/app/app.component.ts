@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Type, ViewChild} from '@angular/core';
 import {SharedService} from "./SharedService";
 import {PopUpComponent} from "./popup/pop-up.component";
 import PopUpContent from "./popup/PopUpContent";
@@ -11,7 +11,8 @@ import PopUpContent from "./popup/PopUpContent";
 export class AppComponent {
   title = 'little-programmer';
   public isPopUpRendered: boolean = false;
-  public popUpContent: PopUpContent[];
+  // public popUpContent: PopUpContent[];
+  public type: Type<any>;
 
   public sharedService: SharedService;
 
@@ -20,8 +21,12 @@ export class AppComponent {
 
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
-    this.sharedService.showPopUp$.subscribe((content: PopUpContent[]) => {
-      this.renderPopUp(content);
+    // this.sharedService.showPopUp$.subscribe((content: PopUpContent[]) => {
+    //   this.renderPopUp(content);
+    // });
+
+    this.sharedService.showPopUp$.subscribe((type: Type<any>) => {
+      this.renderPopUp(type);
     });
   }
 
@@ -29,8 +34,13 @@ export class AppComponent {
     this.isPopUpRendered = false;
   }
 
-  private renderPopUp(content: PopUpContent[]) {
-    this.popUpContent = content;
+  // private renderPopUp(content: PopUpContent[]) {
+  //   this.popUpContent = content;
+  //   this.isPopUpRendered = true;
+  // }
+
+  private renderPopUp(type: Type<any>) {
+    this.type = type;
     this.isPopUpRendered = true;
   }
 

@@ -8,6 +8,7 @@ import Instruction from "../instructionsetpopup/Instruction";
 import GameProcessDemonstrationComponent from "../gamedemonstrationpopup/GameProcessDemonstrationComponent";
 import SyntaxDemonstrationComponent from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponent";
 import HintComponent from "../hintpopup/HintComponent";
+import {ProgrammingExplanationComponent} from "../programming-explanation/programming-explanation.component";
 
 @Component({
   selector: 'app-control-panel',
@@ -31,20 +32,24 @@ export class ControlPanelComponent implements OnInit {
   ngOnInit() {
   }
 
-  public onTask(): void {
-    if (!this.isTaskContentInit) {
-      this.taskPopUpContent = this.createPopUpContent();
-      this.isTaskContentInit = true;
-    }
-    this.sharedService.showPopUp(this.taskPopUpContent);
-  }
+  // public onTask(): void {
+  //   if (!this.isTaskContentInit) {
+  //     this.taskPopUpContent = this.createPopUpContent();
+  //     this.isTaskContentInit = true;
+  //   }
+  //   this.sharedService.showPopUp(this.taskPopUpContent);
+  // }
+  //
+  // public onHint(): void {
+  //   if (!this.isHintContentInit) {
+  //     this.hintPopUpContent = this.createHintContent();
+  //     this.isHintContentInit = true;
+  //   }
+  //   this.sharedService.showPopUp(this.hintPopUpContent);
+  // }
 
-  public onHint(): void {
-    if (!this.isHintContentInit) {
-      this.hintPopUpContent = this.createHintContent();
-      this.isHintContentInit = true;
-    }
-    this.sharedService.showPopUp(this.hintPopUpContent);
+  private showProgrammingExplanation(){
+    this.sharedService.showPopUp(ProgrammingExplanationComponent);
   }
 
   private createHintContent(): PopUpContent[] {

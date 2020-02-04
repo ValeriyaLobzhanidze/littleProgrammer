@@ -1,0 +1,39 @@
+#container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.inner-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-content: flex-start;
+
+  margin-left: 5%;
+  margin-right: 5%;
+  font-family: KBSticktoIt;
+  font-size: 20px;
+  color: rgb(142, 80, 188);
+}
+
+.inner-upper {
+  margin-bottom: 10%;
+}
+
+.lower-text {
+  margin-left: 5%;
+}
+
+.upper-text {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+img {
+  min-height: 150px;
+  min-width: 150px;
+
+  max-height: 150px;
+  max-width: 150px;
+}

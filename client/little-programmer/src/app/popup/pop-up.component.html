@@ -1,15 +1,16 @@
 <div id="pop-up">
-  <span [textContent]="currentContent.headerContent"></span>
-  <canvas id="canvas" width="{{currentContent.canvasWidth}}" height="{{currentContent.canvasHeight}}"></canvas>
-  <div id="panel">
-    <i *ngIf="content.length > 1"
-       class="fa fa-caret-left fa-2x"
-       (click)="onPrev()"
-       [ngClass]="['fa fa-caret-left fa-2x', this.shouldGoBack() ? 'icon' : 'disabled']"></i>
-    <button id="button" [textContent]="currentContent.buttonValue" (click)="closePopUp()"></button>
-    <i *ngIf="content.length > 1"
-       class="fa fa-caret-right fa-2x"
-       (click)="onNext()"
-       [ngClass]="['fa fa-caret-right fa-2x', this.shouldGoForward() ? 'icon' : 'disabled']"></i>
-  </div>
+<!--  <span [textContent]="currentContent.headerContent"></span>-->
+<!--  <canvas id="canvas" width="{{currentContent.canvasWidth}}" height="{{currentContent.canvasHeight}}"></canvas>-->
+<!--  <div id="panel">-->
+<!--    <i *ngIf="content.length > 1"-->
+<!--       class="fa fa-caret-left fa-2x"-->
+<!--       (click)="onPrev()"-->
+<!--       [ngClass]="['fa fa-caret-left fa-2x', this.shouldGoBack() ? 'icon' : 'disabled']"></i>-->
+<!--    <button id="button" [textContent]="currentContent.buttonValue" (click)="closePopUp()"></button>-->
+<!--    <i *ngIf="content.length > 1"-->
+<!--       class="fa fa-caret-right fa-2x"-->
+<!--       (click)="onNext()"-->
+<!--       [ngClass]="['fa fa-caret-right fa-2x', this.shouldGoForward() ? 'icon' : 'disabled']"></i>-->
+<!--  </div>-->
+  <ng-container #container></ng-container>
 </div>

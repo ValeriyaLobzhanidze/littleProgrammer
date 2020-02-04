@@ -36,7 +36,7 @@ export default class SpriteComponent implements ComponentI {
   private readonly sharedService: SharedService;
 
   private subscription: Subscription;
-  private isPopUpUsed: boolean;
+  private readonly isPopUpUsed: boolean;
 
   constructor(matrixCords: { x: number, y: number }[], targetCords: { x: number, y: number }[],
               numOfRows: number, numOfCols: number, route ?: { direction: DirectMoveFunction, val: number } [],
@@ -86,8 +86,8 @@ export default class SpriteComponent implements ComponentI {
       0,
       this.spriteWidth,
       this.spriteHeight,
-      this.dx,
-      this.dy,
+      this.dx - this.spriteWidth / 2,
+      this.dy - this.spriteHeight / 2,
       this.spriteWidth,
       this.spriteHeight);
   }
@@ -152,7 +152,7 @@ export default class SpriteComponent implements ComponentI {
             popUpProps = {
               headerContent: "Error in " + this.animation.getNumOfLastErrLine() + " line"
             };
-            this.sharedService.showPopUp([new PopUpContent(popUpProps)]);
+            // this.sharedService.showPopUp([new PopUpContent(popUpProps)]);
           }
         }
 
@@ -173,7 +173,7 @@ export default class SpriteComponent implements ComponentI {
             buttonValue: buttonValue
           };
 
-          this.sharedService.showPopUp([new PopUpContent(popUpProps)]);
+          // this.sharedService.showPopUp([new PopUpContent(popUpProps)]);
         }
       }
     }

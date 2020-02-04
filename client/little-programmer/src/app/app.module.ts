@@ -10,6 +10,7 @@ import { CodeLineComponent } from './code-line/code-line.component';
 import {SharedService} from "./SharedService";
 import { PopUpComponent } from './popup/pop-up.component';
 import { ControlPanelComponent } from './control-panel/control-panel.component';
+import { ProgrammingExplanationComponent } from './programming-explanation/programming-explanation.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ControlPanelComponent } from './control-panel/control-panel.component';
     CodeViewerComponent,
     CodeLineComponent,
     PopUpComponent,
-    ControlPanelComponent
+    ControlPanelComponent,
+    ProgrammingExplanationComponent
   ],
   imports: [
     BrowserModule,
@@ -26,6 +28,7 @@ import { ControlPanelComponent } from './control-panel/control-panel.component';
     FormsModule
   ],
   providers: [SharedService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ProgrammingExplanationComponent]
 })
 export class AppModule { }
