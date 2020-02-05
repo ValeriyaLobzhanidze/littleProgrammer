@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
-  Component, ComponentFactory,
-  ComponentFactoryResolver,
+  Component,
   ComponentRef,
   EventEmitter,
   Input,
@@ -9,10 +8,10 @@ import {
   Output, Type, ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import EngineImpl from "../engine/EngineImpl";
 import PopUpContent from "./PopUpContent";
 import {Engine} from "../engine/Engine";
 import {SharedService} from "../SharedService";
+import ComponentBuilderService from "../ComponentBuilderService";
 
 @Component({
   selector: 'app-pop-up',
@@ -20,9 +19,9 @@ import {SharedService} from "../SharedService";
   styleUrls: ['./pop-up.component.css']
 })
 export class PopUpComponent implements OnInit, AfterViewInit {
-    ngAfterViewInit(): void {
-      this.createComponent(this.contentType);
-    }
+  ngAfterViewInit(): void {
+    this.componentRef = this.componentBuilder.createComponent(this.contentType, this.container);
+  }
 
   private engine: Engine;
 
@@ -36,10 +35,11 @@ export class PopUpComponent implements OnInit, AfterViewInit {
 
   public sharesService: SharedService;
 
-  @ViewChild("container", {static: false, read: ViewContainerRef}) container;
-  componentRef: ComponentRef<any>;
+  @ViewChild("container", {static: false, read: ViewContainerRef})
+  public container: ViewContainerRef;
+  private componentRef: ComponentRef<any>;
 
-  constructor(private resolver: ComponentFactoryResolver, sharesService: SharedService) {
+  constructor(private componentBuilder: ComponentBuilderService, sharesService: SharedService) {
     this.sharesService = sharesService;
   }
 
@@ -114,11 +114,11 @@ export class PopUpComponent implements OnInit, AfterViewInit {
   //   return this.currentContentNo - 1 >= 0;
   // }
 
-  createComponent(type: Type<any>) {
-    this.container.clear();
-    const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(type);
-    this.componentRef = this.container.createComponent(factory);
-  }
+  // createComponent(type: Type<any>) {
+  //   this.container.clear();
+  //   const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(type);
+  //   this.componentRef = this.container.createComponent(factory);
+  // }
 
   ngOnDestroy() {
     this.componentRef.destroy();

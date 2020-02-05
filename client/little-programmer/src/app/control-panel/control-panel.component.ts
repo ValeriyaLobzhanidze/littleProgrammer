@@ -9,6 +9,8 @@ import GameProcessDemonstrationComponent from "../gamedemonstrationpopup/GamePro
 import SyntaxDemonstrationComponent from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponent";
 import HintComponent from "../hintpopup/HintComponent";
 import {ProgrammingExplanationComponent} from "../programming-explanation/programming-explanation.component";
+import ComponentBuilderService from "../ComponentBuilderService";
+import {ProgrammingExplanationListComponent} from "../programming-explanation-list/programming-explanation-list.component";
 
 @Component({
   selector: 'app-control-panel',
@@ -16,17 +18,19 @@ import {ProgrammingExplanationComponent} from "../programming-explanation/progra
   styleUrls: ['./control-panel.component.css']
 })
 export class ControlPanelComponent implements OnInit {
-  public sharedService: SharedService;
-  private taskPopUpContent: PopUpContent[];
-  private hintPopUpContent: PopUpContent[];
-  private isHintContentInit = false;
-  private isTaskContentInit = false;
+  private readonly sharedService: SharedService;
+  private readonly componentBuildService: ComponentBuilderService;
+  // private taskPopUpContent: PopUpContent[];
+  // private hintPopUpContent: PopUpContent[];
+  // private isHintContentInit = false;
+  // private isTaskContentInit = false;
 
   private canvasWidth = 400;
   private canvasHeight = 350;
 
-  constructor(sharedService: SharedService) {
+  constructor(sharedService: SharedService, componentBuildService: ComponentBuilderService) {
     this.sharedService = sharedService;
+    this.componentBuildService = componentBuildService;
   }
 
   ngOnInit() {
@@ -48,8 +52,8 @@ export class ControlPanelComponent implements OnInit {
   //   this.sharedService.showPopUp(this.hintPopUpContent);
   // }
 
-  private showProgrammingExplanation(){
-    this.sharedService.showPopUp(ProgrammingExplanationComponent);
+  private showProgrammingExplanation() {
+    this.sharedService.showPopUp(ProgrammingExplanationListComponent);
   }
 
   private createHintContent(): PopUpContent[] {

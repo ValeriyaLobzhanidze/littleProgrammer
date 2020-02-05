@@ -13,6 +13,7 @@ import { ControlPanelComponent } from './control-panel/control-panel.component';
 import { ProgrammingExplanationComponent } from './programming-explanation/programming-explanation.component';
 import { ProgrammingExplanationListComponent } from './programming-explanation-list/programming-explanation-list.component';
 import { PagePanelComponent } from './page-panel/page-panel.component';
+import ComponentBuilderService from "./ComponentBuilderService";
 
 @NgModule({
   declarations: [
@@ -31,8 +32,8 @@ import { PagePanelComponent } from './page-panel/page-panel.component';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [SharedService],
+  providers: [SharedService, ComponentBuilderService],
   bootstrap: [AppComponent],
-  entryComponents: [ProgrammingExplanationComponent]
+  entryComponents: [ProgrammingExplanationComponent, ProgrammingExplanationListComponent]
 })
 export class AppModule { }

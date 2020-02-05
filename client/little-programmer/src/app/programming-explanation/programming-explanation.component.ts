@@ -6,17 +6,33 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./programming-explanation.component.css']
 })
 export class ProgrammingExplanationComponent implements OnInit {
-  private upperTextContent: string;
-  private lowerTextContent: string;
+  private _upperTextContent: string = "";
+  private _lowerTextContent: string = "";
 
-  private upperImageSource: string;
-  private lowerImageSource: string;
+  private _upperImageSource: string = "";
+  private _lowerImageSource: string = "";
 
-  constructor(upperTextContent: string, lowerTextContent: string, upperImageSource: string, lowerImageSource: string) {
-    this.upperTextContent = upperTextContent;
-    this.lowerTextContent = lowerTextContent;
-    this.upperImageSource = upperImageSource;
-    this.lowerImageSource = lowerImageSource;
+  public init(upperTextContent: string, lowerTextContent: string, upperImageSource: string, lowerImageSource: string) {
+    this._upperTextContent = upperTextContent;
+    this._lowerTextContent = lowerTextContent;
+    this._upperImageSource = upperImageSource;
+    this._lowerImageSource = lowerImageSource;
+  }
+
+  get upperTextContent(): string {
+    return this._upperTextContent;
+  }
+
+  get lowerTextContent(): string {
+    return this._lowerTextContent;
+  }
+
+  get upperImageSource(): string {
+    return this._upperImageSource;
+  }
+
+  get lowerImageSource(): string {
+    return this._lowerImageSource;
   }
 
   ngOnInit() {

@@ -18,6 +18,10 @@
   border-radius: 5px;
 }
 
+.icon {
+  color: rgba(187, 116, 251, 0.83);
+}
+
 .icon:hover {
   color: #58fbce;
 }

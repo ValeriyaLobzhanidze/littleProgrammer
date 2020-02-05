@@ -9,6 +9,7 @@ export class PagePanelComponent implements OnInit {
 
   @Input() public amountOfPages: number;
   @Input() public buttonValue: string;
+  @Input() public changePageCallback: (pageNo: number) => {};
   private currentPageNo = 0;
 
   constructor() {
@@ -20,6 +21,7 @@ export class PagePanelComponent implements OnInit {
   public onNext() {
     if (this.shouldChangePage(this.currentPageNo + 1)) {
       this.currentPageNo++;
+      this.changePageCallback(this.currentPageNo);
     } else {
       if (this.currentPageNo < 0) {
         this.currentPageNo = 1;
@@ -30,6 +32,7 @@ export class PagePanelComponent implements OnInit {
   public onPrev() {
     if (this.shouldChangePage(this.currentPageNo - 1)) {
       this.currentPageNo--;
+      this.changePageCallback(this.currentPageNo);
     } else {
       if (this.currentPageNo >= this.amountOfPages) {
         this.currentPageNo = this.amountOfPages - 2;
