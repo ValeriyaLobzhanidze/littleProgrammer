@@ -15,8 +15,8 @@ export class ProgrammingExplanationListComponent implements OnInit, AfterViewIni
   private componentRef: ComponentRef<any>;
   private type: Type<ProgrammingExplanationComponent> = ProgrammingExplanationComponent;
 
-  private readonly explanationList: ProgrammingExplanationComponent[] = [];
-  public buttonValue: string = "Ok";
+  private readonly explanationList: ProgrammingExplanationComponent[];
+  public buttonValue: string;
 
   constructor(private componentBuilder: ComponentBuilderService) {
     this.explanationList = this.createDefaultList();
@@ -51,7 +51,7 @@ export class ProgrammingExplanationListComponent implements OnInit, AfterViewIni
   }
 
   ngAfterViewInit(): void {
-    // setTimeout(() => {this.changeView(0)});
+    setTimeout(() => {this.changeView(0)});
   }
 
   private changeView(viewNo: number): void {

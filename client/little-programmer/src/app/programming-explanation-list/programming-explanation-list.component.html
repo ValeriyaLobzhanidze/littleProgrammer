@@ -1,6 +1,8 @@
 <div id="container">
-<!--  <ng-container #container></ng-container>-->
-  <app-page-panel [amountOfPages]="getListLength()"
+  <ng-container #container></ng-container>
+  <app-page-panel
+                  [amountOfPages]="getListLength()"
                   [buttonValue]="buttonValue"
-                  [changePageCallback]="changeViewCallback()"></app-page-panel>
+                  [changePageCallback]="changeViewCallback()">
+  </app-page-panel>
 </div>
