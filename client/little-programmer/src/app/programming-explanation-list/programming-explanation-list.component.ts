@@ -16,7 +16,7 @@ export class ProgrammingExplanationListComponent implements OnInit, AfterViewIni
   private type: Type<ProgrammingExplanationComponent> = ProgrammingExplanationComponent;
 
   private readonly explanationList: ProgrammingExplanationComponent[];
-  public buttonValue: string;
+  public buttonValue: string = "Ok";
 
   constructor(private componentBuilder: ComponentBuilderService) {
     this.explanationList = this.createDefaultList();
@@ -45,7 +45,6 @@ export class ProgrammingExplanationListComponent implements OnInit, AfterViewIni
 
     list.push(firstPage);
     list.push(secondPage);
-    list.push(thirdPage);
     list.push(thirdPage);
     return list;
   }

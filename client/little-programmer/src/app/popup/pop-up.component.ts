@@ -20,7 +20,7 @@ import ComponentBuilderService from "../ComponentBuilderService";
 })
 export class PopUpComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
-    this.componentRef = this.componentBuilder.createComponent(this.contentType, this.container);
+    setTimeout(() => {this.componentRef = this.componentBuilder.createComponent(this.contentType, this.container);});
   }
 
   private engine: Engine;
