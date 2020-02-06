@@ -14,6 +14,7 @@ import { ProgrammingExplanationComponent } from './programming-explanation/progr
 import { ProgrammingExplanationListComponent } from './programming-explanation-list/programming-explanation-list.component';
 import { PagePanelComponent } from './page-panel/page-panel.component';
 import ComponentBuilderService from "./ComponentBuilderService";
+import { GameDemonstrationPopUpComponent } from './game-demonstration-pop-up/game-demonstration-pop-up.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import ComponentBuilderService from "./ComponentBuilderService";
     ControlPanelComponent,
     ProgrammingExplanationComponent,
     ProgrammingExplanationListComponent,
-    PagePanelComponent
+    PagePanelComponent,
+    GameDemonstrationPopUpComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +36,6 @@ import ComponentBuilderService from "./ComponentBuilderService";
   ],
   providers: [SharedService, ComponentBuilderService],
   bootstrap: [AppComponent],
-  entryComponents: [ProgrammingExplanationComponent, ProgrammingExplanationListComponent]
+  entryComponents: [ProgrammingExplanationComponent, ProgrammingExplanationListComponent, GameDemonstrationPopUpComponent]
 })
 export class AppModule { }

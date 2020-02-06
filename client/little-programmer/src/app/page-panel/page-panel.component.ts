@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {SharedService} from "../SharedService";
 
 @Component({
   selector: 'app-page-panel',
@@ -12,7 +13,7 @@ export class PagePanelComponent implements OnInit {
   @Input() public changePageCallback: (pageNo: number) => {};
   private currentPageNo = 0;
 
-  constructor() {
+  constructor(private sharedService: SharedService) {
   }
 
   ngOnInit() {
@@ -50,5 +51,9 @@ export class PagePanelComponent implements OnInit {
 
   public shouldGoBack(): boolean {
     return this.currentPageNo - 1 >= 0;
+  }
+
+  public onClick() {
+    this.sharedService.closePopUp();
   }
 }

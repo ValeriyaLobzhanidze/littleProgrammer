@@ -8,9 +8,9 @@ import Instruction from "../instructionsetpopup/Instruction";
 import GameProcessDemonstrationComponent from "../gamedemonstrationpopup/GameProcessDemonstrationComponent";
 import SyntaxDemonstrationComponent from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponent";
 import HintComponent from "../hintpopup/HintComponent";
-import {ProgrammingExplanationComponent} from "../programming-explanation/programming-explanation.component";
 import ComponentBuilderService from "../ComponentBuilderService";
 import {ProgrammingExplanationListComponent} from "../programming-explanation-list/programming-explanation-list.component";
+import {GameDemonstrationPopUpComponent} from "../game-demonstration-pop-up/game-demonstration-pop-up.component";
 
 @Component({
   selector: 'app-control-panel',
@@ -54,6 +54,10 @@ export class ControlPanelComponent implements OnInit {
 
   private showProgrammingExplanation() {
     this.sharedService.showPopUp(ProgrammingExplanationListComponent);
+  }
+
+  private showGame() {
+    this.sharedService.showPopUp(GameDemonstrationPopUpComponent);
   }
 
   private createHintContent(): PopUpContent[] {

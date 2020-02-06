@@ -62,13 +62,13 @@ export class PopUpComponent implements OnInit, AfterViewInit {
   //   this.engine.start();
   // }
 
-  public closePopUp(): void {
-    if (this.engine) {
-      this.engine.stop();
-    }
-    this.eventEmitter.emit("close");
-    this.sharesService.closePopUp();
-  }
+  // public closePopUp(): void {
+  //   if (this.engine) {
+  //     this.engine.stop();
+  //   }
+  //   this.eventEmitter.emit("close");
+  //   this.sharesService.closePopUp();
+  // }
 
   // public onNext() {
   //   if (this.shouldChangePage(this.currentContentNo + 1)) {

@@ -28,6 +28,9 @@ export class AppComponent {
     this.sharedService.showPopUp$.subscribe((type: Type<any>) => {
       this.renderPopUp(type);
     });
+    this.sharedService.closePopUp$.subscribe(() => {
+      this.isPopUpRendered = false;
+    })
   }
 
   public closePopUpEvent(): void {

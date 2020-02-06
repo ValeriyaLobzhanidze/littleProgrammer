@@ -1,0 +1,22 @@
+#container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#canvas-holder {
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.22);
+  border-radius: 25px;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+span {
+  margin-left: 10%;
+  margin-right: 10%;
+  font-family: KBSticktoIt;
+  font-size: 30px;
+  color: rgba(142, 80, 188, 0.64);
+  text-align: center;
+}
