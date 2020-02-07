@@ -1,7 +1,7 @@
 import {Injectable, Type} from '@angular/core';
 import {Subject} from "rxjs";
 import {DirectMoveFunction} from "./level1/DirectMoveFunction";
-import PopUpContent from "./popup/PopUpContent";
+import PopUpEventProps from "./PopUpEventProps";
 
 @Injectable()
 export class SharedService {
@@ -11,8 +11,7 @@ export class SharedService {
   private score: Subject<{ x: number, y: number }> = new Subject<{ x: number, y: number }>();
   public score$ = this.score.asObservable();
 
-  // private showPopUpEvent: Subject<PopUpContent[]> = new Subject<PopUpContent[]>();
-  private showPopUpEvent: Subject<Type<any>> = new Subject<Type<any>>();
+  private showPopUpEvent: Subject<PopUpEventProps> = new Subject<PopUpEventProps>();
   public showPopUp$ = this.showPopUpEvent.asObservable();
 
   private closePopUpEvent: Subject<void> = new Subject<void>();
@@ -26,12 +25,8 @@ export class SharedService {
     this.score.next();
   }
 
-  // public showPopUp(content: PopUpContent[]): void {
-  //   this.showPopUpEvent.next(content);
-  // }
-
-  public showPopUp(type: Type<any>): void {
-    this.showPopUpEvent.next(type);
+  public showPopUp(props: PopUpEventProps): void {
+    this.showPopUpEvent.next(props);
   }
 
   public closePopUp(): void {

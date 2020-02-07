@@ -3,15 +3,15 @@ import RoundGridComponent from "../level1/RoundGridComponent";
 import Level from "../engine/Level";
 import {Engine} from "../engine/Engine";
 import EngineImpl from "../engine/EngineImpl";
+import {Init} from "../pager/Init";
 
 @Component({
   selector: 'app-game-demonstration-pop-up',
   templateUrl: './game-demonstration-pop-up.component.html',
   styleUrls: ['./game-demonstration-pop-up.component.css']
 })
-export class GameDemonstrationPopUpComponent implements OnInit {
-  public header: string = "Help radish visit all purple points!";
-  public buttonValue: string = "Ok";
+export class GameDemonstrationPopUpComponent implements OnInit, Init {
+  private header: string;
   private canvasWidth: number = 350;
   private canvasHeight: number = 300;
 
@@ -30,6 +30,10 @@ export class GameDemonstrationPopUpComponent implements OnInit {
 
   ngOnInit() {
     this.load();
+  }
+
+  init(props: any) {
+    this.header = props.header || "";
   }
 
 }

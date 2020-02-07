@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PopUpComponent } from './pop-up.component';
+import { PagerComponent } from './pager.component';
 
-describe('PopUpComponent', () => {
-  let component: PopUpComponent;
-  let fixture: ComponentFixture<PopUpComponent>;
+describe('PagerComponent', () => {
+  let component: PagerComponent;
+  let fixture: ComponentFixture<PagerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PopUpComponent ]
+      declarations: [ PagerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PopUpComponent);
+    fixture = TestBed.createComponent(PagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

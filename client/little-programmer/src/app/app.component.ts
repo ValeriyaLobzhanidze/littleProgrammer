@@ -1,7 +1,6 @@
-import {Component, Type, ViewChild} from '@angular/core';
+import {Component, Type} from '@angular/core';
 import {SharedService} from "./SharedService";
-import {PopUpComponent} from "./popup/pop-up.component";
-import PopUpContent from "./popup/PopUpContent";
+import PopUpEventProps from "./PopUpEventProps";
 
 @Component({
   selector: 'app-root',
@@ -10,41 +9,25 @@ import PopUpContent from "./popup/PopUpContent";
 })
 export class AppComponent {
   title = 'little-programmer';
-  public isPopUpRendered: boolean = false;
-  // public popUpContent: PopUpContent[];
-  public type: Type<any>;
+  private isPopUpRendered: boolean = false;
+  private type: Type<any>;
+  private componentPropertiesList: any[];
+  private buttonValue: string;
 
   public sharedService: SharedService;
 
-  @ViewChild(PopUpComponent, {static: false})
-  popUp: PopUpComponent;
-
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
-    // this.sharedService.showPopUp$.subscribe((content: PopUpContent[]) => {
-    //   this.renderPopUp(content);
-    // });
 
-    this.sharedService.showPopUp$.subscribe((type: Type<any>) => {
-      this.renderPopUp(type);
+    this.sharedService.showPopUp$.subscribe((props: PopUpEventProps) => {
+      this.type = props.type;
+      this.componentPropertiesList = props.componentPropList;
+      this.buttonValue = props.buttonValue;
+      this.isPopUpRendered = true;
     });
+
     this.sharedService.closePopUp$.subscribe(() => {
       this.isPopUpRendered = false;
     })
   }
-
-  public closePopUpEvent(): void {
-    this.isPopUpRendered = false;
-  }
-
-  // private renderPopUp(content: PopUpContent[]) {
-  //   this.popUpContent = content;
-  //   this.isPopUpRendered = true;
-  // }
-
-  private renderPopUp(type: Type<any>) {
-    this.type = type;
-    this.isPopUpRendered = true;
-  }
-
 }

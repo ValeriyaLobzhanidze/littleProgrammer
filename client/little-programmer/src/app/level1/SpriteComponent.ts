@@ -4,7 +4,6 @@ import {SpriteAnimation} from "./SpriteAnimation";
 import {ComponentI} from "../engine/ComponentI";
 import {DirectMoveFunction} from "./DirectMoveFunction";
 import {SharedService} from "../SharedService";
-import PopUpContent from "../popup/PopUpContent";
 import {Subscription} from "rxjs";
 
 export default class SpriteComponent implements ComponentI {
