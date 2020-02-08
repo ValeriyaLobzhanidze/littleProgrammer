@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {SharedService} from "../SharedService";
 import RoundGridComponent from "../level1/RoundGridComponent";
 import Level from "../engine/Level";
-import InstructionSetComponent from "../instructionsetpopup/InstructionSetComponent";
-import Instruction from "../instructionsetpopup/Instruction";
+import InstructionSetComponent from "../instructionset/InstructionSetComponent";
+import Instruction from "../instructionset/Instruction";
 import GameProcessDemonstrationComponent from "../gamedemonstrationpopup/GameProcessDemonstrationComponent";
 import SyntaxDemonstrationComponent from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponent";
 import HintComponent from "../hintpopup/HintComponent";
@@ -12,6 +12,8 @@ import ProgrammingExplanationProps from "../programming-explanation/ProgrammingE
 import PopUpEventProps from "../PopUpEventProps";
 import {ProgrammingExplanationComponent} from "../programming-explanation/programming-explanation.component";
 import {GameDemonstrationPopUpComponent} from "../game-demonstration-pop-up/game-demonstration-pop-up.component";
+import InstructionSetProps from "../instructionset/InstructionSetProps";
+import {InstructionSetPopUpComponent} from "../instruction-set-pop-up/instruction-set-pop-up.component";
 
 @Component({
   selector: 'app-control-panel',
@@ -52,21 +54,42 @@ export class ControlPanelComponent implements OnInit {
     list3.upperImageSource = "assets/images/to-do-list.png";
     list3.upperTextContent = "SOME TEXT SOME TEXT SOME TEXT SOME TEXT SOME TEXT SOME TEXT";
 
-    let popUpProps = new PopUpEventProps();
-    popUpProps.componentPropList = [list1, list2, list3];
-    popUpProps.buttonValue = "Ok";
-    popUpProps.type = ProgrammingExplanationComponent;
+    let popUpProps1 = new PopUpEventProps();
+    popUpProps1.componentProps = list1;
+    popUpProps1.type = ProgrammingExplanationComponent;
 
-    this.sharedService.showPopUp(popUpProps);
+    let popUpProps2 = new PopUpEventProps();
+    popUpProps2.componentProps = list2;
+    popUpProps2.type = ProgrammingExplanationComponent;
+
+    let popUpProps3 = new PopUpEventProps();
+    popUpProps3.componentProps = list3;
+    popUpProps3.type = ProgrammingExplanationComponent;
+
+    this.sharedService.showPopUp([popUpProps1, popUpProps2, popUpProps3]);
   }
 
   private showGame() {
-    let listProps = { header: "Help radish visit all purple points!" };
-    let popUpProps = new PopUpEventProps();
-    popUpProps.componentPropList = [listProps];
-    popUpProps.buttonValue = "Ok";
-    popUpProps.type = GameDemonstrationPopUpComponent;
-    this.sharedService.showPopUp(popUpProps);
+    let list1 = {header: "Help radish visit all purple points!"};
+    let popUpProps1 = new PopUpEventProps();
+    popUpProps1.componentProps = list1;
+    popUpProps1.type = GameDemonstrationPopUpComponent;
+
+    let list2 = new InstructionSetProps();
+    list2.comment = new Instruction("* write amount of steps", "rgba(187, 116, 251, 0.83)",
+      20);
+    list2.instructionSet = [
+      new Instruction("moveRight(*)"),
+      new Instruction("moveLeft(*)"),
+      new Instruction("moveDown(*)"),
+      new Instruction("moveUp(*)")];
+    list2.header = "You can use commands:";
+
+    let popUpProps2 = new PopUpEventProps();
+    popUpProps2.componentProps = list2;
+    popUpProps2.type = InstructionSetPopUpComponent;
+
+    this.sharedService.showPopUp([popUpProps1, popUpProps2]);
   }
 
   // private createHintContent(): PopUpContent[] {

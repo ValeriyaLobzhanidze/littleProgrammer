@@ -3,8 +3,8 @@
   <app-code-editor></app-code-editor>
   <app-control-panel></app-control-panel>
   <div *ngIf="isPopUpRendered" id="pop-up-holder">
-    <app-pager [buttonValue]="buttonValue" [componentPropertiesList]="componentPropertiesList"
-               [type]="type" style="margin: auto"></app-pager>
+    <app-pager [popUpProperties]="componentPropertiesList"
+               style="margin: auto"></app-pager>
   </div>
 </div>
 

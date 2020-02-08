@@ -11,7 +11,7 @@ export class SharedService {
   private score: Subject<{ x: number, y: number }> = new Subject<{ x: number, y: number }>();
   public score$ = this.score.asObservable();
 
-  private showPopUpEvent: Subject<PopUpEventProps> = new Subject<PopUpEventProps>();
+  private showPopUpEvent: Subject<PopUpEventProps[]> = new Subject<PopUpEventProps[]>();
   public showPopUp$ = this.showPopUpEvent.asObservable();
 
   private closePopUpEvent: Subject<void> = new Subject<void>();
@@ -25,7 +25,7 @@ export class SharedService {
     this.score.next();
   }
 
-  public showPopUp(props: PopUpEventProps): void {
+  public showPopUp(props: PopUpEventProps[]): void {
     this.showPopUpEvent.next(props);
   }
 

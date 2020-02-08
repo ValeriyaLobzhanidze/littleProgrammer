@@ -3,7 +3,8 @@ import {BallState} from "./BallState";
 export default class Ball {
   private x = 0;
   private y = 0;
-  private radius = 11;
+  private width = 20;
+  private height = 20;
   private colorHalf1 = "#58fbce";
   private colorHalf2 = "rgba(187, 116, 251, 0.83)";
 
@@ -24,7 +25,9 @@ export default class Ball {
 
   private readonly startRollHorizontallyX: number;
   private readonly rollVerticallyBarrierY: number;
-  private readonly lengthOfHorizontallyRoll: number;
+  private lengthOfHorizontallyRoll: number;
+
+  private readonly comment: string;
 
   private currentState = BallState.FLY;
   private startVerticallyMoveY: number;
@@ -32,33 +35,36 @@ export default class Ball {
   private currentUpdateFuncY: (value: number) => number = this.positiveYFlyDirection;
   private currentUpdateFuncX: (value: number) => number = this.positiveDirection;
 
-  private minRadiusSize = 1;
-  private radiusStep = 0.4;
+  private minPictureSize = 5;
+  private sizeStep = 0.6;
 
-  constructor(flyBarrierX: number, amountOfFlyBarriers: number, startRollHorizontallyX: number, rollVerticallyBarrierY: number, lengthOfHorizontallyRoll: number) {
+  private readonly image;
+
+  constructor(flyBarrierX: number, amountOfFlyBarriers: number, startRollHorizontallyX: number,
+              rollVerticallyBarrierY: number, comment: string) {
     this.flyBarrierX = flyBarrierX;
     this.amountOfFlyBarriers = amountOfFlyBarriers;
     this.startRollHorizontallyX = startRollHorizontallyX;
     this.rollVerticallyBarrierY = rollVerticallyBarrierY;
-    this.lengthOfHorizontallyRoll = lengthOfHorizontallyRoll;
+    this.comment = comment;
+    this.image = new Image(0, 0);
+    this.image.src = "/assets/images/gear.png";
   }
 
   public render(canvas: any): void {
+    let ctx = canvas.getContext('2d');
+    this.lengthOfHorizontallyRoll = ctx.measureText(this.comment).width;
     this.update();
     this._render(canvas);
   }
 
   private _render(canvas: any) {
     let ctx = canvas.getContext('2d');
-    ctx.fillStyle = this.colorHalf1;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, this.startAngel, this.startAngel + Math.PI, true);
-    ctx.fill();
-
-    ctx.fillStyle = this.colorHalf2;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, this.startAngel + Math.PI, this.startAngel + 2 * Math.PI, true);
-    ctx.fill();
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.startAngel);
+    ctx.drawImage(this.image, -(this.width / 2), -(this.height / 2), this.width, this.height);
+    ctx.restore();
   }
 
   private update() {
@@ -170,12 +176,13 @@ export default class Ball {
   }
 
   private changeAngle() {
-    this.startAngel += Math.PI / 4;
+    this.startAngel += Math.PI / 3;
   }
 
   private decreaseSize() {
-    if (this.radius > this.minRadiusSize) {
-      this.radius -= this.radiusStep;
+    if (this.width > this.minPictureSize) {
+      this.width -= this.sizeStep;
+      this.height -= this.sizeStep;
     }
   }
 

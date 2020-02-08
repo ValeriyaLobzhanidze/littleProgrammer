@@ -7,7 +7,7 @@ export default class InstructionSet {
   private visitedInstructionColor = "#58fbce";
   private _xInstructionStart = 52.2;
   private instructionShift = 10;
-  private _xCommentStart = 30;
+  private _xCommentStart = 40;
   private readonly trajectoryFunction: (x: number) => number;
   private readonly trajectoryFuncStep: number;
   private instructionIdx = 0;
@@ -69,10 +69,6 @@ export default class InstructionSet {
 
   get xCommentStart(): number {
     return this._xCommentStart;
-  }
-
-  public getCommentLength(): number {
-    return this.comment.instruction.length;
   }
 
   public getSetLength(): number {
