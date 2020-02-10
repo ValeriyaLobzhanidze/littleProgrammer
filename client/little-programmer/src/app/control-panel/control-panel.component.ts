@@ -1,19 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {SharedService} from "../SharedService";
 import RoundGridComponent from "../level1/RoundGridComponent";
-import Level from "../engine/Level";
 import InstructionSetComponent from "../instructionset/InstructionSetComponent";
 import Instruction from "../instructionset/Instruction";
-import GameProcessDemonstrationComponent from "../gamedemonstrationpopup/GameProcessDemonstrationComponent";
-import SyntaxDemonstrationComponent from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponent";
-import HintComponent from "../hintpopup/HintComponent";
 import ComponentBuilderService from "../ComponentBuilderService";
 import ProgrammingExplanationProps from "../programming-explanation/ProgrammingExplanationProps";
 import PopUpEventProps from "../PopUpEventProps";
 import {ProgrammingExplanationComponent} from "../programming-explanation/programming-explanation.component";
-import {GameDemonstrationPopUpComponent} from "../game-demonstration-pop-up/game-demonstration-pop-up.component";
-import InstructionSetProps from "../instructionset/InstructionSetProps";
-import {InstructionSetPopUpComponent} from "../instruction-set-pop-up/instruction-set-pop-up.component";
+import {CanvasComponent} from "../canvascomponent/canvas.component";
+import CanvasProps from "../canvascomponent/CanvasProps";
 
 @Component({
   selector: 'app-control-panel',
@@ -70,24 +65,32 @@ export class ControlPanelComponent implements OnInit {
   }
 
   private showGame() {
-    let list1 = {header: "Help radish visit all purple points!"};
+    let list1 = new CanvasProps();
+    list1.header = "Help radish visit all purple points!";
+    list1.canvasHeight = 300;
+    list1.canvasWidth = 350;
+    list1.rootComponent = new RoundGridComponent(350, 300);
     let popUpProps1 = new PopUpEventProps();
     popUpProps1.componentProps = list1;
-    popUpProps1.type = GameDemonstrationPopUpComponent;
+    popUpProps1.type = CanvasComponent;
 
-    let list2 = new InstructionSetProps();
-    list2.comment = new Instruction("* write amount of steps", "rgba(187, 116, 251, 0.83)",
+    let comment = new Instruction("* write amount of steps", "rgba(187, 116, 251, 0.83)",
       20);
-    list2.instructionSet = [
+    let instructionSet = [
       new Instruction("moveRight(*)"),
       new Instruction("moveLeft(*)"),
       new Instruction("moveDown(*)"),
       new Instruction("moveUp(*)")];
+
+    let list2 = new CanvasProps();
     list2.header = "You can use commands:";
+    list2.canvasHeight = 300;
+    list2.canvasWidth = 350;
+    list2.rootComponent = new InstructionSetComponent(instructionSet, comment);
 
     let popUpProps2 = new PopUpEventProps();
     popUpProps2.componentProps = list2;
-    popUpProps2.type = InstructionSetPopUpComponent;
+    popUpProps2.type = CanvasComponent;
 
     this.sharedService.showPopUp([popUpProps1, popUpProps2]);
   }

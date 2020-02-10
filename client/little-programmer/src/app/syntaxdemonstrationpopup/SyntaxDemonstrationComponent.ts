@@ -1,5 +1,5 @@
 import {ComponentI} from "../engine/ComponentI";
-import TextComponent from "../gamedemonstrationpopup/TextComponent";
+import TextComponent from "../gameprocessdemonstration/TextComponent";
 
 export default class SyntaxDemonstrationComponent implements ComponentI {
   private textComponentList: TextComponent[] = [];

@@ -12,9 +12,8 @@ import { ControlPanelComponent } from './control-panel/control-panel.component';
 import { ProgrammingExplanationComponent } from './programming-explanation/programming-explanation.component';
 import { PagePanelComponent } from './page-panel/page-panel.component';
 import ComponentBuilderService from "./ComponentBuilderService";
-import { GameDemonstrationPopUpComponent } from './game-demonstration-pop-up/game-demonstration-pop-up.component';
+import { CanvasComponent } from './canvascomponent/canvas.component';
 import { PagerComponent } from './pager/pager.component';
-import { InstructionSetPopUpComponent } from './instruction-set-pop-up/instruction-set-pop-up.component';
 
 @NgModule({
   declarations: [
@@ -25,9 +24,8 @@ import { InstructionSetPopUpComponent } from './instruction-set-pop-up/instructi
     ControlPanelComponent,
     ProgrammingExplanationComponent,
     PagePanelComponent,
-    GameDemonstrationPopUpComponent,
-    PagerComponent,
-    InstructionSetPopUpComponent
+    CanvasComponent,
+    PagerComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +34,6 @@ import { InstructionSetPopUpComponent } from './instruction-set-pop-up/instructi
   ],
   providers: [SharedService, ComponentBuilderService],
   bootstrap: [AppComponent],
-  entryComponents: [ProgrammingExplanationComponent, GameDemonstrationPopUpComponent, InstructionSetPopUpComponent]
+  entryComponents: [ProgrammingExplanationComponent, CanvasComponent]
 })
 export class AppModule { }
