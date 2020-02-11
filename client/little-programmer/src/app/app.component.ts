@@ -10,9 +10,7 @@ import PopUpEventProps from "./PopUpEventProps";
 export class AppComponent {
   title = 'little-programmer';
   private isPopUpRendered: boolean = false;
-  // private type: Type<any>;
   private componentPropertiesList: PopUpEventProps[];
-  // private buttonValue: string;
 
   public sharedService: SharedService;
 
@@ -20,9 +18,7 @@ export class AppComponent {
     this.sharedService = sharedService;
 
     this.sharedService.showPopUp$.subscribe((props: PopUpEventProps[]) => {
-      // this.type = props.type;
       this.componentPropertiesList = props;
-      // this.buttonValue = props.buttonValue;
       this.isPopUpRendered = true;
     });
 
