@@ -25,7 +25,17 @@ export class CodeViewerComponent implements OnInit {
 
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
-    this.rootComponent = new RoundGridComponent(this.canvasWidth, this.canvasHeight, false, this.sharedService);
+    this.rootComponent = new RoundGridComponent();
+    this.rootComponent.init({
+      width: this.canvasWidth,
+      height: this.canvasHeight,
+      isDefaultRoute: false,
+      sharedService: this.sharedService,
+      startCanvasX: 0,
+      startCanvasY: 0,
+      isDefaultTarget: true,
+      isPopUpUsed:true
+    });
   }
 
   ngOnInit() {

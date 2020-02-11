@@ -7,37 +7,78 @@ import CanvasShapesLib from "../lib/CanvasShapesLib";
 export default class RoundGridComponent implements ComponentI {
 
   private cords: { x: number, y: number }[] = [];
-  private readonly numOfRows: number;
-  private readonly numOfCols: number;
-  private readonly startX: number;
-  private readonly startY: number;
+  private numOfRows: number;
+  private numOfCols: number;
+  private startX: number;
+  private startY: number;
 
-  private readonly width: number;
-  private readonly height: number;
+  private width: number;
+  private height: number;
 
-  private readonly diffX: number;
-  private readonly diffY: number;
-  private readonly backArcsColor: string = "rgb(75,191,151, 0.1)";
-  private readonly targetArcsColor: string = "rgba(159, 146, 255, 0.64)";
+  private diffX: number;
+  private diffY: number;
+  private backArcsColor: string = "rgb(75,191,151, 0.1)";
+  private targetArcsColor: string = "rgba(159, 146, 255, 0.64)";
   private childComponent: SpriteComponent;
 
   private readonly arcRadius: number = 12;
-  private readonly targetNums: { x: number, y: number }[] = [];
+  private targetNums: { x: number, y: number }[] = [];
   private targetCords: { x: number, y: number }[] = [];
-  private readonly startCanvasX: number;
-  private readonly startCanvasY: number;
+  private startCanvasX: number;
+  private startCanvasY: number;
 
   private startDragRoundCords: { x: number, y: number } = {x: 0, y: 0};
   private horizontalDrag: boolean;
   private dragAmountOfSteps: number;
 
-  constructor(width: number, height: number, isDefaultRoute: boolean = true, sharedService?: SharedService,
-              startCanvasX?: number, startCanvasY?: number, isDefaultTarget: boolean = true, isPopUpUsed = true) {
-    this.width = width;
-    this.height = height;
+  constructor() {
 
-    this.startCanvasX = startCanvasX || 0;
-    this.startCanvasY = startCanvasY || 0;
+  }
+
+  // init(width: number, height: number, isDefaultRoute: boolean = true, sharedService?: SharedService,
+  //             startCanvasX?: number, startCanvasY?: number, isDefaultTarget: boolean = true, isPopUpUsed = true) {
+  //   this.width = width;
+  //   this.height = height;
+  //
+  //   this.startCanvasX = startCanvasX || 0;
+  //   this.startCanvasY = startCanvasY || 0;
+  //
+  //   let diam = this.arcRadius * 2;
+  //   this.startX = diam;
+  //   this.startY = diam;
+  //
+  //   this.diffX = diam + this.arcRadius;
+  //   this.diffY = diam + this.arcRadius;
+  //
+  //   this.numOfRows = Math.floor(((this.height - this.startCanvasY) - this.arcRadius * 2) / (diam + this.arcRadius));
+  //   this.numOfCols = Math.floor(((this.width - this.startCanvasX) - this.arcRadius * 2) / (diam + this.arcRadius));
+  //
+  //   let targetRectHeight = this.numOfCols - 4;
+  //   let targetRectTop = 2;
+  //   let targetRectLeft = 2;
+  //
+  //   if (isDefaultTarget) {
+  //     this.targetNums = this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop, targetRectLeft, targetRectHeight);
+  //     this.targetNums = this.targetNums.concat(this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop + 2,
+  //       targetRectLeft + 2, targetRectHeight - 4));
+  //   }
+  //
+  //   this.calculateCords();
+  //
+  //   if (isDefaultRoute) {
+  //     let route = this.buildDefaultRoute(targetRectTop, targetRectLeft, targetRectHeight);
+  //     this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, route, null, isPopUpUsed);
+  //   } else {
+  //     this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, null, sharedService, isPopUpUsed);
+  //   }
+  // }
+
+  init(props: any) {
+    this.width = props.width;
+    this.height = props.height;
+
+    this.startCanvasX = props.startCanvasX || 0;
+    this.startCanvasY = props.startCanvasY || 0;
 
     let diam = this.arcRadius * 2;
     this.startX = diam;
@@ -53,7 +94,7 @@ export default class RoundGridComponent implements ComponentI {
     let targetRectTop = 2;
     let targetRectLeft = 2;
 
-    if (isDefaultTarget) {
+    if (props.isDefaultTarget) {
       this.targetNums = this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop, targetRectLeft, targetRectHeight);
       this.targetNums = this.targetNums.concat(this.buildRectangle(this.numOfRows, this.numOfCols, targetRectTop + 2,
         targetRectLeft + 2, targetRectHeight - 4));
@@ -61,11 +102,11 @@ export default class RoundGridComponent implements ComponentI {
 
     this.calculateCords();
 
-    if (isDefaultRoute) {
+    if (props.isDefaultRoute) {
       let route = this.buildDefaultRoute(targetRectTop, targetRectLeft, targetRectHeight);
-      this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, route, null, isPopUpUsed);
+      this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, route, null, props.isPopUpUsed);
     } else {
-      this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, null, sharedService, isPopUpUsed);
+      this.childComponent = new SpriteComponent(this.cords, this.targetCords, this.numOfRows, this.numOfCols, null, props.sharedService, props.isPopUpUsed);
     }
   }
 

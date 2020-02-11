@@ -1,8 +1,10 @@
 import {ComponentI} from "../engine/ComponentI";
+import {Type} from "@angular/core";
 
 export default class CanvasProps {
   header: string;
-  rootComponent: ComponentI;
+  rootComponentType: Type<any>;
+  rootComponentProps: any;
   canvasHeight: number;
   canvasWidth: number;
 }

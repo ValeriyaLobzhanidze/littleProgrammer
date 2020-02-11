@@ -8,12 +8,19 @@ export default class HintComponent implements ComponentI {
   private mousePointer;
 
   private curMouseState;
-  private readonly mouseCords;
+  private mouseCords;
   private mouseCordsIdx = 0;
 
-  constructor(gridWidth: number, gridHeight) {
-    this.roundGridComponent = new RoundGridComponent(gridWidth, gridHeight, false, null,
-      0, 0, false, false);
+  constructor() {
+
+  }
+
+  init(props: any) {
+    this.roundGridComponent = new RoundGridComponent();
+    this.roundGridComponent.init({
+      width: props.width, height: props.height, isDefaultRoute: false, sharedService: null, startCanvasX: 0,
+      startCanvasY: 0, isDefaultTarget: false, isPopUpUsed: false
+    });
     let cords = this.roundGridComponent.getCords();
     let cols = this.roundGridComponent.getAmountOfCols();
     let rows = this.roundGridComponent.getAmountOfRows();

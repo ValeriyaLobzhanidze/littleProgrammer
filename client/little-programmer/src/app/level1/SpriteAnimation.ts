@@ -1,6 +1,5 @@
 import {DirectMoveFunction} from "./DirectMoveFunction";
 import {Animation} from "./Animation";
-import {SharedService} from "../SharedService";
 
 export class SpriteAnimation implements Animation {
   private curPos = 0;

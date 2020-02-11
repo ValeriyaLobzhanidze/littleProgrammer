@@ -1,14 +1,19 @@
 export default class Instruction {
   private readonly _instruction: string;
   private readonly _fontSize: number = 30;
-  private _color: string = "rgba(187, 116, 251, 0.83)";
+  private _color: string;
   private _x: number = 0;
   private _y: number = 0;
+  private static COLOR: string = "rgba(187, 116, 251, 0.83)";
 
-  constructor(instruction: string, color = "rgba(187, 116, 251, 0.83)", size = 30) {
+  constructor(instruction: string, color = Instruction.COLOR, size = 30) {
     this._instruction = instruction;
     this._color = color;
     this._fontSize = size;
+  }
+
+  public returnToStartValues(){
+    this._color = Instruction.COLOR;
   }
 
   get instruction(): string {

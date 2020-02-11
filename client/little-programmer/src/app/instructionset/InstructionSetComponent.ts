@@ -7,13 +7,19 @@ export default class InstructionSetComponent implements ComponentI {
   private instructionSet: InstructionSet;
   private ball: Ball;
 
-  constructor(instructions: Instruction[], comment: Instruction) {
-    this.instructionSet = new InstructionSet(instructions, comment, Ball.trajectoryFlyFunction, Ball.TRAJECTORY_STEP);
+  constructor() {
+  }
+
+  init(props: any) {
+    for (let instr of props.instructions) {
+      instr.returnToStartValues();
+    }
+    this.instructionSet = new InstructionSet(props.instructions, props.comment, Ball.trajectoryFlyFunction, Ball.TRAJECTORY_STEP);
     this.ball = new Ball(this.instructionSet.xInstructionStart,
       this.instructionSet.getSetLength(),
       this.instructionSet.xCommentStart,
       this.instructionSet.getCommentSize(),
-      comment.instruction);
+      props.comment.instruction);
   }
 
   render(canvas: any) {

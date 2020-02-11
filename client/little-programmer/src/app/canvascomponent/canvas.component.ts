@@ -36,7 +36,10 @@ export class CanvasComponent implements OnInit, Init {
 
   init(props: CanvasProps) {
     this.header = props.header || "";
-    this.rootComponent = props.rootComponent;
+    this.rootComponent = new props.rootComponentType();
+    if (props.rootComponentProps) {
+      (this.rootComponent as unknown as Init).init(props.rootComponentProps);
+    }
     this.level = new Level(this.rootComponent);
     this.canvasHeight = props.canvasHeight;
     this.canvasWidth = props.canvasWidth;

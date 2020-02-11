@@ -3,7 +3,7 @@ import TextComponent from "../gameprocessdemonstration/TextComponent";
 
 export default class SyntaxDemonstrationComponent implements ComponentI {
   private textComponentList: TextComponent[] = [];
-  private readonly commentList: string[];
+  private commentList: string[];
   private textColor = "rgba(187, 116, 251, 0.83)";
   private fontSize = 25;
   private isSeveralInputNeeded;
@@ -14,15 +14,19 @@ export default class SyntaxDemonstrationComponent implements ComponentI {
   private curTextComponent: TextComponent;
   private textComponentIdx = 0;
 
-  constructor(comment: string[], textArr: string[], isSeveralInputNeeded = false) {
-    this.commentList = comment;
-    this.isSeveralInputNeeded = isSeveralInputNeeded;
+  constructor() {
+
+  }
+
+  init(props: any) {
+    this.commentList = props.comment;
+    this.isSeveralInputNeeded = props.isSeveralInputNeeded;
     let fontSize = 30;
-    if (!isSeveralInputNeeded) {
-      this.textComponentList.push(new TextComponent(100, 150, textArr, fontSize, true, true, true));
+    if (!props.isSeveralInputNeeded) {
+      this.textComponentList.push(new TextComponent(100, 150, props.textArr, fontSize, true, true, true));
     } else {
       let curY = 50;
-      for (let text of textArr) {
+      for (let text of props.textArr) {
         this.textComponentList.push(new TextComponent(100, curY, [text], fontSize, false, true, true));
         curY += fontSize * 2;
       }
@@ -52,7 +56,7 @@ export default class SyntaxDemonstrationComponent implements ComponentI {
       textComponent.render(canvas);
     }
 
-    if(this.curTextComponent.isTypingFinished() && this.textComponentIdx < this.textComponentList.length){
+    if (this.curTextComponent.isTypingFinished() && this.textComponentIdx < this.textComponentList.length) {
       this.curTextComponent = this.textComponentList[this.textComponentIdx++];
       this.curTextComponent.activate();
     }
