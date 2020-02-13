@@ -15,6 +15,8 @@ export class CodeEditorComponent implements OnInit {
   public codeLines: QueryList<CodeLineComponent>;
   private syntaxParser: SyntaxParser = new SyntaxParser();
 
+  private attemptsCache: string[][] = [];
+
   public isValid = (val: string) => {
     return this.syntaxParser.validate(val);
   };
@@ -23,6 +25,12 @@ export class CodeEditorComponent implements OnInit {
 
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
+    this.sharedService.clearCodeLine$.subscribe(() => {
+      this.deleteInput();
+    });
+    this.sharedService.showLastTry$.subscribe(() => {
+      this.extractFromCache();
+    })
   }
 
   ngOnInit() {
@@ -32,6 +40,33 @@ export class CodeEditorComponent implements OnInit {
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
 
+  }
+
+  private extractFromCache() {
+    if (this.attemptsCache.length > 0) {
+      let lastAttempt = this.attemptsCache[this.attemptsCache.length - 1];
+      this.fillInput(lastAttempt);
+      this.attemptsCache.pop();
+    }
+  }
+
+  private fillInput(input: string[]) {
+    let idx = 0;
+    this.codeLines.forEach(e => e.codeLine = input[idx++]);
+    this.codeLines.forEach(e => e.onInput());
+  }
+
+  private deleteInput() {
+    this.saveToCache();
+    this.codeLines.forEach(elem => elem.codeLine = "");
+  }
+
+  private saveToCache() {
+    let copy = [];
+    for (let line of this.codeLines.toArray()) {
+      copy.push(line.codeLine);
+    }
+    this.attemptsCache.push(copy);
   }
 
   onClick(): void {
@@ -57,4 +92,6 @@ export class CodeEditorComponent implements OnInit {
       this.sharedService.setCodeLineData(directionList);
     }
   }
+
+
 }

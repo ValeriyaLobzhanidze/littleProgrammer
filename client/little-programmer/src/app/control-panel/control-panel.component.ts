@@ -34,6 +34,14 @@ export class ControlPanelComponent implements OnInit {
   ngOnInit() {
   }
 
+  private onClear() {
+    this.sharedService.clearCodeLinesInput();
+  }
+
+  private onLastTry() {
+    this.sharedService.showLastAttempt();
+  }
+
   private createPopUpProps(componentProps: any, type: any): PopUpEventProps {
     let popUpProps = new PopUpEventProps();
     popUpProps.componentProps = componentProps;

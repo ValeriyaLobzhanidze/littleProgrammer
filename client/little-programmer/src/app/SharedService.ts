@@ -17,6 +17,16 @@ export class SharedService {
   private closePopUpEvent: Subject<void> = new Subject<void>();
   public closePopUp$ = this.closePopUpEvent.asObservable();
 
+  private clearCodeLinesInputEvent: Subject<void> = new Subject<void>();
+  public clearCodeLine$ = this.clearCodeLinesInputEvent.asObservable();
+
+  private showLastTryEvent: Subject<void> = new Subject<void>();
+  public showLastTry$ = this.showLastTryEvent.asObservable();
+
+  public showLastAttempt() {
+    this.showLastTryEvent.next();
+  }
+
   public setCodeLineData(data: { direction: DirectMoveFunction, val: number }[]): void {
     this.codeLineData.next(data);
   }
@@ -31,5 +41,9 @@ export class SharedService {
 
   public closePopUp(): void {
     this.closePopUpEvent.next();
+  }
+
+  public clearCodeLinesInput() {
+    this.clearCodeLinesInputEvent.next();
   }
 }
