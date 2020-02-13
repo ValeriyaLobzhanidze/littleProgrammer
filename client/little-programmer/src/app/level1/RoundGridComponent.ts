@@ -18,7 +18,8 @@ export default class RoundGridComponent implements ComponentI {
   private diffX: number;
   private diffY: number;
   private backArcsColor: string = "rgb(75,191,151, 0.1)";
-  private targetArcsColor: string = "rgba(159, 146, 255, 0.64)";
+  private targetArcsColor: string = "rgb(99, 177, 117, 0.64)";
+  // private targetArcsColor: string = "rgba(159, 146, 255, 0.64)";
   private childComponent: SpriteComponent;
 
   private readonly arcRadius: number = 12;

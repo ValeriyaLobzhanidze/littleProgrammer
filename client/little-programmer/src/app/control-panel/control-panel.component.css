@@ -9,11 +9,13 @@
   height: 700px;
   width: 75px;
   margin-left: 40%;
-  color: rgba(159, 146, 255, 0.64);
+  color: rgba(255, 20, 147, 0.24);
+  /*color: rgba(159, 146, 255, 0.64);*/
 }
 
 .pink {
-  color: rgba(255, 20, 147, 0.44);
+  color: rgba(99, 177, 117, 0.71);
+  /*color: rgba(255, 20, 147, 0.44);*/
 }
 
 i:hover {
