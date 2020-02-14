@@ -6,7 +6,7 @@ import {DirectMoveFunction} from "./DirectMoveFunction";
 import {SharedService} from "../SharedService";
 import {Subscription} from "rxjs";
 import Point from "./Point";
-import Direction from "./Direction";
+import DirectionValue from "../util/DirectionValue";
 
 /**
  *
@@ -41,7 +41,7 @@ export default class SpriteComponent implements ComponentI {
   private readonly isPopUpUsed: boolean;
 
   constructor(matrixCords: Point[], targetCords: Point[],
-              numOfRows: number, numOfCols: number, route ?: Direction [],
+              numOfRows: number, numOfCols: number, route ?: DirectionValue [],
               sharedService?: SharedService, isPopUpUsed = true) {
 
     this.image = new Image(0, 0);

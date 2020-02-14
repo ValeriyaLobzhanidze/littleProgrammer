@@ -3,7 +3,7 @@ import {DirectMoveFunction} from "./DirectMoveFunction";
 import {ComponentI} from "../engine/ComponentI";
 import {SharedService} from "../SharedService";
 import CanvasLib from "../lib/CanvasLib";
-import Global from "../global/Global";
+import Global from "../util/Global";
 import Point from "./Point";
 import RoundGridComponentProps from "./RoundGridComponentProps";
 
