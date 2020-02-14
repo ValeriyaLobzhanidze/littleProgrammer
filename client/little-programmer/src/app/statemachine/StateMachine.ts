@@ -21,7 +21,8 @@ export default class StateMachine<T> {
   private stateIdx = 0;
   private IS_ACTIVE = true;
 
-  constructor(stateList: StateEntry[], stateFunctionList: Map<any, any>, stateComparingFunctionList: Map<any, any>) {
+  constructor(startValue: T, stateList: StateEntry[], stateFunctionList: Map<any, any>, stateComparingFunctionList: Map<any, any>) {
+    this.curProp = startValue;
     this.stateList = stateList;
     this.stateFunctionList = stateFunctionList;
     this.stateComparingFunctionList = stateComparingFunctionList;
@@ -30,15 +31,17 @@ export default class StateMachine<T> {
 
   private _update() {
     if (this.stateIdx < this.stateList.length) {
+      if (this.stateIdx > 0) {
+        this.curProp = this.curConditionToStop;
+      }
       let stateEntry = this.stateList[this.stateIdx++];
-      let initValue = stateEntry.property.startValueProps;
+
       let stopValue = stateEntry.property.endValueProps;
+      this.curConditionToStop = new T(stopValue);
 
       this.curState = stateEntry.state;
       this.curHandler = this.stateFunctionList.get(this.curState);
       this.curComparator = this.stateComparingFunctionList.get(this.curState);
-      this.curProp = new T(initValue);
-      this.curConditionToStop = new T(stopValue);
     } else {
       this.IS_ACTIVE = false;
     }
