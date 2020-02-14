@@ -5,52 +5,56 @@ import {ComponentI} from "../engine/ComponentI";
 import {DirectMoveFunction} from "./DirectMoveFunction";
 import {SharedService} from "../SharedService";
 import {Subscription} from "rxjs";
+import Point from "./Point";
+import Direction from "./Direction";
 
+/**
+ *
+ *
+ * */
 export default class SpriteComponent implements ComponentI {
-  private state: State = State.STABLE;
+  // private state: State = State.STABLE;
 
   private readonly spriteWidth = 30;
   private readonly spriteHeight = 38;
-
   private readonly numberOfFrames = 6;
   private readonly ticksPerFrame = 3;
   private tickCount = 0;
-
   private frameIndex = 0;
   private readonly image;
 
-  private animation: Animation;
+  // private animation: Animation;
+  // private readonly numOfCols: number;
+  // private readonly numOfRows: number;
+  // private readonly matrixCords: Point[];
+  // private readonly targetCords: Point[];
 
-  private visitedCords = [];
-  private animatedTargets = [];
-  private targetAnimateDy = 1.2;
+  // private visitedCords = [];
+  // private animatedTargets = [];
+  // private targetAnimateDy = 1.2;
 
-  private readonly numOfCols: number;
-  private readonly numOfRows: number;
-  private readonly matrixCords: { x: number, y: number }[];
-  private readonly targetCords: { x: number, y: number }[];
-
-  private dx: number = 0;
-  private dy: number = 0;
+  private x: number = 0;
+  private y: number = 0;
   private readonly sharedService: SharedService;
 
   private subscription: Subscription;
   private readonly isPopUpUsed: boolean;
 
-  constructor(matrixCords: { x: number, y: number }[], targetCords: { x: number, y: number }[],
-              numOfRows: number, numOfCols: number, route ?: { direction: DirectMoveFunction, val: number } [],
+  constructor(matrixCords: Point[], targetCords: Point[],
+              numOfRows: number, numOfCols: number, route ?: Direction [],
               sharedService?: SharedService, isPopUpUsed = true) {
 
     this.image = new Image(0, 0);
     this.image.src = "/assets/images/radish.png";
 
-    this.dx = matrixCords[0].x;
-    this.dy = matrixCords[0].y;
+    this.x = matrixCords[0].x;
+    this.y = matrixCords[0].y;
 
-    this.targetCords = targetCords;
-    this.matrixCords = matrixCords;
-    this.numOfCols = numOfCols;
-    this.numOfRows = numOfRows;
+    // this.targetCords = targetCords;
+    // this.matrixCords = matrixCords;
+    // this.numOfCols = numOfCols;
+    // this.numOfRows = numOfRows;
+
     this.sharedService = sharedService;
     this.isPopUpUsed = isPopUpUsed;
 
@@ -74,12 +78,12 @@ export default class SpriteComponent implements ComponentI {
   }
 
   public setAnimation(route: { direction: DirectMoveFunction, val: number } []) {
-    this.animation = new SpriteAnimation(this.matrixCords, this.numOfRows, this.numOfCols, route);
-    this.state = State.ACTIVE;
+    // this.animation = new SpriteAnimation(this.matrixCords, this.numOfRows, this.numOfCols, route);
+    // this.state = State.ACTIVE;
   }
 
   public render(canvas: any): void {
-    this.update();
+    this._update();
 
     let ctx = canvas.getContext('2d');//TODO: move to CanvasLib
     ctx.drawImage(this.image,
@@ -87,8 +91,8 @@ export default class SpriteComponent implements ComponentI {
       0,
       this.spriteWidth,
       this.spriteHeight,
-      this.dx - this.spriteWidth / 2,
-      this.dy - this.spriteHeight / 2,
+      this.x - this.spriteWidth / 2,
+      this.y - this.spriteHeight / 2,
       this.spriteWidth,
       this.spriteHeight);
   }
@@ -135,8 +139,20 @@ export default class SpriteComponent implements ComponentI {
     return arr.indexOf(targetElem) != -1;
   }
 
-  private update() {
+  private _update(){
     this.tickCount++;
+    if (this.tickCount > this.ticksPerFrame) {
+      this.tickCount = 0;
+      if (this.frameIndex < this.numberOfFrames - 1) {
+        this.frameIndex++;
+      } else {
+        this.frameIndex = 0;
+      }
+    }
+  }
+
+  private update() {
+    // this.tickCount++;
 
     // if (this.state == State.ACTIVE && this.animation != null) {
     //   if (!this.animation.shouldEnd()) {
@@ -179,14 +195,14 @@ export default class SpriteComponent implements ComponentI {
     //   }
     // }
 
-    if (this.tickCount > this.ticksPerFrame) {
-      this.tickCount = 0;
-      if (this.frameIndex < this.numberOfFrames - 1) {
-        this.frameIndex++;
-      } else {
-        this.frameIndex = 0;
-      }
-    }
+    // if (this.tickCount > this.ticksPerFrame) {
+    //   this.tickCount = 0;
+    //   if (this.frameIndex < this.numberOfFrames - 1) {
+    //     this.frameIndex++;
+    //   } else {
+    //     this.frameIndex = 0;
+    //   }
+    // }
 
     // if (this.animatedTargets.length > 0) {
     //   this.animateTargets();

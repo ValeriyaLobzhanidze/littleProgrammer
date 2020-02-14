@@ -35,10 +35,8 @@ export default class StateMachine<T> {
         this.curProp = this.curConditionToStop;
       }
       let stateEntry = this.stateList[this.stateIdx++];
-
       let stopValue = stateEntry.property.endValueProps;
       this.curConditionToStop = new T(stopValue);
-
       this.curState = stateEntry.state;
       this.curHandler = this.stateFunctionList.get(this.curState);
       this.curComparator = this.stateComparingFunctionList.get(this.curState);
@@ -49,7 +47,7 @@ export default class StateMachine<T> {
 
   public update(): any {
     if (this.IS_ACTIVE) {
-      let isTargetReached = this.curComparator.compare(this.curProp, this.curConditionToStop);
+      let isTargetReached: boolean = this.curComparator.compare(this.curProp, this.curConditionToStop);
       if (isTargetReached) {
         this._update();
       }
