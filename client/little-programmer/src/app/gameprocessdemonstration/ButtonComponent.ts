@@ -1,5 +1,5 @@
 import {ComponentI} from "../engine/ComponentI";
-import CanvasShapesLib from "../lib/CanvasShapesLib";
+import CanvasLib from "../lib/CanvasLib";
 import {ButtonState} from "./ButtonState";
 
 export default class ButtonComponent implements ComponentI {
@@ -41,7 +41,7 @@ export default class ButtonComponent implements ComponentI {
   }
 
   private renderButton(canvas: any) {
-    CanvasShapesLib.roundStrokeRect(canvas, this.x, this.y, this.width, this.height, this.radius,
+    CanvasLib.roundStrokeRect(canvas, this.x, this.y, this.width, this.height, this.radius,
       this.buttonBorderColor, this.currentColor);
   }
 

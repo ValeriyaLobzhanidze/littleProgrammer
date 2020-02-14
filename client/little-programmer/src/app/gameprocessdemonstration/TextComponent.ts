@@ -1,7 +1,7 @@
 import {ComponentI} from "../engine/ComponentI";
 import VerticalLineComponent from "./VerticalLineComponent";
 import {TextState} from "./TextState";
-import CanvasShapesLib from "../lib/CanvasShapesLib";
+import CanvasLib from "../lib/CanvasLib";
 
 export default class TextComponent implements ComponentI {
   private readonly x;
@@ -98,13 +98,13 @@ export default class TextComponent implements ComponentI {
   }
 
   private renderInputField(canvas: any) {
-    let ctx = canvas.getContext('2d');
+    let ctx = canvas.getContext('2d');//TODO: move to Canvas lib
     ctx.font = this.fonSize + "px KBSticktoIt";
-    CanvasShapesLib.roundStrokeRect(canvas, this.x, this.y, ctx.measureText(this.maxLine).width + 5,
+    CanvasLib.roundStrokeRect(canvas, this.x, this.y, ctx.measureText(this.maxLine).width + 5,
       this.fonSize + 10, 5, this.inputFieldColor, "white");
   }
 
-  private renderText(canvas: any) {
+  private renderText(canvas: any) {//TODO: move to Canvas lib
     let ctx = canvas.getContext('2d');
     ctx.font = this.fonSize + "px KBSticktoIt";
     ctx.fillStyle = this.curTextColor;

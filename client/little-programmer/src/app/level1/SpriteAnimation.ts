@@ -39,8 +39,6 @@ export class SpriteAnimation implements Animation {
     return first < second;
   }
 
-  //this method updates current state: active coordinate(can be dx or dy) and comparable function
-  //changing state happens when current dx has reached its current boundary
   private updateState(): void {
     let curEntry = this.route[this.amountOfVisitedCords];
 

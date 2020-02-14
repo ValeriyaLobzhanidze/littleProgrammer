@@ -58,7 +58,7 @@ export default class Ball {
     this._render(canvas);
   }
 
-  private _render(canvas: any) {
+  private _render(canvas: any) {//TODO: move to Canvas lib
     let ctx = canvas.getContext('2d');
     ctx.save();
     ctx.translate(this.x, this.y);

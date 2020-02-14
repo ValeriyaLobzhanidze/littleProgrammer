@@ -1,4 +1,4 @@
-export default class CanvasShapesLib {
+export default class CanvasLib {
 
   public static roundStrokeRect(canvas: any, x: number, y: number, w: number, h: number, radius: number,
                                 strokeStyle: string, fillStyle: string) {
