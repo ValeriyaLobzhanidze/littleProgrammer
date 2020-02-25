@@ -1,6 +1,4 @@
 import StateEntry from "./StateEntry";
-import StateHandler from "./StateHandler";
-import StateComparator from "./StateComparator";
 
 /**
  *
@@ -9,17 +7,19 @@ import StateComparator from "./StateComparator";
  * */
 export default class StateMachine<T> {
   private readonly stateList: StateEntry<T>[];
-  private readonly stateFunctionList: Map<any, StateHandler<T>>;
-  private readonly stateComparingFunctionList: Map<any, StateComparator<T>>;
+  private readonly stateFunctionList: Map<any, (value: T) => T>;
+  private readonly stateComparingFunctionList: Map<any, (val1: T, val2: T) => boolean>;
 
   private curProp: T;
-  private curConditionToStop: T;
+  private curShouldReachProp: T;
+
   private curState: any;
-  private curHandler: StateHandler<any>;
-  private curComparator: StateComparator<any>;
+  private curHandler: (value: T) => T;
+  private curComparator: (val1: T, val2: T) => boolean;
 
   private stateIdx = 0;
-  private IS_ACTIVE = true;
+  private isSmActive = true;
+  private numOfLastErr: number = -1;
 
   constructor(startValue: T, stateList: StateEntry<T>[], stateFunctionList: Map<any, any>, stateComparingFunctionList: Map<any, any>) {
     this.curProp = startValue;
@@ -32,27 +32,43 @@ export default class StateMachine<T> {
   private _update() {
     if (this.stateIdx < this.stateList.length) {
       if (this.stateIdx > 0) {
-        this.curProp = this.curConditionToStop;
+        this.curProp = this.curShouldReachProp;
       }
-      let stateEntry = this.stateList[this.stateIdx++];
-      let stopValue = stateEntry.property.endValueProps;
-      this.curConditionToStop = new stateEntry.property.type(stopValue);
+      let stateEntry = this.stateList[this.stateIdx];
+      if (stateEntry.endValue == null) {
+        this.numOfLastErr = this.stateIdx;
+        this.isSmActive = false;
+        return;
+      }
+
       this.curState = stateEntry.state;
+      this.curShouldReachProp = stateEntry.endValue;
       this.curHandler = this.stateFunctionList.get(this.curState);
       this.curComparator = this.stateComparingFunctionList.get(this.curState);
+      this.stateIdx++;
     } else {
-      this.IS_ACTIVE = false;
+      this.isSmActive = false;
     }
   }
 
-  public update(): any {
-    if (this.IS_ACTIVE) {
-      let isTargetReached: boolean = this.curComparator.compare(this.curProp, this.curConditionToStop);
-      if (isTargetReached) {
+  public update(): T {
+    if (this.isSmActive) {
+      let isActual: boolean = this.curComparator(this.curProp, this.curShouldReachProp);
+      if (!isActual) {
         this._update();
       }
-      this.curProp = this.curHandler.handle(this.curProp);
+      if (this.isActive() && this.getNumOfLastErr() == -1) {
+        this.curProp = this.curHandler(this.curProp);
+      }
     }
     return this.curProp;
+  }
+
+  public getNumOfLastErr(): number {
+    return this.numOfLastErr;
+  }
+
+  public isActive(): boolean {
+    return this.isSmActive;
   }
 }

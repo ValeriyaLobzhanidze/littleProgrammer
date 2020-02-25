@@ -2,10 +2,11 @@ import {Injectable, Type} from '@angular/core';
 import {Subject} from "rxjs";
 import {DirectMoveFunction} from "./level1/DirectMoveFunction";
 import PopUpEventProps from "./PopUpEventProps";
+import DirectionValue from "./level1/DirectionValue";
 
 @Injectable()
 export class SharedService {
-  private codeLineData: Subject<{ direction: DirectMoveFunction, val: number }[]> = new Subject<{ direction: DirectMoveFunction, val: number }[]>();
+  private codeLineData: Subject<DirectionValue[]> = new Subject<DirectionValue[]>();
   public codeLineData$ = this.codeLineData.asObservable();
 
   private score: Subject<{ x: number, y: number }> = new Subject<{ x: number, y: number }>();
@@ -27,7 +28,7 @@ export class SharedService {
     this.showLastTryEvent.next();
   }
 
-  public setCodeLineData(data: { direction: DirectMoveFunction, val: number }[]): void {
+  public setCodeLineData(data: DirectionValue[]): void {
     this.codeLineData.next(data);
   }
 

@@ -4,6 +4,7 @@ import {Engine} from "../engine/Engine";
 import EngineImpl from "../engine/EngineImpl";
 import RoundGridComponent from "../level1/RoundGridComponent";
 import Level from "../engine/Level";
+import RoundGridComponentProps from "../level1/RoundGridComponentProps";
 
 @Component({
   selector: 'app-code-viewer',
@@ -20,22 +21,19 @@ export class CodeViewerComponent implements OnInit {
   public sharedService: SharedService;
 
   private readonly rootComponent: RoundGridComponent;
-
   private engine: Engine;
 
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
     this.rootComponent = new RoundGridComponent();
-    this.rootComponent.init({
-      width: this.canvasWidth,
-      height: this.canvasHeight,
-      isDefaultRoute: false,
-      sharedService: this.sharedService,
-      startCanvasX: 0,
-      startCanvasY: 0,
-      isDefaultTarget: true,
-      isPopUpUsed:true
-    });
+    let props = new RoundGridComponentProps();
+    props.sharedService = this.sharedService;
+    props.canvasWidth = this.canvasWidth;
+    props.canvasHeight = this.canvasHeight;
+    props.isDefaultRoute = false;
+    props.isDefaultTarget = true;
+    props.isPopUpUsed = true;
+    this.rootComponent.init(props);
   }
 
   ngOnInit() {
@@ -64,14 +62,14 @@ export class CodeViewerComponent implements OnInit {
   }
 
   private onMouseDown(event: MouseEvent): void {
-    this.rootComponent.onMouseDown(event.clientX - this.canvasLeft, event.clientY - this.canvasTop);
+    // this.rootComponent.onMouseDown(event.clientX - this.canvasLeft, event.clientY - this.canvasTop);
   }
 
   private onMouseMove(event: MouseEvent): void {
-    this.rootComponent.onMouseMove(event.clientX - this.canvasLeft, event.clientY - this.canvasTop);
+    // this.rootComponent.onMouseMove(event.clientX - this.canvasLeft, event.clientY - this.canvasTop);
   }
 
   private onMouseUp(): void {
-    this.rootComponent.onMouseUp();
+    // this.rootComponent.onMouseUp();
   }
 }

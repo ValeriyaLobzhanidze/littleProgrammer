@@ -5,6 +5,7 @@ import TextComponent from "./TextComponent";
 import ButtonComponent from "./ButtonComponent";
 import {SharedService} from "../SharedService";
 import {DirectMoveFunction} from "../level1/DirectMoveFunction";
+import RoundGridComponentProps from "../level1/RoundGridComponentProps";
 
 export default class GameProcessDemonstrationComponent implements ComponentI {
   private roundGrid: RoundGridComponent;
@@ -26,16 +27,18 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
   init(props: any) {
     this.sharedService = props.sharedService;
     this.roundGrid = new RoundGridComponent();
-    this.roundGrid.init({
-      width: props.gridWidth,
-      height: props.gridHeight,
-      isDefaultRoute: false,
-      sharedService: this.sharedService,
-      startCanvasX: 0,
-      startCanvasY: this.typeCanvasHeight,
-      isDefaultTarget: false,
-      isPopUpUsed: props.isPopUpUsed
-    });
+    let roundGridProps = new RoundGridComponentProps();
+
+    roundGridProps.sharedService = this.sharedService;
+    roundGridProps.canvasWidth = props.gridWidth;
+    roundGridProps.canvasHeight = props.gridHeight;
+    roundGridProps.isDefaultRoute = false;
+    roundGridProps.isDefaultTarget = false;
+    roundGridProps.isPopUpUsed = true;
+    roundGridProps.canvasTop = this.typeCanvasHeight;
+    roundGridProps.isPopUpUsed = props.isPopUpUsed;
+
+    this.roundGrid.init(roundGridProps);
     this.textComponent = new TextComponent(100, 5, props.textArr, 30);
     this.buttonComponent = new ButtonComponent(140, 60, "Execute!", 115, 40);
     this.mouseComponent = new MousePointerComponent(

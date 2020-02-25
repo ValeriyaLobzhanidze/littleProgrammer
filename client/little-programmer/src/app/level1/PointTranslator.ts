@@ -1,7 +1,7 @@
 import DirectionValue from "./DirectionValue";
-import DirectionPoint from "./DirectionPoint";
-import Point from "../level1/Point";
-import {DirectMoveFunction} from "../level1/DirectMoveFunction";
+import Point from "./Point";
+import {DirectMoveFunction} from "./DirectMoveFunction";
+import StateEntry from "../statemachine/StateEntry";
 
 export default class PointTranslator {
   private readonly directionList: DirectionValue[];
@@ -16,9 +16,10 @@ export default class PointTranslator {
   private getPoint(direction: DirectionValue): Point {
     switch (direction.direction) {
       case DirectMoveFunction.MOVE_RIGHT:
-        if (this.currentPoint.x + direction.val < this.matrixCords[1].length) {
+        if (this.currentPoint.x + direction.val < this.matrixCords[0].length) {
           this.currentPoint.x += direction.val;
-          return this.matrixCords[this.currentPoint.x][this.currentPoint.y];
+          let point = this.matrixCords[this.currentPoint.y][this.currentPoint.x];
+          return new Point(point.x, point.y);
         } else {
           return null;
         }
@@ -26,7 +27,8 @@ export default class PointTranslator {
       case DirectMoveFunction.MOVE_LEFT:
         if (this.currentPoint.x - direction.val >= 0) {
           this.currentPoint.x -= direction.val;
-          return this.matrixCords[this.currentPoint.x][this.currentPoint.y];
+          let point = this.matrixCords[this.currentPoint.y][this.currentPoint.x];
+          return new Point(point.x, point.y);
         } else {
           return null;
         }
@@ -34,7 +36,8 @@ export default class PointTranslator {
       case DirectMoveFunction.MOVE_UP:
         if (this.currentPoint.y - direction.val >= 0) {
           this.currentPoint.y -= direction.val;
-          return this.matrixCords[this.currentPoint.x][this.currentPoint.y];
+          let point = this.matrixCords[this.currentPoint.y][this.currentPoint.x];
+          return new Point(point.x, point.y);
         } else {
           return null;
         }
@@ -42,7 +45,8 @@ export default class PointTranslator {
       case DirectMoveFunction.MOVE_DOWN:
         if (this.currentPoint.y + direction.val < this.matrixCords[0].length * this.matrixCords[1].length) {
           this.currentPoint.y += direction.val;
-          return this.matrixCords[this.currentPoint.x][this.currentPoint.y];
+          let point = this.matrixCords[this.currentPoint.y][this.currentPoint.x];
+          return new Point(point.x, point.y);
         } else {
           return null;
         }
@@ -51,10 +55,10 @@ export default class PointTranslator {
     }
   }
 
-  public getDirectPointList(): DirectionPoint[] {
-    let directionPointList: DirectionPoint[] = [];
+  public getDirectPointList(): StateEntry<Point>[] {
+    let directionPointList: StateEntry<Point>[] = [];
     for (let direction of this.directionList) {
-      directionPointList.push(new DirectionPoint(direction.direction, this.getPoint(direction)));
+      directionPointList.push(new StateEntry<Point>(direction.direction, this.getPoint(direction)));
     }
     return directionPointList;
   }

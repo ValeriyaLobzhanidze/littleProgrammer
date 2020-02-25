@@ -1,6 +1,9 @@
-import PropertyEntry from "./PropertyEntry";
-
 export default class StateEntry<T> {
   public state: any;
-  public property: PropertyEntry<T>;
+  public endValue: T;
+
+  constructor(state: any, endValue: T) {
+    this.state = state;
+    this.endValue = endValue;
+  }
 }

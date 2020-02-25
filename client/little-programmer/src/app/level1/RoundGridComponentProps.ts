@@ -1,6 +1,7 @@
 import {SharedService} from "../SharedService";
 
 export default class RoundGridComponentProps {
+  public radius: number = 12;
   public canvasWidth: number;
   public canvasHeight: number;
 
@@ -11,4 +12,7 @@ export default class RoundGridComponentProps {
 
   public canvasTop: number = 0;
   public canvasLeft: number = 0;
+
+  public topTargetRect: number = 2;
+  public leftTargetRect: number = 2;
 }
