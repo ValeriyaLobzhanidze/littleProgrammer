@@ -21,7 +21,8 @@ export default class StateMachine<T> {
   private isSmActive = true;
   private numOfLastErr: number = -1;
 
-  constructor(startValue: T, stateList: StateEntry<T>[], stateFunctionList: Map<any, any>, stateComparingFunctionList: Map<any, any>) {
+  constructor(startValue: T, stateList: StateEntry<T>[], stateFunctionList: Map<any, (value: T) => T>,
+              stateComparingFunctionList: Map<any, (val1: T, val2: T) => boolean>) {
     this.curProp = startValue;
     this.stateList = stateList;
     this.stateFunctionList = stateFunctionList;

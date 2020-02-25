@@ -51,10 +51,6 @@ export default class RoundGridComponent implements ComponentI {
     let ctx = canvas.getContext('2d');
     for (let i = 0; i < this.roundCords.length; i++) {
       for (let j = 0; j < this.roundCords[0].length; j++) {
-        // let color = this.ordinaryRoundColor;
-        // if (this.targetCords[i][j] === 1) {
-        //   color = this.targetRoundColor;
-        // }
         ctx.beginPath();
         ctx.arc(this.roundCords[i][j].x, this.roundCords[i][j].y, this.roundRadius, 0, 2 * Math.PI);
         ctx.fillStyle = this.ordinaryRoundColor;
