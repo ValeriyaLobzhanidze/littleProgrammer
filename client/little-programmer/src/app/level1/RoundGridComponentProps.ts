@@ -1,4 +1,5 @@
 import {SharedService} from "../SharedService";
+import Global from "../global/Global";
 
 export default class RoundGridComponentProps {
   public radius: number = 12;
@@ -15,4 +16,7 @@ export default class RoundGridComponentProps {
 
   public topTargetRect: number = 2;
   public leftTargetRect: number = 2;
+
+  public targetColor = Global.DEEP_GREEN;
+  public commonColor = Global.LIGHT_GREEN;
 }

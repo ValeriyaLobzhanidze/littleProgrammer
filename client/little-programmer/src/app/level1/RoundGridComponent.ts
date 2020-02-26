@@ -6,14 +6,12 @@ import Point from "./Point";
 import RoundGridComponentProps from "./RoundGridComponentProps";
 import RoundGridComponentAssetsBuilder from "./RoundGridComponentAssetsBuilder";
 import SpriteComponentProps from "./SpriteComponentProps";
+import {CirclePoint} from "./CirclePoint";
+import TargetComponent from "./TargetComponent";
 
 export default class RoundGridComponent implements ComponentI {
-  private roundCords: Point[][];
-  private targetCords: Point[];
-
-  private roundRadius: number;
-  private ordinaryRoundColor: string = Global.LIGHT_GREEN;
-  // private targetRoundColor: string = Global.DEEP_GREEN;
+  private roundCords: CirclePoint[][];
+  private targetComponents: TargetComponent[] = [];
   private spriteComponent: SpriteComponent;
 
   // private startDragRoundCords: Point = new Point(0, 0);
@@ -24,17 +22,18 @@ export default class RoundGridComponent implements ComponentI {
   }
 
   init(props: RoundGridComponentProps) {
-    this.roundRadius = props.radius;
-
     let assets = new RoundGridComponentAssetsBuilder().build(props);
     this.roundCords = assets.roundCords;
-    this.targetCords = assets.targetCords;
 
     let spriteProps = new SpriteComponentProps();
     spriteProps.sharedService = props.sharedService;
     spriteProps.matrixCords = this.roundCords;
     spriteProps.route = assets.defaultRoute;
     this.spriteComponent = new SpriteComponent(spriteProps);
+
+    for (let target of assets.targetCords) {
+      this.targetComponents.push(new TargetComponent(target));
+    }
   }
 
   public render(canvas: any): void {
@@ -44,7 +43,13 @@ export default class RoundGridComponent implements ComponentI {
     // if (this.startDragRoundCords && this.dragAmountOfSteps) {
     //   this.renderRectLine(canvas);
     // }
+    let spritePoint = this.spriteComponent.getCurPoint();
+    for (let target of this.targetComponents) {
+      target.activateIfTarget(spritePoint);
+      target.render(canvas);
+    }
     this.spriteComponent.render(canvas);
+
   }
 
   private _render(canvas: any): void {
@@ -52,8 +57,9 @@ export default class RoundGridComponent implements ComponentI {
     for (let i = 0; i < this.roundCords.length; i++) {
       for (let j = 0; j < this.roundCords[0].length; j++) {
         ctx.beginPath();
-        ctx.arc(this.roundCords[i][j].x, this.roundCords[i][j].y, this.roundRadius, 0, 2 * Math.PI);
-        ctx.fillStyle = this.ordinaryRoundColor;
+        let point = this.roundCords[i][j];
+        ctx.arc(point.x, point.y, point.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = point.color;
         ctx.fill();
       }
     }
@@ -67,12 +73,12 @@ export default class RoundGridComponent implements ComponentI {
     this.spriteComponent.subscribeForGettingCodeLines();
   }
 
-  public getCords(): Point[][] {
+  public getCords(): CirclePoint[][] {
     return this.roundCords;
   }
 
   public getAmountOfTargets(): number {
-    return this.targetCords.length;
+    return this.targetComponents.length;
   }
 
   // private renderRectLine(canvas: any) {
@@ -140,11 +146,7 @@ export default class RoundGridComponent implements ComponentI {
   //   }
   //   CanvasLib.roundStrokeRect(canvas, curX - shiftX, curY - shiftY, width, height, 2, Global.DEEP_PURPLE, Global.LIGHT_PURPLE);
   // }
-  //
-  // private isPointInsideRound(x0: number, y0: number, xPoint: number, yPoint: number): boolean {
-  //   return Math.sqrt((xPoint - x0) * (xPoint - x0) + (yPoint - y0) * (yPoint - y0)) <= this.roundRadius;
-  // }
-  //
+
   // private startPointIdentityCheck(x: number, y: number): boolean {
   //   if (this.startDragRoundCords) {
   //     return x == this.startDragRoundCords.x && y == this.startDragRoundCords.y
