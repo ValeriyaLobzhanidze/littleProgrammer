@@ -1,4 +1,3 @@
-import {ComponentI} from "../engine/ComponentI";
 import {Type} from "@angular/core";
 
 export default class CanvasProps {

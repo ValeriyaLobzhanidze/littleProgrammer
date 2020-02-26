@@ -10,28 +10,24 @@ import {CirclePoint} from "./CirclePoint";
 import TargetComponent from "./TargetComponent";
 
 export default class RoundGridComponent implements ComponentI {
-  private roundCords: CirclePoint[][];
+  private matrixPoints: CirclePoint[][];
   private targetComponents: TargetComponent[] = [];
   private spriteComponent: SpriteComponent;
-
-  // private startDragRoundCords: Point = new Point(0, 0);
-  // private horizontalDrag: boolean;
-  // private dragAmountOfSteps: number;
 
   constructor() {
   }
 
   init(props: RoundGridComponentProps) {
     let assets = new RoundGridComponentAssetsBuilder().build(props);
-    this.roundCords = assets.roundCords;
+    this.matrixPoints = assets.matrixPoints;
 
     let spriteProps = new SpriteComponentProps();
     spriteProps.sharedService = props.sharedService;
-    spriteProps.matrixCords = this.roundCords;
+    spriteProps.matrixCords = this.matrixPoints;
     spriteProps.route = assets.defaultRoute;
     this.spriteComponent = new SpriteComponent(spriteProps);
 
-    for (let target of assets.targetCords) {
+    for (let target of assets.targetPoints) {
       this.targetComponents.push(new TargetComponent(target));
     }
   }
@@ -54,10 +50,10 @@ export default class RoundGridComponent implements ComponentI {
 
   private _render(canvas: any): void {
     let ctx = canvas.getContext('2d');
-    for (let i = 0; i < this.roundCords.length; i++) {
-      for (let j = 0; j < this.roundCords[0].length; j++) {
+    for (let i = 0; i < this.matrixPoints.length; i++) {
+      for (let j = 0; j < this.matrixPoints[0].length; j++) {
         ctx.beginPath();
-        let point = this.roundCords[i][j];
+        let point = this.matrixPoints[i][j];
         ctx.arc(point.x, point.y, point.radius, 0, 2 * Math.PI);
         ctx.fillStyle = point.color;
         ctx.fill();
@@ -74,7 +70,7 @@ export default class RoundGridComponent implements ComponentI {
   }
 
   public getCords(): CirclePoint[][] {
-    return this.roundCords;
+    return this.matrixPoints;
   }
 
   public getAmountOfTargets(): number {

@@ -1,8 +1,8 @@
 import Point from "./Point";
 
 export class CirclePoint extends Point {
-  private _radius: number;
-  private _color: string;
+  private readonly _radius: number;
+  private readonly _color: string;
 
   constructor(x: number, y: number, radius: number, color: string) {
     super(x, y);

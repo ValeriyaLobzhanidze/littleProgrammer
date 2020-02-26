@@ -20,8 +20,8 @@ export default class RoundGridComponentAssetsBuilder {
       defaultRoute = this.buildDefaultRoute(props);
     }
     let assets = new RoundGridComponentAssets();
-    assets.roundCords = roundCords;
-    assets.targetCords = targetRoundCords;
+    assets.matrixPoints = roundCords;
+    assets.targetPoints = targetRoundCords;
     assets.defaultRoute = defaultRoute;
     return assets;
   }

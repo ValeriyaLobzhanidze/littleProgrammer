@@ -1,9 +1,8 @@
-import Point from "./Point";
 import DirectionValue from "./DirectionValue";
 import {CirclePoint} from "./CirclePoint";
 
 export default class RoundGridComponentAssets {
-  public roundCords: CirclePoint[][];
-  public targetCords: CirclePoint[];
+  public matrixPoints: CirclePoint[][];
+  public targetPoints: CirclePoint[];
   public defaultRoute: DirectionValue[];
 }
