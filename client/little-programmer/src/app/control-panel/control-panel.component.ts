@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SharedService} from "../SharedService";
-import RoundGridComponent from "../level1/RoundGridComponent";
+import Level1RootComponent from "../level1/Level1RootComponent";
 import InstructionSetComponent from "../instructionset/InstructionSetComponent";
 import Instruction from "../instructionset/Instruction";
 import ComponentBuilderService from "../ComponentBuilderService";
@@ -114,7 +114,7 @@ export class ControlPanelComponent implements OnInit {
       isDefaultTarget: true,
       isPopUpUsed: false
     };
-    let list1 = this.createCanvasProps("Help radish visit all purple points!", RoundGridComponent, list1RootComponentProps);
+    let list1 = this.createCanvasProps("Help radish visit all purple points!", Level1RootComponent, list1RootComponentProps);
     let popUpProps1 = this.createPopUpProps(list1, CanvasComponent);
 
     let comment = new Instruction("* write amount of steps", "rgba(187, 116, 251, 0.83)",

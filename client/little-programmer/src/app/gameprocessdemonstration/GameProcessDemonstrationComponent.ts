@@ -1,4 +1,4 @@
-import RoundGridComponent from "../level1/RoundGridComponent";
+import Level1RootComponent from "../level1/Level1RootComponent";
 import {ComponentI} from "../engine/ComponentI";
 import MousePointerComponent from "../mousepointer/MousePointerComponent";
 import TextComponent from "./TextComponent";
@@ -8,7 +8,7 @@ import {DirectMoveFunction} from "../level1/DirectMoveFunction";
 import RoundGridComponentProps from "../level1/RoundGridComponentProps";
 
 export default class GameProcessDemonstrationComponent implements ComponentI {
-  private roundGrid: RoundGridComponent;
+  private roundGrid: Level1RootComponent;
   private typeCanvasHeight = 120;
 
   private mouseComponent: MousePointerComponent;
@@ -26,7 +26,7 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
 
   init(props: any) {
     this.sharedService = props.sharedService;
-    this.roundGrid = new RoundGridComponent();
+    this.roundGrid = new Level1RootComponent();
     let roundGridProps = new RoundGridComponentProps();
 
     roundGridProps.sharedService = this.sharedService;

@@ -1,5 +1,5 @@
 import {ComponentI} from "../engine/ComponentI";
-import RoundGridComponent from "../level1/RoundGridComponent";
+import Level1RootComponent from "../level1/Level1RootComponent";
 import MousePointerComponent from "../mousepointer/MousePointerComponent";
 import {DirectMoveFunction} from "../level1/DirectMoveFunction";
 
@@ -16,7 +16,7 @@ export default class HintComponent implements ComponentI {
   }
 
   init(props: any) {
-    this.roundGridComponent = new RoundGridComponent();
+    this.roundGridComponent = new Level1RootComponent();
     this.roundGridComponent.init({
       width: props.width, height: props.height, isDefaultRoute: false, sharedService: null, startCanvasX: 0,
       startCanvasY: 0, isDefaultTarget: false, isPopUpUsed: false

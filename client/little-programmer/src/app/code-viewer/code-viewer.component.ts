@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {SharedService} from "../SharedService";
 import {Engine} from "../engine/Engine";
 import EngineImpl from "../engine/EngineImpl";
-import RoundGridComponent from "../level1/RoundGridComponent";
+import Level1RootComponent from "../level1/Level1RootComponent";
 import Level from "../engine/Level";
 import RoundGridComponentProps from "../level1/RoundGridComponentProps";
 
@@ -20,12 +20,12 @@ export class CodeViewerComponent implements OnInit {
   public currentScore: number = 0;
   public sharedService: SharedService;
 
-  private readonly rootComponent: RoundGridComponent;
+  private readonly rootComponent: Level1RootComponent;
   private engine: Engine;
 
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
-    this.rootComponent = new RoundGridComponent();
+    this.rootComponent = new Level1RootComponent();
     let props = new RoundGridComponentProps();
     props.sharedService = this.sharedService;
     props.canvasWidth = this.canvasWidth;
@@ -62,14 +62,14 @@ export class CodeViewerComponent implements OnInit {
   }
 
   private onMouseDown(event: MouseEvent): void {
-    // this.rootComponent.onMouseDown(event.clientX - this.canvasLeft, event.clientY - this.canvasTop);
+    this.rootComponent.onMouseDown(event.clientX - this.canvasLeft, event.clientY - this.canvasTop);
   }
 
   private onMouseMove(event: MouseEvent): void {
-    // this.rootComponent.onMouseMove(event.clientX - this.canvasLeft, event.clientY - this.canvasTop);
+    this.rootComponent.onMouseMove(event.clientX - this.canvasLeft, event.clientY - this.canvasTop);
   }
 
   private onMouseUp(): void {
-    // this.rootComponent.onMouseUp();
+    this.rootComponent.onMouseUp();
   }
 }
