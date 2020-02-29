@@ -1,7 +1,7 @@
 import {SharedService} from "../SharedService";
 import Global from "../global/Global";
 
-export default class RoundGridComponentProps {
+export default class Level1RootComponentProps {
   public radius: number = 12;
   public canvasWidth: number;
   public canvasHeight: number;

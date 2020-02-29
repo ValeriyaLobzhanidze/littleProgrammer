@@ -28,6 +28,7 @@ export default class SpriteComponent implements ComponentI {
   private readonly matrixCords: Point[][];
 
   private static readonly SPEED = 1.0;
+  private activated: boolean = false;
 
   constructor(props: SpriteComponentProps) {
     this.image = new Image(0, 0);
@@ -49,6 +50,12 @@ export default class SpriteComponent implements ComponentI {
     }
   }
 
+  public clearCurrentAnimation() {
+    this.curPoint = new Point(this.matrixCords[0][0].x, this.matrixCords[0][0].y);
+    this.stateMachine = null;
+    this.activated = false;
+  }
+
   public subscribeForGettingCodeLines() {
     this.subscription = this.sharedService.codeLineData$.subscribe(directionList => {
       this.initStateMachine(directionList);
@@ -61,6 +68,11 @@ export default class SpriteComponent implements ComponentI {
 
   public initStateMachine(route: DirectionValue[]) {
     this.stateMachine = DirectMoveStateMachineBuilder.build(route, this.matrixCords, SpriteComponent.SPEED);
+    this.activated = true;
+  }
+
+  public wasActivated(): boolean {
+    return this.activated;
   }
 
   public render(canvas: any): void {
@@ -86,11 +98,11 @@ export default class SpriteComponent implements ComponentI {
   }
 
   public getNumOfLastErr(): number {
-    return this.stateMachine.getNumOfLastErr();
+    return this.stateMachine ? this.stateMachine.getNumOfLastErr() : -1;
   }
 
   public isActive(): boolean {
-    return this.stateMachine.isActive();
+    return this.stateMachine && this.stateMachine.isActive();
   }
 
   private updateTickCount() {

@@ -5,7 +5,7 @@ import InstructionSetComponent from "../instructionset/InstructionSetComponent";
 import Instruction from "../instructionset/Instruction";
 import ComponentBuilderService from "../ComponentBuilderService";
 import ProgrammingExplanationProps from "../programming-explanation/ProgrammingExplanationProps";
-import PopUpEventProps from "../PopUpEventProps";
+import PopUpEventProps from "../popup/PopUpEventProps";
 import {ProgrammingExplanationComponent} from "../programming-explanation/programming-explanation.component";
 import {CanvasComponent} from "../canvascomponent/canvas.component";
 import CanvasProps from "../canvascomponent/CanvasProps";

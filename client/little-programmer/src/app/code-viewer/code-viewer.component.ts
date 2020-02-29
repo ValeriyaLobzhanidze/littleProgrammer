@@ -4,7 +4,7 @@ import {Engine} from "../engine/Engine";
 import EngineImpl from "../engine/EngineImpl";
 import Level1RootComponent from "../level1/Level1RootComponent";
 import Level from "../engine/Level";
-import RoundGridComponentProps from "../level1/RoundGridComponentProps";
+import Level1RootComponentProps from "../level1/Level1RootComponentProps";
 
 @Component({
   selector: 'app-code-viewer',
@@ -26,7 +26,7 @@ export class CodeViewerComponent implements OnInit {
   constructor(sharedService: SharedService) {
     this.sharedService = sharedService;
     this.rootComponent = new Level1RootComponent();
-    let props = new RoundGridComponentProps();
+    let props = new Level1RootComponentProps();
     props.sharedService = this.sharedService;
     props.canvasWidth = this.canvasWidth;
     props.canvasHeight = this.canvasHeight;

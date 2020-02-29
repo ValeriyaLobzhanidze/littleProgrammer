@@ -1,7 +1,7 @@
 import {Injectable, Type} from '@angular/core';
 import {Subject} from "rxjs";
 import {DirectMoveFunction} from "./level1/DirectMoveFunction";
-import PopUpEventProps from "./PopUpEventProps";
+import PopUpEventProps from "./popup/PopUpEventProps";
 import DirectionValue from "./level1/DirectionValue";
 
 @Injectable()

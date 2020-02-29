@@ -1,7 +1,7 @@
 import {Component, ComponentRef, Input, OnInit, Type, ViewChild, ViewContainerRef} from '@angular/core';
 import ComponentBuilderService from "../ComponentBuilderService";
 import {Init} from "./Init";
-import PopUpEventProps from "../PopUpEventProps";
+import PopUpEventProps from "../popup/PopUpEventProps";
 
 @Component({
   selector: 'app-pager',

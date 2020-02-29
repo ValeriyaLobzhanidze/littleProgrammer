@@ -1,6 +1,6 @@
 import {Component, Type} from '@angular/core';
 import {SharedService} from "./SharedService";
-import PopUpEventProps from "./PopUpEventProps";
+import PopUpEventProps from "./popup/PopUpEventProps";
 
 @Component({
   selector: 'app-root',

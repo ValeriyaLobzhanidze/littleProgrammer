@@ -1,4 +1,4 @@
-import RoundGridComponentProps from "./RoundGridComponentProps";
+import Level1RootComponentProps from "./Level1RootComponentProps";
 import Point from "./Point";
 import DirectionValue from "./DirectionValue";
 import {DirectMoveFunction} from "./DirectMoveFunction";
@@ -9,7 +9,7 @@ export default class RoundGridComponentAssetsBuilder {
   private numOfRows: number;
   private numOfCols: number;
 
-  public build(props: RoundGridComponentProps): RoundGridComponentAssets {
+  public build(props: Level1RootComponentProps): RoundGridComponentAssets {
     let roundCords = this.buildRoundCords(props);
     let targetRoundCords;
     if (props.isDefaultTarget) {
@@ -26,7 +26,7 @@ export default class RoundGridComponentAssetsBuilder {
     return assets;
   }
 
-  private buildDefaultRoute(props: RoundGridComponentProps): DirectionValue[] {
+  private buildDefaultRoute(props: Level1RootComponentProps): DirectionValue[] {
     let top = props.topTargetRect;
     let left = props.leftTargetRect;
 
@@ -40,7 +40,7 @@ export default class RoundGridComponentAssetsBuilder {
       new DirectionValue(DirectMoveFunction.MOVE_LEFT, width)]);
   }
 
-  private buildRoundCords(props: RoundGridComponentProps): CirclePoint[][] {
+  private buildRoundCords(props: Level1RootComponentProps): CirclePoint[][] {
     let diam = props.radius * 2;
     let startX = diam;
     let startY = diam;
@@ -66,7 +66,7 @@ export default class RoundGridComponentAssetsBuilder {
     return cords;
   }
 
-  private buildTargets(props: RoundGridComponentProps, matrix: Point[][]): CirclePoint[] {
+  private buildTargets(props: Level1RootComponentProps, matrix: Point[][]): CirclePoint[] {
     let top = props.topTargetRect;
     let left = props.leftTargetRect;
 

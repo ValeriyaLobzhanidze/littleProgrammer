@@ -1,42 +1,51 @@
 import SpriteComponent from "./SpriteComponent";
 import {ComponentI} from "../engine/ComponentI";
-import RoundGridComponentProps from "./RoundGridComponentProps";
+import Level1RootComponentProps from "./Level1RootComponentProps";
 import RoundGridComponentAssetsBuilder from "./RoundGridComponentAssetsBuilder";
 import SpriteComponentProps from "./SpriteComponentProps";
 import {CirclePoint} from "./CirclePoint";
 import TargetComponent from "./TargetComponent";
 import DraggableLineComponent from "./DraggableLineComponent";
+import RoundGridComponent from "./RoundGridComponent";
+import PopUpEventProps from "../popup/PopUpEventProps";
+import SimplePopUpProps from "../simple-pop-up/SimplePopUpProps";
+import {SimplePopUpComponent} from "../simple-pop-up/simple-pop-up.component";
+import {SharedService} from "../SharedService";
 
 export default class Level1RootComponent implements ComponentI {
-  private matrixPoints: CirclePoint[][];
   private targetComponents: TargetComponent[] = [];
   private spriteComponent: SpriteComponent;
   private dragLineComponent: DraggableLineComponent;
+  private roundGridComponent: RoundGridComponent;
+  private sharedService: SharedService;
 
   constructor() {
   }
 
-  init(props: RoundGridComponentProps) {
+  init(props: Level1RootComponentProps) {
     let assets = new RoundGridComponentAssetsBuilder().build(props);
-    this.matrixPoints = assets.matrixPoints;
+    this.roundGridComponent = new RoundGridComponent(assets.matrixPoints);
 
     let spriteProps = new SpriteComponentProps();
     spriteProps.sharedService = props.sharedService;
-    spriteProps.matrixCords = this.matrixPoints;
+    spriteProps.matrixCords = assets.matrixPoints;
     spriteProps.route = assets.defaultRoute;
     this.spriteComponent = new SpriteComponent(spriteProps);
 
     for (let target of assets.targetPoints) {
-      this.targetComponents.push(new TargetComponent(target));
+      this.targetComponents.push(new TargetComponent(target, props.sharedService));
     }
-    this.dragLineComponent = new DraggableLineComponent(this.matrixPoints);
+    this.dragLineComponent = new DraggableLineComponent(assets.matrixPoints);
+    this.sharedService = props.sharedService;
+
+    this.sharedService.closePopUp$.subscribe( () => this.spriteComponent.clearCurrentAnimation());
   }
 
   public render(canvas: any): void {
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    this._render(canvas);
+    this.roundGridComponent.render(canvas);
     this.dragLineComponent.render(canvas);
     let spritePoint = this.spriteComponent.getCurPoint();
     for (let target of this.targetComponents) {
@@ -44,19 +53,41 @@ export default class Level1RootComponent implements ComponentI {
       target.render(canvas);
     }
     this.spriteComponent.render(canvas);
+    if (this.spriteComponent.wasActivated() && !this.spriteComponent.isActive()) {
+      this.handleEndOfAnimation();
+
+    }
   }
 
-  private _render(canvas: any): void {
-    let ctx = canvas.getContext('2d');
-    for (let i = 0; i < this.matrixPoints.length; i++) {
-      for (let j = 0; j < this.matrixPoints[0].length; j++) {
-        ctx.beginPath();
-        let point = this.matrixPoints[i][j];
-        ctx.arc(point.x, point.y, point.radius, 0, 2 * Math.PI);
-        ctx.fillStyle = point.color;
-        ctx.fill();
-      }
+  private handleEndOfAnimation() {
+    let activatedTargets = this.targetComponents.filter(e => e.wasActivated());
+    if (activatedTargets.length === this.targetComponents.length) {
+
+    } else {
+      let diff = this.targetComponents.length - activatedTargets.length;
+      let popUpProps = this.createFailPopUp(diff);
+      this.sharedService.showPopUp(popUpProps);
     }
+  }
+
+  private createSuccessPopUp(): PopUpEventProps[] {
+    let simplePopUpProps = new SimplePopUpProps();
+    simplePopUpProps.imageSrc = '';
+    simplePopUpProps.header = 'Wonderful!';
+    let popUpEventProps = new PopUpEventProps();
+    popUpEventProps.componentProps = simplePopUpProps;
+    popUpEventProps.type = SimplePopUpComponent;
+    return [popUpEventProps];
+  }
+
+  private createFailPopUp(amountOfNotVisited: number): PopUpEventProps[] {
+    let simplePopUpProps = new SimplePopUpProps();
+    simplePopUpProps.imageSrc = 'assets/images/sad-robot.png';
+    simplePopUpProps.header = "You haven't visited " + amountOfNotVisited + " point!";
+    let popUpEventProps = new PopUpEventProps();
+    popUpEventProps.componentProps = simplePopUpProps;
+    popUpEventProps.type = SimplePopUpComponent;
+    return [popUpEventProps];
   }
 
   public unsubscribeFromGettingCodeLines() {
@@ -68,7 +99,7 @@ export default class Level1RootComponent implements ComponentI {
   }
 
   public getCords(): CirclePoint[][] {
-    return this.matrixPoints;
+    return this.roundGridComponent.getCords();
   }
 
   public getAmountOfTargets(): number {

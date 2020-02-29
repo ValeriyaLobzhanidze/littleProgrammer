@@ -7,33 +7,17 @@ import {Init} from "../pager/Init";
   styleUrls: ['./programming-explanation.component.css']
 })
 export class ProgrammingExplanationComponent implements OnInit, Init {
-  private _upperTextContent: string;
-  private _lowerTextContent: string;
+  private upperTextContent: string;
+  private lowerTextContent: string;
 
-  private _upperImageSource: string;
-  private _lowerImageSource: string;
+  private upperImageSource: string;
+  private lowerImageSource: string;
 
   public init(props: any) {
-    this._upperTextContent = props.upperTextContent || "";
-    this._lowerTextContent = props.lowerTextContent || "";
-    this._upperImageSource = props.upperImageSource || "";
-    this._lowerImageSource = props.lowerImageSource || "";
-  }
-
-  get upperTextContent(): string {
-    return this._upperTextContent;
-  }
-
-  get lowerTextContent(): string {
-    return this._lowerTextContent;
-  }
-
-  get upperImageSource(): string {
-    return this._upperImageSource;
-  }
-
-  get lowerImageSource(): string {
-    return this._lowerImageSource;
+    this.upperTextContent = props.upperTextContent || '';
+    this.lowerTextContent = props.lowerTextContent || '';
+    this.upperImageSource = props.upperImageSource || '';
+    this.lowerImageSource = props.lowerImageSource || '';
   }
 
   ngOnInit() {

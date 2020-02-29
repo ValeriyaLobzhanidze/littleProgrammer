@@ -2,15 +2,18 @@ import Point from "./Point";
 import StateMachine from "../statemachine/StateMachine";
 import TargetStateMachineBuilder from "./TargetStateMachineBuilder";
 import {CirclePoint} from "./CirclePoint";
+import {SharedService} from "../SharedService";
 
 export default class TargetComponent {
   private targetPoint: CirclePoint;
   private stateMachine: StateMachine<CirclePoint>;
-  private isActive: boolean = false;
+  private activated: boolean = false;
   private static SPEED = 5.0;
+  private sharedService: SharedService;
 
-  constructor(point: CirclePoint) {
+  constructor(point: CirclePoint, sharedService: SharedService) {
     this.targetPoint = point;
+    this.sharedService = sharedService;
     this.buildStateMachine();
   }
 
@@ -20,9 +23,14 @@ export default class TargetComponent {
       TargetComponent.SPEED);
   }
 
+  public wasActivated(): boolean {
+    return this.activated;
+  }
+
   public activateIfTarget(point: Point) {
-    if (!this.isActive && this.targetPoint.isPointInsideRound(point)) {
-      this.isActive = true;
+    if (!this.activated && this.targetPoint.isPointInsideRound(point)) {
+      this.activated = true;
+      this.sharedService.incrementScore();
     }
   }
 
@@ -32,7 +40,7 @@ export default class TargetComponent {
   }
 
   private updateTargets() {
-    if (this.isActive) {
+    if (this.activated && this.stateMachine.isActive()) {
       this.targetPoint = this.stateMachine.update();
     }
   }

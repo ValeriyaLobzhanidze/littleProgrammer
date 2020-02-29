@@ -14,6 +14,7 @@ import { PagePanelComponent } from './page-panel/page-panel.component';
 import ComponentBuilderService from "./ComponentBuilderService";
 import { CanvasComponent } from './canvascomponent/canvas.component';
 import { PagerComponent } from './pager/pager.component';
+import { SimplePopUpComponent } from './simple-pop-up/simple-pop-up.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { PagerComponent } from './pager/pager.component';
     ProgrammingExplanationComponent,
     PagePanelComponent,
     CanvasComponent,
-    PagerComponent
+    PagerComponent,
+    SimplePopUpComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +36,6 @@ import { PagerComponent } from './pager/pager.component';
   ],
   providers: [SharedService, ComponentBuilderService],
   bootstrap: [AppComponent],
-  entryComponents: [ProgrammingExplanationComponent, CanvasComponent]
+  entryComponents: [ProgrammingExplanationComponent, CanvasComponent, SimplePopUpComponent]
 })
 export class AppModule { }

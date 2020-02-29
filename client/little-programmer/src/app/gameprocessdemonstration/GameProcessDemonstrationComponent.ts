@@ -5,7 +5,7 @@ import TextComponent from "./TextComponent";
 import ButtonComponent from "./ButtonComponent";
 import {SharedService} from "../SharedService";
 import {DirectMoveFunction} from "../level1/DirectMoveFunction";
-import RoundGridComponentProps from "../level1/RoundGridComponentProps";
+import Level1RootComponentProps from "../level1/Level1RootComponentProps";
 
 export default class GameProcessDemonstrationComponent implements ComponentI {
   private roundGrid: Level1RootComponent;
@@ -27,7 +27,7 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
   init(props: any) {
     this.sharedService = props.sharedService;
     this.roundGrid = new Level1RootComponent();
-    let roundGridProps = new RoundGridComponentProps();
+    let roundGridProps = new Level1RootComponentProps();
 
     roundGridProps.sharedService = this.sharedService;
     roundGridProps.canvasWidth = props.gridWidth;
