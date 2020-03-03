@@ -1,10 +1,11 @@
 import Instruction from "./Instruction";
+import Global from "../global/Global";
 
 export default class InstructionSet {
   private readonly instructionList: Instruction[];
   private readonly comment: Instruction;
   private currentInstruction: Instruction;
-  private visitedInstructionColor = "#58fbce";
+  private visitedInstructionColor = Global.DEEP_GREEN;
   private _xInstructionStart = 52.2;
   private instructionShift = 10;
   private _xCommentStart = 40;

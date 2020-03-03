@@ -11,20 +11,14 @@
 }
 
 #img-container {
-  height: 250px;
-  width: 300px;
-
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-content: center;
+  margin-bottom: 10px;
 }
 
 img {
-  /*margin-left: 5%;*/
-  /*min-height: 150px;*/
-  /*min-width: 300px;*/
-
   max-height: 300px;
   max-width: 300px;
 }

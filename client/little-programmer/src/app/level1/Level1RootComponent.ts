@@ -83,7 +83,7 @@ export default class Level1RootComponent implements ComponentI {
     } else {
       let diff = this.targetComponents.length - activatedTargets.length;
       popUpHeader = "You haven't visited " + diff + " point!";
-      popUpPic = 'assets/images/sad-robot.png';
+      popUpPic = 'assets/images/sad-robot-1.png';
     }
     let popUpProps = this.createPopUpEventProps(popUpPic, popUpHeader);
     this.sharedService.showPopUp(popUpProps);

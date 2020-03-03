@@ -1,5 +1,4 @@
 import {ComponentI} from "../engine/ComponentI";
-import Instruction from "./Instruction";
 import InstructionSet from "./InstructionSet";
 import Ball from "./Ball";
 

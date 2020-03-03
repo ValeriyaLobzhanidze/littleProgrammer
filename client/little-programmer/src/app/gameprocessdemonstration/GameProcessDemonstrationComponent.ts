@@ -8,8 +8,8 @@ import {DirectMoveFunction} from "../level1/DirectMoveFunction";
 import Level1RootComponentProps from "../level1/Level1RootComponentProps";
 
 export default class GameProcessDemonstrationComponent implements ComponentI {
-  private roundGrid: Level1RootComponent;
-  private typeCanvasHeight = 120;
+  private level1Component: Level1RootComponent;
+  private static CANVAS_START_Y = 120;
 
   private mouseComponent: MousePointerComponent;
   private textComponent: TextComponent;
@@ -23,21 +23,21 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
   constructor() {
   }
 
-  init(props: any) {
+  public init(props: any) {
     this.sharedService = props.sharedService;
-    this.roundGrid = new Level1RootComponent();
-    let roundGridProps = new Level1RootComponentProps();
+    this.level1Component = new Level1RootComponent();
+    let level1ComponentProps = new Level1RootComponentProps();
 
-    roundGridProps.sharedService = this.sharedService;
-    roundGridProps.canvasWidth = props.gridWidth;
-    roundGridProps.canvasHeight = props.gridHeight;
-    roundGridProps.isDefaultRoute = false;
-    roundGridProps.isDefaultTarget = false;
-    roundGridProps.isPopUpUsed = true;
-    roundGridProps.canvasTop = this.typeCanvasHeight;
-    roundGridProps.isPopUpUsed = props.isPopUpUsed;
+    level1ComponentProps.sharedService = this.sharedService;
+    level1ComponentProps.canvasWidth = props.gridWidth;
+    level1ComponentProps.canvasHeight = props.gridHeight;
+    level1ComponentProps.isDefaultRoute = false;
+    level1ComponentProps.isDefaultTarget = true;
+    level1ComponentProps.isPopUpUsed = true;
+    level1ComponentProps.canvasTop = GameProcessDemonstrationComponent.CANVAS_START_Y;
+    level1ComponentProps.isPopUpUsed = false;
 
-    this.roundGrid.init(roundGridProps);
+    this.level1Component.init(level1ComponentProps);
     this.textComponent = new TextComponent(100, 5, props.textArr, 30);
     this.buttonComponent = new ButtonComponent(140, 60, "Execute!", 115, 40);
     this.mouseComponent = new MousePointerComponent(
@@ -46,7 +46,7 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
   }
 
   render(canvas: any) {
-    this.roundGrid.render(canvas);
+    this.level1Component.render(canvas);
     if (!this.textComponent.wasActivated()) {
       this.textComponent.activate();
     }

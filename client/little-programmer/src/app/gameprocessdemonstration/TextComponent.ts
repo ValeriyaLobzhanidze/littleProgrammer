@@ -2,6 +2,7 @@ import {ComponentI} from "../engine/ComponentI";
 import VerticalLineComponent from "./VerticalLineComponent";
 import {TextState} from "./TextState";
 import CanvasLib from "../lib/CanvasLib";
+import Global from "../global/Global";
 
 export default class TextComponent implements ComponentI {
   private readonly x;
@@ -29,9 +30,9 @@ export default class TextComponent implements ComponentI {
   private verticalLine: VerticalLineComponent;
 
   private inputFieldColor = "grey";
-  private textColor1 = "rgba(187, 116, 251, 0.83)";
-  private wrongColor = "#FB1831";
-  private rightColor = "#58fbce";
+  private textColor1 = Global.LIGHT_PURPLE;
+  private wrongColor = Global.LIGHT_RED;
+  private rightColor = Global.DEEP_GREEN;
   private curTextColor = this.textColor1;
 
   private maxLine: string;
