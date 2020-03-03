@@ -19,7 +19,7 @@ export default class TargetComponent {
 
   private buildStateMachine() {
     this.stateMachine = TargetStateMachineBuilder.build(new CirclePoint(this.targetPoint.x, this.targetPoint.y, this.targetPoint.radius, this.targetPoint.color),
-      new CirclePoint(0, -10, this.targetPoint.radius, this.targetPoint.color),
+      new CirclePoint(0, -15, this.targetPoint.radius, this.targetPoint.color),
       TargetComponent.SPEED);
   }
 

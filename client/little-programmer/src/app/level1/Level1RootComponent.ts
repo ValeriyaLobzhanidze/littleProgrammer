@@ -11,6 +11,7 @@ import PopUpEventProps from "../popup/PopUpEventProps";
 import SimplePopUpProps from "../simple-pop-up/SimplePopUpProps";
 import {SimplePopUpComponent} from "../simple-pop-up/simple-pop-up.component";
 import {SharedService} from "../SharedService";
+import RoundGridComponentAssets from "./RoundGridComponentAssets";
 
 export default class Level1RootComponent implements ComponentI {
   private targetComponents: TargetComponent[] = [];
@@ -18,72 +19,74 @@ export default class Level1RootComponent implements ComponentI {
   private dragLineComponent: DraggableLineComponent;
   private roundGridComponent: RoundGridComponent;
   private sharedService: SharedService;
+  private assets: RoundGridComponentAssets;
 
   constructor() {
   }
 
   init(props: Level1RootComponentProps) {
-    let assets = new RoundGridComponentAssetsBuilder().build(props);
-    this.roundGridComponent = new RoundGridComponent(assets.matrixPoints);
+    this.assets = new RoundGridComponentAssetsBuilder().build(props);
+    this.roundGridComponent = new RoundGridComponent(this.assets.matrixPoints);
 
     let spriteProps = new SpriteComponentProps();
     spriteProps.sharedService = props.sharedService;
-    spriteProps.matrixCords = assets.matrixPoints;
-    spriteProps.route = assets.defaultRoute;
+    spriteProps.matrixCords = this.assets.matrixPoints;
+    spriteProps.route = this.assets.defaultRoute;
     this.spriteComponent = new SpriteComponent(spriteProps);
 
-    for (let target of assets.targetPoints) {
+    for (let target of this.assets.targetPoints) {
       this.targetComponents.push(new TargetComponent(target, props.sharedService));
     }
-    this.dragLineComponent = new DraggableLineComponent(assets.matrixPoints);
+    this.dragLineComponent = new DraggableLineComponent(this.assets.matrixPoints);
     this.sharedService = props.sharedService;
+    this.sharedService.closePopUp$.subscribe(() => this.returnToStartCondition())
+  }
 
-    this.sharedService.closePopUp$.subscribe( () => this.spriteComponent.clearCurrentAnimation());
+  private returnToStartCondition() {
+    this.targetComponents = [];
+    for (let target of this.assets.targetPoints) {
+      this.targetComponents.push(new TargetComponent(target, this.sharedService));
+    }
+    this.spriteComponent.clearCurrentAnimation();
+    this.sharedService.clearScore();
   }
 
   public render(canvas: any): void {
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     this.roundGridComponent.render(canvas);
-    this.dragLineComponent.render(canvas);
     let spritePoint = this.spriteComponent.getCurPoint();
     for (let target of this.targetComponents) {
       target.activateIfTarget(spritePoint);
       target.render(canvas);
     }
+    this.dragLineComponent.render(canvas);
     this.spriteComponent.render(canvas);
     if (this.spriteComponent.wasActivated() && !this.spriteComponent.isActive()) {
       this.handleEndOfAnimation();
-
     }
   }
 
   private handleEndOfAnimation() {
     let activatedTargets = this.targetComponents.filter(e => e.wasActivated());
+    let popUpHeader;
+    let popUpPic;
     if (activatedTargets.length === this.targetComponents.length) {
-
+      popUpHeader = "Wonderful!";
+      popUpPic = 'assets/images/clap.png';
     } else {
       let diff = this.targetComponents.length - activatedTargets.length;
-      let popUpProps = this.createFailPopUp(diff);
-      this.sharedService.showPopUp(popUpProps);
+      popUpHeader = "You haven't visited " + diff + " point!";
+      popUpPic = 'assets/images/sad-robot.png';
     }
+    let popUpProps = this.createPopUpEventProps(popUpPic, popUpHeader);
+    this.sharedService.showPopUp(popUpProps);
   }
 
-  private createSuccessPopUp(): PopUpEventProps[] {
+  private createPopUpEventProps(imageSrc: string, header: string): PopUpEventProps[] {
     let simplePopUpProps = new SimplePopUpProps();
-    simplePopUpProps.imageSrc = '';
-    simplePopUpProps.header = 'Wonderful!';
-    let popUpEventProps = new PopUpEventProps();
-    popUpEventProps.componentProps = simplePopUpProps;
-    popUpEventProps.type = SimplePopUpComponent;
-    return [popUpEventProps];
-  }
-
-  private createFailPopUp(amountOfNotVisited: number): PopUpEventProps[] {
-    let simplePopUpProps = new SimplePopUpProps();
-    simplePopUpProps.imageSrc = 'assets/images/sad-robot.png';
-    simplePopUpProps.header = "You haven't visited " + amountOfNotVisited + " point!";
+    simplePopUpProps.imageSrc = imageSrc;
+    simplePopUpProps.header = header;
     let popUpEventProps = new PopUpEventProps();
     popUpEventProps.componentProps = simplePopUpProps;
     popUpEventProps.type = SimplePopUpComponent;

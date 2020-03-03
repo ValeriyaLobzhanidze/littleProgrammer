@@ -24,6 +24,9 @@ export class SharedService {
   private showLastTryEvent: Subject<void> = new Subject<void>();
   public showLastTry$ = this.showLastTryEvent.asObservable();
 
+  private clearScoreEvent: Subject<void> = new Subject<void>();
+  public clearScore$ = this.clearScoreEvent.asObservable();
+
   public showLastAttempt() {
     this.showLastTryEvent.next();
   }
@@ -34,6 +37,10 @@ export class SharedService {
 
   public incrementScore(): void {
     this.score.next();
+  }
+
+  public clearScore(): void {
+    this.clearScoreEvent.next();
   }
 
   public showPopUp(props: PopUpEventProps[]): void {

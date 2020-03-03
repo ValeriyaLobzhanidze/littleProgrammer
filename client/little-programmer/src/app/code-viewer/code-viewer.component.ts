@@ -47,6 +47,9 @@ export class CodeViewerComponent implements OnInit {
     this.sharedService.closePopUp$.subscribe(() => {
       this.rootComponent.subscribeForGettingCodeLines()
     });
+    this.sharedService.clearScore$.subscribe(() => {
+      this.currentScore = 0;
+    })
   }
 
   private load(): void {
