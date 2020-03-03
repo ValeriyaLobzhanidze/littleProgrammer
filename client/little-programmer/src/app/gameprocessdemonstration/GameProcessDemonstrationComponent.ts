@@ -21,7 +21,6 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
   public sharedService: SharedService;
 
   constructor() {
-
   }
 
   init(props: any) {

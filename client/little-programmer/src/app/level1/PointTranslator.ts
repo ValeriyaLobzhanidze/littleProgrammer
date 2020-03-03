@@ -43,7 +43,7 @@ export default class PointTranslator {
         }
 
       case DirectMoveFunction.MOVE_DOWN:
-        if (this.currentPoint.y + direction.val < this.matrixCords[0].length * this.matrixCords[1].length) {
+        if (this.currentPoint.y + direction.val < this.matrixCords.length) {
           this.currentPoint.y += direction.val;
           let point = this.matrixCords[this.currentPoint.y][this.currentPoint.x];
           return new Point(point.x, point.y);

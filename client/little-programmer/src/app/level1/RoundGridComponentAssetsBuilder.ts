@@ -30,8 +30,8 @@ export default class RoundGridComponentAssetsBuilder {
     let top = props.topTargetRect;
     let left = props.leftTargetRect;
 
-    let height = this.numOfCols - top;
-    let width = this.numOfRows - left;
+    let height = this.numOfRows - top * 2;
+    let width = this.numOfCols - left * 2;
 
     return ([new DirectionValue(DirectMoveFunction.MOVE_RIGHT, left),
       new DirectionValue(DirectMoveFunction.MOVE_DOWN, top + height - 1),
@@ -70,8 +70,8 @@ export default class RoundGridComponentAssetsBuilder {
     let top = props.topTargetRect;
     let left = props.leftTargetRect;
 
-    let height = this.numOfCols - top * 2;
-    let width = this.numOfRows - left * 2;
+    let height = this.numOfRows - top * 2;
+    let width = this.numOfCols - left * 2;
 
     let cords = [];
     if ((top < this.numOfRows && top >= 0) && (left < this.numOfCols && left >= 0)) {

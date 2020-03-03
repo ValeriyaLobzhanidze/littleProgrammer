@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Type} from '@angular/core';
 import {SharedService} from "../SharedService";
 import Level1RootComponent from "../level1/Level1RootComponent";
 import InstructionSetComponent from "../instructionset/InstructionSetComponent";
@@ -12,7 +12,7 @@ import CanvasProps from "../canvascomponent/CanvasProps";
 import GameProcessDemonstrationComponent from "../gameprocessdemonstration/GameProcessDemonstrationComponent";
 import SyntaxDemonstrationComponent from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponent";
 import HintComponent from "../hintpopup/HintComponent";
-import {root} from "rxjs/internal-compatibility";
+import Level1RootComponentProps from "../level1/Level1RootComponentProps";
 
 @Component({
   selector: 'app-control-panel',
@@ -49,7 +49,7 @@ export class ControlPanelComponent implements OnInit {
     return popUpProps;
   }
 
-  private createCanvasProps(header: string, rootComponentType: any, rootComponentProps: any): CanvasProps {
+  private createCanvasProps(header: string, rootComponentType: Type<any>, rootComponentProps: any): CanvasProps {
     let props = new CanvasProps();
     props.header = header;
     props.canvasHeight = this.canvasHeight;
@@ -104,16 +104,13 @@ export class ControlPanelComponent implements OnInit {
   }
 
   private showGame() {
-    let list1RootComponentProps = {
-      width: this.canvasWidth,
-      height: this.canvasHeight,
-      isDefaultRoute: true,
-      sharedService: null,
-      startCanvasX: 0,
-      startCanvasY: 0,
-      isDefaultTarget: true,
-      isPopUpUsed: false
-    };
+    let list1RootComponentProps = new Level1RootComponentProps();
+    list1RootComponentProps.canvasWidth = this.canvasWidth;
+    list1RootComponentProps.canvasHeight = this.canvasHeight;
+    list1RootComponentProps.isDefaultRoute = true;
+    list1RootComponentProps.isDefaultTarget = true;
+    list1RootComponentProps.isPopUpUsed = false;
+
     let list1 = this.createCanvasProps("Help radish visit all purple points!", Level1RootComponent, list1RootComponentProps);
     let popUpProps1 = this.createPopUpProps(list1, CanvasComponent);
 

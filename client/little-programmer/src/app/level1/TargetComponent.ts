@@ -30,7 +30,9 @@ export default class TargetComponent {
   public activateIfTarget(point: Point) {
     if (!this.activated && this.targetPoint.isPointInsideRound(point)) {
       this.activated = true;
-      this.sharedService.incrementScore();
+      if(this.sharedService) {
+        this.sharedService.incrementScore();
+      }
     }
   }
 

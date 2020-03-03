@@ -20,6 +20,7 @@ export default class Level1RootComponent implements ComponentI {
   private roundGridComponent: RoundGridComponent;
   private sharedService: SharedService;
   private assets: RoundGridComponentAssets;
+  private isPopUpUsed: boolean;
 
   constructor() {
   }
@@ -39,7 +40,10 @@ export default class Level1RootComponent implements ComponentI {
     }
     this.dragLineComponent = new DraggableLineComponent(this.assets.matrixPoints);
     this.sharedService = props.sharedService;
-    this.sharedService.closePopUp$.subscribe(() => this.returnToStartCondition())
+    this.isPopUpUsed = props.isPopUpUsed;
+    if (this.sharedService) {
+      this.sharedService.closePopUp$.subscribe(() => this.returnToStartCondition())
+    }
   }
 
   private returnToStartCondition() {
@@ -63,7 +67,9 @@ export default class Level1RootComponent implements ComponentI {
     this.dragLineComponent.render(canvas);
     this.spriteComponent.render(canvas);
     if (this.spriteComponent.wasActivated() && !this.spriteComponent.isActive()) {
-      this.handleEndOfAnimation();
+      if (this.isPopUpUsed) {
+        this.handleEndOfAnimation();
+      }
     }
   }
 
