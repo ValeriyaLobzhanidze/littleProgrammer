@@ -43,7 +43,7 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
     level1ComponentProps.isPopUpUsed = false;
 
     this.level1Component.init(level1ComponentProps);
-    this.textComponent = new TextComponent(0, 5, props.textList);
+    this.textComponent = new TextComponent(0, 15, props.textList);
     this.buttonComponent = new ButtonComponent(140, 60, "Execute!", 115, 40);
     this.mouseComponent = new MousePointerComponent(
       [DirectMoveFunction.MOVE_DOWN, DirectMoveFunction.MOVE_LEFT],

@@ -3,7 +3,7 @@ import CanvasLib from "../lib/CanvasLib";
 import {ButtonState} from "./ButtonState";
 
 export default class ButtonComponent implements ComponentI {
-  private readonly x;
+  private x;
   private readonly y;
   private readonly text;
   private readonly width;
@@ -23,7 +23,7 @@ export default class ButtonComponent implements ComponentI {
   private curTime = 0;
   private curState = ButtonState.REGULAR;
 
-  constructor(x, y, text, width, height) {
+  constructor(x: number = 0, y: number = 0, text, width, height) {
     this.x = x;
     this.y = y;
     this.text = text;
@@ -41,6 +41,7 @@ export default class ButtonComponent implements ComponentI {
   }
 
   private renderButton(canvas: any) {
+    this.x = (canvas.width - this.width) / 2;
     CanvasLib.roundStrokeRect(canvas, this.x, this.y, this.width, this.height, this.radius,
       this.buttonBorderColor, this.currentColor);
   }
