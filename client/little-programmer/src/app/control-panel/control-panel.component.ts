@@ -13,6 +13,7 @@ import GameProcessDemonstrationComponent from "../gameprocessdemonstration/GameP
 import SyntaxDemonstrationComponent from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponent";
 import HintComponent from "../hintpopup/HintComponent";
 import Level1RootComponentProps from "../level1/Level1RootComponentProps";
+import GameProcessDemonstrationProps from "../gameprocessdemonstration/GameProcessDemonstrationProps";
 
 @Component({
   selector: 'app-control-panel',
@@ -126,13 +127,13 @@ export class ControlPanelComponent implements OnInit {
     let list2 = this.createCanvasProps("You can use commands:", InstructionSetComponent, list2RootComponentProps);
     let popUpProps2 = this.createPopUpProps(list2, CanvasComponent);
 
-    let list3RootComponentProps = {
-      gridWidth: this.canvasWidth,
-      gridHeight: this.canvasHeight,
-      textArr: ["moveRight(5);"],
-      sharedService: this.sharedService,
-      isPopUpUsed: false
-    };
+    let list3RootComponentProps = new GameProcessDemonstrationProps();
+
+    list3RootComponentProps.canvasWidth = this.canvasWidth;
+    list3RootComponentProps.canvasHeight = this.canvasHeight;
+    list3RootComponentProps.textList = ["moveRight(5);"];
+    list3RootComponentProps.sharedService = this.sharedService;
+
 
     let list3 = this.createCanvasProps("For example:", GameProcessDemonstrationComponent, list3RootComponentProps);
     let popUpProps3 = this.createPopUpProps(list3, CanvasComponent);

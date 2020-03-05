@@ -6,10 +6,15 @@ import ButtonComponent from "./ButtonComponent";
 import {SharedService} from "../SharedService";
 import {DirectMoveFunction} from "../level1/DirectMoveFunction";
 import Level1RootComponentProps from "../level1/Level1RootComponentProps";
+import GameProcessDemonstrationProps from "./GameProcessDemonstrationProps";
 
 export default class GameProcessDemonstrationComponent implements ComponentI {
   private level1Component: Level1RootComponent;
-  private static CANVAS_START_Y = 120;
+  private canvasStartY: number = 120;
+
+  private buttonWidth: number;
+  private buttonHeight: number;
+  private buttonText: string;
 
   private mouseComponent: MousePointerComponent;
   private textComponent: TextComponent;
@@ -18,27 +23,27 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
   private isMouseActivated = false;
   private isButtonActivated = false;
   private isButtonStopWorked = false;
+
   public sharedService: SharedService;
 
   constructor() {
   }
 
-  public init(props: any) {
+  public init(props: GameProcessDemonstrationProps) {
     this.sharedService = props.sharedService;
     this.level1Component = new Level1RootComponent();
     let level1ComponentProps = new Level1RootComponentProps();
-
-    level1ComponentProps.sharedService = this.sharedService;
-    level1ComponentProps.canvasWidth = props.gridWidth;
-    level1ComponentProps.canvasHeight = props.gridHeight;
+    level1ComponentProps.sharedService = props.sharedService;
+    level1ComponentProps.canvasWidth = props.canvasWidth;
+    level1ComponentProps.canvasHeight = props.canvasHeight;
+    level1ComponentProps.canvasTop = this.canvasStartY;
     level1ComponentProps.isDefaultRoute = false;
     level1ComponentProps.isDefaultTarget = true;
     level1ComponentProps.isPopUpUsed = true;
-    level1ComponentProps.canvasTop = GameProcessDemonstrationComponent.CANVAS_START_Y;
     level1ComponentProps.isPopUpUsed = false;
 
     this.level1Component.init(level1ComponentProps);
-    this.textComponent = new TextComponent(100, 5, props.textArr, 30);
+    this.textComponent = new TextComponent(0, 5, props.textList);
     this.buttonComponent = new ButtonComponent(140, 60, "Execute!", 115, 40);
     this.mouseComponent = new MousePointerComponent(
       [DirectMoveFunction.MOVE_DOWN, DirectMoveFunction.MOVE_LEFT],

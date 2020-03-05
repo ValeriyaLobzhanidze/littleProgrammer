@@ -23,11 +23,11 @@ export default class SyntaxDemonstrationComponent implements ComponentI {
     this.isSeveralInputNeeded = props.isSeveralInputNeeded;
     let fontSize = 30;
     if (!props.isSeveralInputNeeded) {
-      this.textComponentList.push(new TextComponent(100, 150, props.textArr, fontSize, true, true, true));
+      this.textComponentList.push(new TextComponent(100, 150, props.textArr, true, true, true));
     } else {
       let curY = 50;
       for (let text of props.textArr) {
-        this.textComponentList.push(new TextComponent(100, curY, [text], fontSize, false, true, true));
+        this.textComponentList.push(new TextComponent(100, curY, [text], false, true, true));
         curY += fontSize * 2;
       }
     }

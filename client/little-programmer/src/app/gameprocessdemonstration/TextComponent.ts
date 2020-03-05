@@ -5,10 +5,11 @@ import CanvasLib from "../lib/CanvasLib";
 import Global from "../global/Global";
 
 export default class TextComponent implements ComponentI {
-  private readonly x;
-  private readonly y;
+  private static readonly TEXT_MARGIN = 7;
+  private x: number;
+  private y: number;
 
-  private readonly fonSize;
+  private readonly fonSize = 30;
   private curState: TextState;
 
   private readonly textArr: string[];
@@ -46,13 +47,11 @@ export default class TextComponent implements ComponentI {
   private readonly freezingTime = 2;
   private curFreezingTime = 0;
 
-  constructor(x: number, y: number, textArr: string[], fontSize: number, isReverseNeeded = false,
+  constructor(x: number = 0, y: number = 15, textArr: string[], isReverseNeeded = false,
               isFreezingNeeded = true, isSyntaxHighlightingNeeded = false) {
+    this.textArr = textArr;
     this.x = x;
     this.y = y;
-    this.textArr = textArr;
-    this.fonSize = fontSize;
-
     this.verticalLine = new VerticalLineComponent(this.fonSize, this.y + 2);
     this.curState = TextState.STABLE;
     this.isReverseNeeded = isReverseNeeded;
@@ -99,17 +98,19 @@ export default class TextComponent implements ComponentI {
   }
 
   private renderInputField(canvas: any) {
-    let ctx = canvas.getContext('2d');//TODO: move to Canvas lib
+    let ctx = canvas.getContext('2d');
     ctx.font = this.fonSize + "px KBSticktoIt";
-    CanvasLib.roundStrokeRect(canvas, this.x, this.y, ctx.measureText(this.maxLine).width + 5,
+    let width = ctx.measureText(this.maxLine).width + TextComponent.TEXT_MARGIN * 2;
+    this.x = (canvas.width - width) / 2;
+    CanvasLib.roundStrokeRect(canvas, this.x, this.y, width,
       this.fonSize + 10, 5, this.inputFieldColor, "white");
   }
 
-  private renderText(canvas: any) {//TODO: move to Canvas lib
+  private renderText(canvas: any) {
     let ctx = canvas.getContext('2d');
     ctx.font = this.fonSize + "px KBSticktoIt";
     ctx.fillStyle = this.curTextColor;
-    ctx.fillText(this.curText, this.x, this.y + this.fonSize);
+    ctx.fillText(this.curText, this.x + TextComponent.TEXT_MARGIN, this.y + this.fonSize);
   }
 
   private decrementLetter(): boolean {
@@ -204,7 +205,7 @@ export default class TextComponent implements ComponentI {
 
   private renderVerticalLine(canvas: any) {
     let ctx = canvas.getContext('2d');
-    this.verticalLine.setCurPos(this.x + ctx.measureText(this.curText).width + 2);
+    this.verticalLine.setCurPos(this.x + ctx.measureText(this.curText).width + TextComponent.TEXT_MARGIN);
     this.verticalLine.render(canvas);
   }
 
