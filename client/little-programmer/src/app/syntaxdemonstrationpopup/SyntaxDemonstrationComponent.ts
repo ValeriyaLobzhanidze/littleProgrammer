@@ -1,8 +1,8 @@
 import {ComponentI} from "../engine/ComponentI";
-import TextComponent from "../gameprocessdemonstration/TextComponent";
+import InputTextComponent from "../gameprocessdemonstration/inputtextcomponent/InputTextComponent";
 
 export default class SyntaxDemonstrationComponent implements ComponentI {
-  private textComponentList: TextComponent[] = [];
+  private textComponentList: InputTextComponent[] = [];
   private commentList: string[];
   private textColor = "rgba(187, 116, 251, 0.83)";
   private fontSize = 25;
@@ -11,7 +11,7 @@ export default class SyntaxDemonstrationComponent implements ComponentI {
   private commentX = 50;
   private commentY = 30;
 
-  private curTextComponent: TextComponent;
+  private curTextComponent: InputTextComponent;
   private textComponentIdx = 0;
 
   constructor() {
@@ -19,20 +19,20 @@ export default class SyntaxDemonstrationComponent implements ComponentI {
   }
 
   init(props: any) {
-    this.commentList = props.comment;
-    this.isSeveralInputNeeded = props.isSeveralInputNeeded;
-    let fontSize = 30;
-    if (!props.isSeveralInputNeeded) {
-      this.textComponentList.push(new TextComponent(100, 150, props.textArr, true, true, true));
-    } else {
-      let curY = 50;
-      for (let text of props.textArr) {
-        this.textComponentList.push(new TextComponent(100, curY, [text], false, true, true));
-        curY += fontSize * 2;
-      }
-    }
-    this.curTextComponent = this.textComponentList[this.textComponentIdx++];
-    this.curTextComponent.activate();
+    // this.commentList = props.comment;
+    // this.isSeveralInputNeeded = props.isSeveralInputNeeded;
+    // let fontSize = 30;
+    // if (!props.isSeveralInputNeeded) {
+    //   this.textComponentList.push(new InputTextComponent(100, 150, props.textArr, true, true, true));
+    // } else {
+    //   let curY = 50;
+    //   for (let text of props.textArr) {
+    //     this.textComponentList.push(new InputTextComponent(100, curY, [text], false, true, true));
+    //     curY += fontSize * 2;
+    //   }
+    // }
+    // this.curTextComponent = this.textComponentList[this.textComponentIdx++];
+    // this.curTextComponent.activate();
   }
 
   private renderComment(canvas: any) {

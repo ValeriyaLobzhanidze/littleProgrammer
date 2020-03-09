@@ -1,12 +1,14 @@
+import Global from "../global/Global";
+
 export default class CanvasLib {
 
   public static roundStrokeRect(canvas: any, x: number, y: number, w: number, h: number, radius: number,
-                                strokeStyle: string, fillStyle: string) {
+                                strokeStyle: string, fillStyle?: string) {
     let ctx = canvas.getContext('2d');
     let r = x + w;
     let b = y + h;
     ctx.strokeStyle = strokeStyle;
-    ctx.fillStyle = fillStyle;
+    ctx.fillStyle = fillStyle ? fillStyle : "white";
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
     ctx.lineTo(r - radius, y);

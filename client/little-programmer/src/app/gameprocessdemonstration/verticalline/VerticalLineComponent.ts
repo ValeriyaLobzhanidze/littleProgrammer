@@ -1,4 +1,4 @@
-import {ComponentI} from "../engine/ComponentI";
+import {ComponentI} from "../../engine/ComponentI";
 import {LineState} from "./LineState";
 
 export default class VerticalLineComponent implements ComponentI {

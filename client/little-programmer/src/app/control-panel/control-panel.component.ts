@@ -131,9 +131,13 @@ export class ControlPanelComponent implements OnInit {
 
     list3RootComponentProps.canvasWidth = this.canvasWidth;
     list3RootComponentProps.canvasHeight = this.canvasHeight;
-    list3RootComponentProps.textList = ["moveRight(5);"];
+    list3RootComponentProps.inputs = ["moveRight(5);"];
     list3RootComponentProps.sharedService = this.sharedService;
-
+    list3RootComponentProps.buttonHeight = 50;
+    list3RootComponentProps.buttonWidth = 150;
+    list3RootComponentProps.inputWidth = 250;
+    list3RootComponentProps.inputHeight = 50;
+    list3RootComponentProps.buttonText = "Execute!";
 
     let list3 = this.createCanvasProps("For example:", GameProcessDemonstrationComponent, list3RootComponentProps);
     let popUpProps3 = this.createPopUpProps(list3, CanvasComponent);
@@ -143,7 +147,7 @@ export class ControlPanelComponent implements OnInit {
       textArr: ["moveRight(5", "moveRight(5)", "moveRight(5);"],
       isSeveralInputNeeded: false
     };
-    let list4 = this.createCanvasProps("For example:", SyntaxDemonstrationComponent, list4RootComponentProps);
+    let list4 = this.createCanvasProps("Be careful!", SyntaxDemonstrationComponent, list4RootComponentProps);
     let popUpProps4 = this.createPopUpProps(list4, CanvasComponent);
 
     let list5RootComponentProps = {

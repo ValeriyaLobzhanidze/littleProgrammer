@@ -1,8 +1,8 @@
 import {Component, HostListener, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {CodeLineComponent} from "../code-line/code-line.component";
-import {SyntaxParser} from "../SyntaxParser";
 import {SharedService} from "../SharedService";
 import {DirectMoveFunction} from "../level1/DirectMoveFunction";
+import {SyntaxParser} from "../SyntaxParser";
 
 @Component({
   selector: 'app-code-editor',
@@ -13,12 +13,11 @@ export class CodeEditorComponent implements OnInit {
   public numbers: number[];
   @ViewChildren(CodeLineComponent)
   public codeLines: QueryList<CodeLineComponent>;
-  private syntaxParser: SyntaxParser = new SyntaxParser();
 
   private attemptsCache: string[][] = [];
 
   public isValid = (val: string) => {
-    return this.syntaxParser.validate(val);
+    return SyntaxParser.validate(val);
   };
 
   public sharedService: SharedService;
@@ -88,7 +87,7 @@ export class CodeEditorComponent implements OnInit {
         }
       });
 
-      let directionList: { direction: DirectMoveFunction, val: number }[] = this.syntaxParser.parse(codeLines);
+      let directionList: { direction: DirectMoveFunction, val: number }[] = SyntaxParser.parse(codeLines);
       this.sharedService.setCodeLineData(directionList);
     }
   }

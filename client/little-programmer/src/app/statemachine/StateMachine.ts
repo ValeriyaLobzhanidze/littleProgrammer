@@ -7,8 +7,8 @@ import StateEntry from "./StateEntry";
  * */
 export default class StateMachine<T> {
   private readonly stateList: StateEntry<T>[];
-  private readonly stateFunctionList: Map<any, (value: T) => T>;
-  private readonly stateComparingFunctionList: Map<any, (val1: T, val2: T) => boolean>;
+  private readonly stateToHandlerMap: Map<any, (value: T) => T>;
+  private readonly stateToComparatorMap: Map<any, (val1: T, val2: T) => boolean>;
 
   private curProp: T;
   private curShouldReachProp: T;
@@ -21,12 +21,12 @@ export default class StateMachine<T> {
   private isSmActive = true;
   private numOfLastErr: number = -1;
 
-  constructor(startValue: T, stateList: StateEntry<T>[], stateFunctionList: Map<any, (value: T) => T>,
-              stateComparingFunctionList: Map<any, (val1: T, val2: T) => boolean>) {
+  constructor(startValue: T, stateList: StateEntry<T>[], stateToHandler: Map<any, (value: T) => T>,
+              stateToComparator: Map<any, (val1: T, val2: T) => boolean>) {
     this.curProp = startValue;
     this.stateList = stateList;
-    this.stateFunctionList = stateFunctionList;
-    this.stateComparingFunctionList = stateComparingFunctionList;
+    this.stateToHandlerMap = stateToHandler;
+    this.stateToComparatorMap = stateToComparator;
     this._update();
   }
 
@@ -44,8 +44,8 @@ export default class StateMachine<T> {
 
       this.curState = stateEntry.state;
       this.curShouldReachProp = stateEntry.endValue;
-      this.curHandler = this.stateFunctionList.get(this.curState);
-      this.curComparator = this.stateComparingFunctionList.get(this.curState);
+      this.curHandler = this.stateToHandlerMap.get(this.curState);
+      this.curComparator = this.stateToComparatorMap.get(this.curState);
       this.stateIdx++;
     } else {
       this.isSmActive = false;
