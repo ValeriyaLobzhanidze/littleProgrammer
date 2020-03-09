@@ -8,6 +8,8 @@ import {DirectMoveFunction} from "../level1/DirectMoveFunction";
 import Level1RootComponentProps from "../level1/Level1RootComponentProps";
 import GameProcessDemonstrationProps from "./GameProcessDemonstrationProps";
 import InputTextComponentProps from "./inputtextcomponent/InputTextComponentProps";
+import StateEntry from "../statemachine/StateEntry";
+import Point from "../level1/Point";
 
 export default class GameProcessDemonstrationComponent implements ComponentI {
   private static readonly CANVAS_TOP: number = 150;
@@ -37,6 +39,7 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
     level1ComponentProps.isPopUpUsed = false;
     this.level1Component.init(level1ComponentProps);
 
+    let fontSize = 25;
     let inputX = (props.canvasWidth - props.inputWidth) / 2;
     let inputY = ((GameProcessDemonstrationComponent.CANVAS_TOP / 2) - props.inputHeight) / 2;
     let inputProps = new InputTextComponentProps();
@@ -45,6 +48,7 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
     inputProps.width = props.inputWidth;
     inputProps.height = props.inputHeight;
     inputProps.inputs = props.inputs;
+    inputProps.fontSize = fontSize;
     inputProps.isReverseNeeded = false;
     inputProps.isSyntaxHighlightingNeeded = false;
     inputProps.isFreezingNeeded = false;
@@ -54,29 +58,29 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
     let buttonX = (props.canvasWidth - props.buttonWidth) / 2;
     let buttonY = (GameProcessDemonstrationComponent.CANVAS_TOP / 2) + ((GameProcessDemonstrationComponent.CANVAS_TOP / 2) - props.buttonHeight) / 2;
 
-    this.buttonComponent = new ButtonComponent(buttonX, buttonY, props.buttonText, props.buttonWidth, props.buttonHeight);
+    this.buttonComponent = new ButtonComponent(buttonX, buttonY, props.buttonText, props.buttonWidth, props.buttonHeight, fontSize);
 
-    // this.mouseComponent = new MousePointerComponent(
-    //   [DirectMoveFunction.MOVE_DOWN, DirectMoveFunction.MOVE_LEFT],
-    //   [{x: 350, y: 5}, {x: 350, y: 85}, {x: 140 + 115 / 2, y: 85}]);
+    let mouseStart = inputX + props.inputWidth + inputX / 2;
+    this.mouseComponent = new MousePointerComponent(new Point(mouseStart, inputY),
+      [new StateEntry<Point>(DirectMoveFunction.MOVE_DOWN, new Point(mouseStart, buttonY)),
+      new StateEntry<Point>(DirectMoveFunction.MOVE_LEFT, new Point(inputX + props.inputWidth / 2, buttonY))]);
   }
 
   render(canvas: any) {
     this.level1Component.render(canvas);
     this.textComponent.render(canvas);
     this.buttonComponent.render(canvas);
-    // this.mouseComponent.render(canvas);
+    this.mouseComponent.render(canvas);
 
     if (!this.textComponent.wasActivated()) {
       this.textComponent.activate();
     }
 
-    // if (this.textComponent.isTypingFinished() && !this.isMouseActivated) {
-    //   this.mouseComponent.activate();
-    //   this.isMouseActivated = true;
-    // }
-    //
-    // if (this.isMouseActivated && !this.mouseComponent.isActive() && !this.isButtonActivated) {
+    if (this.textComponent.isTypingFinished() && !this.mouseComponent.wasActivated()) {
+      this.mouseComponent.activate();
+    }
+
+    // if (this.mouseComponent.wasActivated() && !this.mouseComponent.isActive() && !this.isButtonActivated) {
     //   this.buttonComponent.makeSelected();
     //   this.isButtonActivated = true;
     // }

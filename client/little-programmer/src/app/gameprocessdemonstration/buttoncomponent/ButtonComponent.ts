@@ -21,18 +21,17 @@ export default class ButtonComponent implements ComponentI {
   private textColor = Global.WHITE;
   private borderColor = Global.GRAY;
   private regularColor = Global.DEEP_GREEN;
-
   private selectedColor = Global.YELLOW;
 
   private currentColor = this.regularColor;
 
-  constructor(x: number = 0, y: number = 0, text: string, width: number, height: number) {
+  constructor(x: number = 0, y: number = 0, text: string, width: number, height: number, fontSize: number) {
     this.x = x;
     this.y = y;
     this.text = text;
     this.width = width;
     this.height = height;
-    this.fontSize = this.height - ButtonComponent.MARGIN_TEXT_TOP * 2;
+    this.fontSize = fontSize;
   }
 
   private renderButton(canvas: any) {

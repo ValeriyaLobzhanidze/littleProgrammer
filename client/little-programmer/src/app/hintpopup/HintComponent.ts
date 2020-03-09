@@ -29,9 +29,9 @@ export default class HintComponent implements ComponentI {
     let thirdPoint = cords[cols * rows - 1];
     let forthPoint = cords[cols * rows - 1 - (cols - 1)];
     this.mouseCords = [firstPoint, secondPoint, thirdPoint, forthPoint, firstPoint];
-    this.mousePointer = new MousePointerComponent(
-      [DirectMoveFunction.MOVE_RIGHT, DirectMoveFunction.MOVE_DOWN, DirectMoveFunction.MOVE_LEFT, DirectMoveFunction.MOVE_UP],
-      this.mouseCords);
+    // this.mousePointer = new MousePointerComponent(
+    //   [DirectMoveFunction.MOVE_RIGHT, DirectMoveFunction.MOVE_DOWN, DirectMoveFunction.MOVE_LEFT, DirectMoveFunction.MOVE_UP],
+    //   this.mouseCords);
     this.mousePointer.activate();
     this.roundGridComponent.onMouseDown(this.mouseCords[this.mouseCordsIdx].x, this.mouseCords[this.mouseCordsIdx].y);
     this.mouseCordsIdx++;

@@ -67,7 +67,7 @@ export default class SpriteComponent implements ComponentI {
   }
 
   public initStateMachine(route: DirectionValue[]) {
-    this.stateMachine = DirectMoveStateMachineBuilder.build(route, this.matrixCords, SpriteComponent.SPEED);
+    this.stateMachine = DirectMoveStateMachineBuilder.buildWithTranslation(route, this.matrixCords, SpriteComponent.SPEED);
     this.activated = true;
   }
 

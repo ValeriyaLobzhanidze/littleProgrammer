@@ -28,30 +28,29 @@ export default class InputTextComponent implements ComponentI {
     this.color = props.color ? props.color : Global.SEMI_GRAY;
     this.width = props.width;
     this.height = props.height;
-    let fontSize = this.height - InputTextComponent.TEXT_MARGIN_TOP * 2;
     for (let i = 0; i < props.inputs.length - 1; i++) {
       this.textComponentList.push(
         new TextComponent(
           this.x + InputTextComponent.TEXT_MARGIN_LEFT,
-          this.y + InputTextComponent.TEXT_MARGIN_TOP + fontSize,
+          this.y + InputTextComponent.TEXT_MARGIN_TOP + props.fontSize,
           props.inputs[i],
           props.isReverseNeeded,
           props.isDelayedNeeded,
           props.isFreezingNeeded,
           props.isSyntaxHighlightingNeeded,
-          fontSize));
+          props.fontSize));
     }
 
     this.textComponentList.push(
       new TextComponent(
         this.x + InputTextComponent.TEXT_MARGIN_LEFT,
-        this.y + InputTextComponent.TEXT_MARGIN_TOP + fontSize,
+        this.y + InputTextComponent.TEXT_MARGIN_TOP + props.fontSize,
         props.inputs[props.inputs.length - 1],
         false,
         props.isDelayedNeeded,
         props.isFreezingNeeded,
         props.isSyntaxHighlightingNeeded,
-        fontSize));
+        props.fontSize));
 
   }
 

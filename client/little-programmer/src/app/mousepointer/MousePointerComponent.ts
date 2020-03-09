@@ -1,53 +1,46 @@
 import {ComponentI} from "../engine/ComponentI";
-import DirectMoveAnimation from "./DirectMoveAnimation";
-import {DirectMoveFunction} from "../level1/DirectMoveFunction";
+import Point from "../level1/Point";
+import StateEntry from "../statemachine/StateEntry";
+import StateMachine from "../statemachine/StateMachine";
+import DirectMoveStateMachineBuilder from "../level1/DirectMoveStateMachineBuilder";
 
 export default class MousePointerComponent implements ComponentI {
+  private static readonly WIDTH = 24;
+  private static readonly HEIGHT = 24;
+
   private readonly image;
-  private x;
-  private y;
+  private curPoint: Point;
+  private stateMachine: StateMachine<Point>;
+  private activated: boolean = false;
+  public activate: () => void;
 
-  private width = 24;
-  private height = 24;
-
-  private animation;
-
-  constructor(route: DirectMoveFunction[], cords: { x: number; y: number }[]) {
-    this.x = cords[0].x;
-    this.y = cords[0].y;
+  constructor(startPoint: Point, stateEntries: StateEntry<Point>[]) {
+    this.curPoint = startPoint;
     this.image = new Image(0, 0);
     this.image.src = "/assets/images/mouse-pointer.png";
-    this.animation = new DirectMoveAnimation(route, cords);
+    this.activate = () => {
+      this.stateMachine = DirectMoveStateMachineBuilder.buildWithoutTranslation(startPoint, stateEntries);
+      this.activated = true;
+    }
   }
 
-  public activate() {
-    this.animation.activate();
+  public wasActivated(): boolean{
+    return this.activated;
   }
 
   public isActive(): boolean {
-    return this.animation.isActive();
+    return this.stateMachine && this.stateMachine.isActive();
   }
 
   private _render(canvas: any) {
     let ctx = canvas.getContext('2d');
-    ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    ctx.drawImage(this.image, this.curPoint.x, this.curPoint.y, MousePointerComponent.WIDTH, MousePointerComponent.HEIGHT);
   }
 
   render(canvas: any) {
-    if (this.animation.isActive()) {
-      let curCords = this.animation.update();
-      this.x = curCords.x;
-      this.y = curCords.y;
+    if (this.stateMachine && this.stateMachine.isActive()) {
+      this.curPoint = this.stateMachine.update();
     }
     this._render(canvas);
   }
-
-  public getState(): DirectMoveFunction {
-    return this.animation.getState();
-  }
-
-  public getCords(): { x: number, y: number } {
-    return this.animation.getCords();
-  }
-
 }

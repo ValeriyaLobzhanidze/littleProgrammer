@@ -5,6 +5,7 @@ export default class InputTextComponentProps {
   public height: number;
   public inputs: string[];
   public color: string;
+  public fontSize: number;
   public isReverseNeeded = false;
   public isDelayedNeeded = false;
   public isFreezingNeeded = true;
