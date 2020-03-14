@@ -8,7 +8,8 @@ export default class ButtonComponent implements ComponentI {
   private static readonly MARGIN_TEXT_TOP = 10;
   private static readonly DEFAULT_FONT = Global.MAIN_FONT;
   private static readonly BORDER_RADIUS = 5;
-  private static readonly UPDATE_FREQ = 5;
+  private static readonly SELECTED_MAX_TIME = 25;
+
 
   private readonly x: number;
   private readonly y: number;
@@ -16,7 +17,6 @@ export default class ButtonComponent implements ComponentI {
   private readonly width: number;
   private readonly height: number;
   private readonly fontSize: number;
-  private curTick: number = 0;
 
   private textColor = Global.WHITE;
   private borderColor = Global.GRAY;
@@ -25,6 +25,9 @@ export default class ButtonComponent implements ComponentI {
 
   private currentColor = this.regularColor;
 
+  private activated = false;
+  private currSelectedTime = 0;
+
   constructor(x: number = 0, y: number = 0, text: string, width: number, height: number, fontSize: number) {
     this.x = x;
     this.y = y;
@@ -32,6 +35,19 @@ export default class ButtonComponent implements ComponentI {
     this.width = width;
     this.height = height;
     this.fontSize = fontSize;
+  }
+
+  public activate() {
+    this.currentColor = this.selectedColor;
+    this.activated = true;
+  }
+
+  public wasActivated(): boolean {
+    return this.activated;
+  }
+
+  public isActive(): boolean {
+    return this.currSelectedTime != ButtonComponent.SELECTED_MAX_TIME;
   }
 
   private renderButton(canvas: any) {
@@ -44,15 +60,20 @@ export default class ButtonComponent implements ComponentI {
       ButtonComponent.DEFAULT_FONT, this.textColor);
   }
 
-  private updateCurTick() {
-    this.curTick++;
-    if (this.curTick > ButtonComponent.UPDATE_FREQ) {
-      this.curTick = 0;
+  private update() {
+    if (this.isActive()) {
+      this.currSelectedTime++;
+    } else {
+      this.currentColor = this.regularColor;
     }
   }
+
 
   render(canvas: any) {
     this.renderButton(canvas);
     this.renderText(canvas);
+    if (this.activated) {
+      this.update();
+    }
   }
 }

@@ -20,6 +20,7 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
   private buttonComponent: ButtonComponent;
 
   public sharedService: SharedService;
+  private isCodeLinesSet: boolean = false;
 
   constructor() {
   }
@@ -63,7 +64,7 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
     let mouseStart = inputX + props.inputWidth + inputX / 2;
     this.mouseComponent = new MousePointerComponent(new Point(mouseStart, inputY),
       [new StateEntry<Point>(DirectMoveFunction.MOVE_DOWN, new Point(mouseStart, buttonY)),
-      new StateEntry<Point>(DirectMoveFunction.MOVE_LEFT, new Point(inputX + props.inputWidth / 2, buttonY))]);
+        new StateEntry<Point>(DirectMoveFunction.MOVE_LEFT, new Point(inputX + props.inputWidth / 2, buttonY))]);
   }
 
   render(canvas: any) {
@@ -80,16 +81,13 @@ export default class GameProcessDemonstrationComponent implements ComponentI {
       this.mouseComponent.activate();
     }
 
-    // if (this.mouseComponent.wasActivated() && !this.mouseComponent.isActive() && !this.isButtonActivated) {
-    //   this.buttonComponent.makeSelected();
-    //   this.isButtonActivated = true;
-    // }
-    //
-    // if (this.isButtonActivated) {
-    //   if (!this.buttonComponent.isSelected() && !this.isButtonStopWorked) {
-    //     this.sharedService.setCodeLineData([{direction: DirectMoveFunction.MOVE_RIGHT, val: 5}]);
-    //     this.isButtonStopWorked = true;
-    //   }
-    // }
+    if (this.mouseComponent.wasActivated() && !this.mouseComponent.isActive() && !this.buttonComponent.wasActivated()) {
+      this.buttonComponent.activate();
+    }
+
+    if (this.buttonComponent.wasActivated() && !this.buttonComponent.isActive() && !this.isCodeLinesSet) {
+      this.isCodeLinesSet = true;
+      this.sharedService.setCodeLineData([{direction: DirectMoveFunction.MOVE_RIGHT, val: 5}]);
+    }
   }
 }

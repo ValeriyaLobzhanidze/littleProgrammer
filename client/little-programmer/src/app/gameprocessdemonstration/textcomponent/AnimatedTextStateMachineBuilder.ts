@@ -28,9 +28,6 @@ export default class AnimatedTextStateMachineBuilder {
       for (let j = 0; j < freezingTime; j++) {
         stateList.push(new StateEntry<string>(TextState.FROZEN, text.substring(0, text.length)));
       }
-    }
-
-    if (isReverseNeeded) {
       stateList.push(new StateEntry<string>(TextState.REVERSED, ""));
     }
 
