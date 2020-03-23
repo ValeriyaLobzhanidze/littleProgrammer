@@ -25,7 +25,8 @@ export default class ButtonComponent implements ComponentI {
 
   private currentColor = this.regularColor;
 
-  private activated = false;
+  private wasActivatedFlag = false;
+  private isActiveFlag = false;
   private currSelectedTime = 0;
 
   constructor(x: number = 0, y: number = 0, text: string, width: number, height: number, fontSize: number) {
@@ -39,15 +40,16 @@ export default class ButtonComponent implements ComponentI {
 
   public activate() {
     this.currentColor = this.selectedColor;
-    this.activated = true;
+    this.wasActivatedFlag = true;
+    this.isActiveFlag = true;
   }
 
   public wasActivated(): boolean {
-    return this.activated;
+    return this.wasActivatedFlag;
   }
 
   public isActive(): boolean {
-    return this.currSelectedTime != ButtonComponent.SELECTED_MAX_TIME;
+    return this.isActiveFlag;
   }
 
   private renderButton(canvas: any) {
@@ -61,10 +63,11 @@ export default class ButtonComponent implements ComponentI {
   }
 
   private update() {
-    if (this.isActive()) {
+    if (this.currSelectedTime < ButtonComponent.SELECTED_MAX_TIME) {
       this.currSelectedTime++;
     } else {
       this.currentColor = this.regularColor;
+      this.isActiveFlag = false;
     }
   }
 
@@ -72,7 +75,7 @@ export default class ButtonComponent implements ComponentI {
   render(canvas: any) {
     this.renderButton(canvas);
     this.renderText(canvas);
-    if (this.activated) {
+    if (this.isActiveFlag) {
       this.update();
     }
   }

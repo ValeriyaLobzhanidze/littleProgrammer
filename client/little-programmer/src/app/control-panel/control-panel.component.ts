@@ -14,6 +14,7 @@ import SyntaxDemonstrationComponent from "../syntaxdemonstrationpopup/SyntaxDemo
 import HintComponent from "../hintpopup/HintComponent";
 import Level1RootComponentProps from "../level1/Level1RootComponentProps";
 import GameProcessDemonstrationProps from "../gameprocessdemonstration/GameProcessDemonstrationProps";
+import SyntaxDemonstrationComponentProps from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponentProps";
 
 @Component({
   selector: 'app-control-panel',
@@ -142,19 +143,23 @@ export class ControlPanelComponent implements OnInit {
     let list3 = this.createCanvasProps("For example:", GameProcessDemonstrationComponent, list3RootComponentProps);
     let popUpProps3 = this.createPopUpProps(list3, CanvasComponent);
 
-    let list4RootComponentProps = {
-      comment: ["If you are wrong,", "commands become red"],
-      textArr: ["moveRight(5", "moveRight(5)", "moveRight(5);"],
-      isSeveralInputNeeded: false
-    };
+    let list4RootComponentProps = new SyntaxDemonstrationComponentProps();
+    list4RootComponentProps.inputLines = ["moveRight(5", "moveRight(5)", "moveRight(5);"];
+    list4RootComponentProps.commentList = ["If you are wrong,", "commands become red"];
+    list4RootComponentProps.isSeveralInputNeeded = false;
+    list4RootComponentProps.canvasHeight = this.canvasHeight;
+    list4RootComponentProps.canvasWidth = this.canvasWidth;
+
     let list4 = this.createCanvasProps("Be careful!", SyntaxDemonstrationComponent, list4RootComponentProps);
     let popUpProps4 = this.createPopUpProps(list4, CanvasComponent);
 
-    let list5RootComponentProps = {
-      comment: [],
-      textArr: ["moveRight(5);", "moveLeft(5);", "moveDown(5);"],
-      isSeveralInputNeeded: true
-    };
+    let list5RootComponentProps = new SyntaxDemonstrationComponentProps();
+    list5RootComponentProps.commentList = [];
+    list5RootComponentProps.inputLines = ["moveRight(5);", "moveLeft(5);", "moveDown(5);"];
+    list5RootComponentProps.isSeveralInputNeeded = true;
+    list5RootComponentProps.canvasHeight = this.canvasHeight;
+    list5RootComponentProps.canvasWidth = this.canvasWidth;
+
     let list5 = this.createCanvasProps("Note, one line - one command!", SyntaxDemonstrationComponent, list5RootComponentProps);
     let popUpProps5 = this.createPopUpProps(list5, CanvasComponent);
 

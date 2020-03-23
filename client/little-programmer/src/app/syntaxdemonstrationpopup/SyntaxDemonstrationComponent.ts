@@ -1,49 +1,69 @@
 import {ComponentI} from "../engine/ComponentI";
 import InputTextComponent from "../gameprocessdemonstration/inputtextcomponent/InputTextComponent";
+import SyntaxDemonstrationComponentProps from "./SyntaxDemonstrationComponentProps";
+import Global from "../global/Global";
+import InputTextComponentProps from "../gameprocessdemonstration/inputtextcomponent/InputTextComponentProps";
 
 export default class SyntaxDemonstrationComponent implements ComponentI {
+
+  private TEXT_COLOR = Global.LIGHT_PURPLE;
+  private INPUT_WIDTH = 200;
+  private INPUT_HEIGHT = 50;
+  private FONT_SIZE = 25;
+
   private textComponentList: InputTextComponent[] = [];
   private commentList: string[];
-  private textColor = "rgba(187, 116, 251, 0.83)";
-  private fontSize = 25;
-  private isSeveralInputNeeded;
 
-  private commentX = 50;
-  private commentY = 30;
+  private commentX: number = 10;
+  private commentY: number = 10;
 
   private curTextComponent: InputTextComponent;
   private textComponentIdx = 0;
 
-  constructor() {
+  init(props: SyntaxDemonstrationComponentProps) {
+    this.commentList = props.commentList;
 
-  }
+    let inputProps = new InputTextComponentProps();
+    inputProps.x = (props.canvasWidth - this.INPUT_WIDTH) / 2;
+    inputProps.y = (props.canvasHeight - this.INPUT_HEIGHT) / 2;
+    inputProps.width = this.INPUT_WIDTH;
+    inputProps.height = this.INPUT_HEIGHT;
+    inputProps.color = Global.GRAY;
+    inputProps.fontSize = this.FONT_SIZE;
+    inputProps.isReverseNeeded = true;
+    inputProps.isDelayedNeeded = true;
+    inputProps.isFreezingNeeded = true;
+    inputProps.isSyntaxHighlightingNeeded = true;
 
-  init(props: any) {
-    // this.commentList = props.comment;
-    // this.isSeveralInputNeeded = props.isSeveralInputNeeded;
-    // let fontSize = 30;
-    // if (!props.isSeveralInputNeeded) {
-    //   this.textComponentList.push(new InputTextComponent(100, 150, props.textArr, true, true, true));
-    // } else {
-    //   let curY = 50;
-    //   for (let text of props.textArr) {
-    //     this.textComponentList.push(new InputTextComponent(100, curY, [text], false, true, true));
-    //     curY += fontSize * 2;
-    //   }
-    // }
-    // this.curTextComponent = this.textComponentList[this.textComponentIdx++];
-    // this.curTextComponent.activate();
+    if (!props.isSeveralInputNeeded) {
+      inputProps.inputs = props.inputLines;
+      this.textComponentList.push(new InputTextComponent(inputProps));
+    } else {
+      debugger;
+      let i = 1;
+      let curY = (props.canvasHeight - this.INPUT_HEIGHT * props.inputLines.length) / props.inputLines.length;
+      for (let text of props.inputLines) {
+        let props = InputTextComponentProps.copy(inputProps);
+        props.isReverseNeeded = false;
+        props.inputs = [text];
+        props.y = curY * i;
+        i++;
+        this.textComponentList.push(new InputTextComponent(props));
+      }
+    }
+    this.curTextComponent = this.textComponentList[this.textComponentIdx++];
+    this.curTextComponent.activate();
   }
 
   private renderComment(canvas: any) {
     if (this.commentList.length > 0) {
-      let curY = this.commentY + this.fontSize;
+      let curY = this.commentY + this.FONT_SIZE;
       for (let comment of this.commentList) {
         let ctx = canvas.getContext('2d');
-        ctx.font = this.fontSize + "px KBSticktoIt";
-        ctx.fillStyle = this.textColor;
+        ctx.font = this.FONT_SIZE + "px KBSticktoIt";
+        ctx.fillStyle = this.TEXT_COLOR;
         ctx.fillText(comment, this.commentX, curY);
-        curY += this.fontSize;
+        curY += this.FONT_SIZE;
       }
     }
   }
