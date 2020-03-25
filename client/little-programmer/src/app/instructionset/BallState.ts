@@ -1,6 +1,6 @@
 export enum BallState {
-  FLY,
-  ROLL_HOR,
-  ROLL_V,
-  STABLE
+  FLY_RIGHT,
+  FLY_LEFT,
+  ROLL_RIGHT,
+  ROLL_DOWN
 }

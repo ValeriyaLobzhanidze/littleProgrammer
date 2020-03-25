@@ -1,0 +1,134 @@
+import StateMachine from "../statemachine/StateMachine";
+import AnglePoint from "./AnglePoint";
+import StateEntry from "../statemachine/StateEntry";
+import {BallState} from "./BallState";
+import Point from "../level1/Point";
+
+export default class BallStateMachineBuilder {
+  private static readonly TRAJECTORY_STEP = 2;
+  private static readonly BARRIER_X_POS = 50;
+  private static BARRIER_POINTS: Point[] = [];
+
+  public static build(startPoint: AnglePoint, amountOfBarriers: number,
+                      rollRightBarrier: number, fallDownBarrier: number, speed: number = 1.0): StateMachine<AnglePoint> {
+
+    let stateList: StateEntry<AnglePoint>[] = BallStateMachineBuilder.buildStateList(amountOfBarriers, rollRightBarrier, fallDownBarrier);
+    let stateToHandler: Map<any, (value: AnglePoint) => AnglePoint> = BallStateMachineBuilder.buildStateToHandlerMap(speed);
+    let stateToComparator: Map<any, (val1: AnglePoint, val2: AnglePoint) => boolean> = BallStateMachineBuilder.buildStateToComparatorMap();
+
+    return new StateMachine<AnglePoint>(startPoint, stateList, stateToHandler, stateToComparator);
+  }
+
+  public static getBarrierPoints(): Point[] {
+    return BallStateMachineBuilder.BARRIER_POINTS;
+  }
+
+  private static trajectoryFlyFunction(value: number): number {
+    return Math.sqrt(value) * 4;
+  }
+
+  private static rightFlyDirection(origin: number, x: number): number {
+    return origin + BallStateMachineBuilder.trajectoryFlyFunction(x);
+  }
+
+  private static leftFlyDirection(origin: number, x: number): number {
+    return origin - BallStateMachineBuilder.trajectoryFlyFunction(x);
+  }
+
+  private static buildStateList(amountOfBarriers: number, rollBarrierPoint: number, fallDownPoint: number): StateEntry<AnglePoint>[] {
+    let stateList: StateEntry<AnglePoint>[] = [];
+    let curOrigin = 0;
+    let curYRightBarrier;
+    let curYLeftBarrier;
+    let rightBarrierPoint;
+    let leftBarrierPoint;
+
+    for (let i = 0; i < amountOfBarriers - 1; i++) {
+      curYRightBarrier = BallStateMachineBuilder.rightFlyDirection(curOrigin, BallStateMachineBuilder.BARRIER_X_POS);
+      curOrigin += curYRightBarrier * BallStateMachineBuilder.TRAJECTORY_STEP;
+      curYLeftBarrier = BallStateMachineBuilder.leftFlyDirection(curOrigin, 0);
+
+      rightBarrierPoint = new AnglePoint(BallStateMachineBuilder.BARRIER_X_POS, curYRightBarrier, 0);
+      leftBarrierPoint = new AnglePoint(0, curYLeftBarrier, 0);
+
+      stateList.push(new StateEntry<AnglePoint>(BallState.FLY_RIGHT, rightBarrierPoint));
+      stateList.push(new StateEntry<AnglePoint>(BallState.FLY_LEFT, leftBarrierPoint));
+      BallStateMachineBuilder.BARRIER_POINTS.push(new Point(rightBarrierPoint.x, rightBarrierPoint.y));
+    }
+
+    curYRightBarrier = BallStateMachineBuilder.rightFlyDirection(curOrigin, BallStateMachineBuilder.BARRIER_X_POS);
+    rightBarrierPoint = new AnglePoint(BallStateMachineBuilder.BARRIER_X_POS, curYRightBarrier, 0);
+    stateList.push(new StateEntry<AnglePoint>(BallState.FLY_RIGHT, rightBarrierPoint));
+    BallStateMachineBuilder.BARRIER_POINTS.push(new Point(rightBarrierPoint.x, rightBarrierPoint.y));
+
+    stateList.push(new StateEntry<AnglePoint>(BallState.ROLL_RIGHT, new AnglePoint(rollBarrierPoint, curYRightBarrier, 0)));
+    stateList.push(new StateEntry<AnglePoint>(BallState.ROLL_DOWN, new AnglePoint(rollBarrierPoint, fallDownPoint, 0)));
+
+    console.log(stateList);
+    return stateList;
+  }
+
+  private static buildStateToHandlerMap(speed: number): Map<any, (value: AnglePoint) => AnglePoint> {
+    let stateToHandler: Map<any, (value: AnglePoint) => AnglePoint> = new Map<any, (value: AnglePoint) => AnglePoint>();
+
+    let origin = 0;
+    let isOriginChanged: boolean = false;
+
+    let flyRightHandler = (point: AnglePoint) => {
+      isOriginChanged = false;
+      point.x += speed;
+      point.y = BallStateMachineBuilder.rightFlyDirection(origin, point.x);
+      return point;
+    };
+    let flyLeftHandler = (point: AnglePoint) => {
+      if (!isOriginChanged) {
+        origin += BallStateMachineBuilder.rightFlyDirection(origin, BallStateMachineBuilder.BARRIER_X_POS) * BallStateMachineBuilder.TRAJECTORY_STEP;
+        isOriginChanged = true;
+      }
+      point.x -= speed;
+      point.y = BallStateMachineBuilder.leftFlyDirection(origin, point.x);
+      return point;
+    };
+    let rollHorHandler = (point: AnglePoint) => {
+      point.x += speed;
+      point.angel += Math.PI / 3;
+      return point;
+    };
+    let rollVertHandler = (point: AnglePoint) => {
+      point.y += speed;
+      point.angel += Math.PI / 3;
+      return point;
+    };
+
+    stateToHandler.set(BallState.FLY_RIGHT, flyRightHandler);
+    stateToHandler.set(BallState.FLY_LEFT, flyLeftHandler);
+    stateToHandler.set(BallState.ROLL_RIGHT, rollHorHandler);
+    stateToHandler.set(BallState.ROLL_DOWN, rollVertHandler);
+
+    return stateToHandler;
+  }
+
+  private static buildStateToComparatorMap(): Map<any, (val1: AnglePoint, val2: AnglePoint) => boolean> {
+    let stateToComparator: Map<any, (val1: AnglePoint, val2: AnglePoint) => boolean> = new Map<any, (val1: AnglePoint, val2: AnglePoint) => boolean>();
+
+    let flyRightComparator = (val1: AnglePoint, val2: AnglePoint) => {
+      return val1.x < val2.x && val1.y < val2.y;
+    };
+    let flyLeftComparator = (val1: AnglePoint, val2: AnglePoint) => {
+      return val1.x > val2.x && val1.y < val2.y;
+    };
+    let rollRightComparator = (val1: AnglePoint, val2: AnglePoint) => {
+      return val1.x < val2.x;
+    };
+    let rollDownComparator = (val1: AnglePoint, val2: AnglePoint) => {
+      return val1.y < val2.y;
+    };
+
+    stateToComparator.set(BallState.FLY_LEFT, flyLeftComparator);
+    stateToComparator.set(BallState.FLY_RIGHT, flyRightComparator);
+    stateToComparator.set(BallState.ROLL_DOWN, rollDownComparator);
+    stateToComparator.set(BallState.ROLL_RIGHT, rollRightComparator);
+
+    return stateToComparator;
+  }
+}

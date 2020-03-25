@@ -3,6 +3,7 @@ import InputTextComponent from "../gameprocessdemonstration/inputtextcomponent/I
 import SyntaxDemonstrationComponentProps from "./SyntaxDemonstrationComponentProps";
 import Global from "../global/Global";
 import InputTextComponentProps from "../gameprocessdemonstration/inputtextcomponent/InputTextComponentProps";
+import CanvasLib from "../lib/CanvasLib";
 
 export default class SyntaxDemonstrationComponent implements ComponentI {
 
@@ -39,7 +40,6 @@ export default class SyntaxDemonstrationComponent implements ComponentI {
       inputProps.inputs = props.inputLines;
       this.textComponentList.push(new InputTextComponent(inputProps));
     } else {
-      debugger;
       let i = 1;
       let curY = (props.canvasHeight - this.INPUT_HEIGHT * props.inputLines.length) / props.inputLines.length;
       for (let text of props.inputLines) {
@@ -59,16 +59,13 @@ export default class SyntaxDemonstrationComponent implements ComponentI {
     if (this.commentList.length > 0) {
       let curY = this.commentY + this.FONT_SIZE;
       for (let comment of this.commentList) {
-        let ctx = canvas.getContext('2d');
-        ctx.font = this.FONT_SIZE + "px KBSticktoIt";
-        ctx.fillStyle = this.TEXT_COLOR;
-        ctx.fillText(comment, this.commentX, curY);
+        CanvasLib.text(canvas, comment, this.commentX, curY, this.FONT_SIZE, Global.MAIN_FONT, this.TEXT_COLOR);
         curY += this.FONT_SIZE;
       }
     }
   }
 
-  render(canvas: any) {
+  public render(canvas: any) {
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     this.renderComment(canvas);

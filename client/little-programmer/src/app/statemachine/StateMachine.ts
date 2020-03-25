@@ -1,4 +1,6 @@
 import StateEntry from "./StateEntry";
+import AnglePoint from "../instructionset/AnglePoint";
+import {BallState} from "../instructionset/BallState";
 
 /**
  *

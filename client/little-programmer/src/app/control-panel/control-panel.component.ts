@@ -2,7 +2,6 @@ import {Component, OnInit, Type} from '@angular/core';
 import {SharedService} from "../SharedService";
 import Level1RootComponent from "../level1/Level1RootComponent";
 import InstructionSetComponent from "../instructionset/InstructionSetComponent";
-import Instruction from "../instructionset/Instruction";
 import ComponentBuilderService from "../ComponentBuilderService";
 import ProgrammingExplanationProps from "../programming-explanation/ProgrammingExplanationProps";
 import PopUpEventProps from "../popup/PopUpEventProps";
@@ -15,6 +14,7 @@ import HintComponent from "../hintpopup/HintComponent";
 import Level1RootComponentProps from "../level1/Level1RootComponentProps";
 import GameProcessDemonstrationProps from "../gameprocessdemonstration/GameProcessDemonstrationProps";
 import SyntaxDemonstrationComponentProps from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponentProps";
+import InstructionSetProps from "../instructionset/InstructionSetProps";
 
 @Component({
   selector: 'app-control-panel',
@@ -116,15 +116,9 @@ export class ControlPanelComponent implements OnInit {
     let list1 = this.createCanvasProps("Help radish visit all purple points!", Level1RootComponent, list1RootComponentProps);
     let popUpProps1 = this.createPopUpProps(list1, CanvasComponent);
 
-    let comment = new Instruction("* write amount of steps", "rgba(187, 116, 251, 0.83)",
-      20);
-    let instructionArr = [
-      new Instruction("moveRight(*)"),
-      new Instruction("moveLeft(*)"),
-      new Instruction("moveDown(*)"),
-      new Instruction("moveUp(*)")];
-
-    let list2RootComponentProps = {instructions: instructionArr, comment: comment};
+    let list2RootComponentProps = new InstructionSetProps();
+    list2RootComponentProps.instructionList = ["moveRight(*)", "moveLeft(*)", "moveDown(*)", "moveUp(*)"];
+    list2RootComponentProps.comment = "* write amount of steps";
     let list2 = this.createCanvasProps("You can use commands:", InstructionSetComponent, list2RootComponentProps);
     let popUpProps2 = this.createPopUpProps(list2, CanvasComponent);
 

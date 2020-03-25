@@ -8,7 +8,7 @@ export default class CanvasLib {
     let r = x + w;
     let b = y + h;
     ctx.strokeStyle = strokeStyle;
-    ctx.fillStyle = fillStyle ? fillStyle : "white";
+    ctx.fillStyle = fillStyle ? fillStyle : "white";x
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
     ctx.lineTo(r - radius, y);

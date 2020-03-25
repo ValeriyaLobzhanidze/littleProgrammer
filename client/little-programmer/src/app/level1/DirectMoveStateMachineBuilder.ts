@@ -8,12 +8,14 @@ import StateMachine from "../statemachine/StateMachine";
 export default class DirectMoveStateMachineBuilder {
 
   public static buildWithoutTranslation(startPoint: Point, stateEntries: StateEntry<Point>[], speed: number = 1.0){
+
     let stateFunctionList: Map<any, (value: Point) => Point> = DirectMoveStateMachineBuilder.getStateFunctionMap(speed);
     let stateComparingFunctionMap: Map<any, (val1: Point, val2: Point) => boolean> = DirectMoveStateMachineBuilder.getComparatorMap();
     return new StateMachine<Point>(startPoint, stateEntries, stateFunctionList, stateComparingFunctionMap);
   }
 
   public static buildWithTranslation(directionList: DirectionValue[], matrixCords: Point[][], speed: number = 1.0): StateMachine<Point> {
+
     let stateList: StateEntry<Point>[] = new PointTranslator(directionList, matrixCords).getDirectPointList();
     let stateFunctionList: Map<any, (value: Point) => Point> = DirectMoveStateMachineBuilder.getStateFunctionMap(speed);
     let stateComparingFunctionMap: Map<any, (val1: Point, val2: Point) => boolean> = DirectMoveStateMachineBuilder.getComparatorMap();
