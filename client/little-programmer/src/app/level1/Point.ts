@@ -1,10 +1,14 @@
-export default class Point {
+export default class Point implements Copyable {
   private _x: number;
   private _y: number;
 
   constructor(x: number, y: number) {
     this._x = x;
     this._y = y;
+  }
+
+  public copy(): Point {
+    return new Point(this._x, this._y);
   }
 
   get x(): number {

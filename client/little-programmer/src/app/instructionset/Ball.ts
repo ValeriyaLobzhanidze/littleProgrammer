@@ -28,11 +28,9 @@ export default class Ball implements ComponentI {
     ctx.restore();
 
     this.updateTickCount();
-    // if (this.tickCount == 0) {
       if (this.stateMachine && this.stateMachine.isActive()) {
         this.curPoint = this.stateMachine.update();
       }
-    //}
   }
 
   private updateTickCount() {

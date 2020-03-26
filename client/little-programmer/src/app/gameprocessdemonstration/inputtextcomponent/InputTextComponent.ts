@@ -1,6 +1,4 @@
 import {ComponentI} from "../../engine/ComponentI";
-import VerticalLineComponent from "../verticalline/VerticalLineComponent";
-import {TextState} from "../textcomponent/TextState";
 import CanvasLib from "../../lib/CanvasLib";
 import Global from "../../global/Global";
 import TextComponent from "../textcomponent/TextComponent";

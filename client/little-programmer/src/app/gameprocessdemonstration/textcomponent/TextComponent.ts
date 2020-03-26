@@ -4,7 +4,6 @@ import AnimatedTextStateMachineBuilder from "./AnimatedTextStateMachineBuilder";
 import {ComponentI} from "../../engine/ComponentI";
 import {SyntaxParser} from "../../SyntaxParser";
 import CanvasLib from "../../lib/CanvasLib";
-import VerticalLineComponent from "../verticalline/VerticalLineComponent";
 
 export default class TextComponent implements ComponentI {
   public static readonly DEFAULT_FONT_SIZE = 30;
@@ -24,7 +23,6 @@ export default class TextComponent implements ComponentI {
   private curTick = 0;
   private stateMachine: StateMachine<string>;
   private readonly isSyntaxValidationNeeded: boolean = false;
-  private verticalLine: VerticalLineComponent;
 
   public activate: () => void;
 

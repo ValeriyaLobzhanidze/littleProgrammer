@@ -1,19 +1,18 @@
 import StateEntry from "./StateEntry";
-import AnglePoint from "../instructionset/AnglePoint";
-import {BallState} from "../instructionset/BallState";
+import Point from "../level1/Point";
 
 /**
  *
  *
  *
  * */
-export default class StateMachine<T> {
+export default class StateMachine<T extends Copyable | string> {
   private readonly stateList: StateEntry<T>[];
   private readonly stateToHandlerMap: Map<any, (value: T) => T>;
   private readonly stateToComparatorMap: Map<any, (val1: T, val2: T) => boolean>;
 
-  private curProp: T;
-  private curShouldReachProp: T;
+  private curPoint: T;
+  private curShouldReachPoint: T;
 
   private curState: any;
   private curHandler: (value: T) => T;
@@ -25,7 +24,7 @@ export default class StateMachine<T> {
 
   constructor(startValue: T, stateList: StateEntry<T>[], stateToHandler: Map<any, (value: T) => T>,
               stateToComparator: Map<any, (val1: T, val2: T) => boolean>) {
-    this.curProp = startValue;
+    this.curPoint = startValue;
     this.stateList = stateList;
     this.stateToHandlerMap = stateToHandler;
     this.stateToComparatorMap = stateToComparator;
@@ -35,7 +34,7 @@ export default class StateMachine<T> {
   private _update() {
     if (this.stateIdx < this.stateList.length) {
       if (this.stateIdx > 0) {
-        this.curProp = this.curShouldReachProp;
+        this.curPoint = this.curShouldReachPoint;
       }
       let stateEntry = this.stateList[this.stateIdx];
       if (stateEntry.endValue == null) {
@@ -45,7 +44,8 @@ export default class StateMachine<T> {
       }
 
       this.curState = stateEntry.state;
-      this.curShouldReachProp = stateEntry.endValue;
+      let copy = stateEntry.endValue instanceof Point ? stateEntry.endValue.copy() : stateEntry.endValue;
+      this.curShouldReachPoint = copy;
       this.curHandler = this.stateToHandlerMap.get(this.curState);
       this.curComparator = this.stateToComparatorMap.get(this.curState);
       this.stateIdx++;
@@ -56,15 +56,15 @@ export default class StateMachine<T> {
 
   public update(): T {
     if (this.isSmActive) {
-      let isActual: boolean = this.curComparator(this.curProp, this.curShouldReachProp);
+      let isActual: boolean = this.curComparator(this.curPoint, this.curShouldReachPoint);
       if (!isActual) {
         this._update();
       }
       if (this.isActive() && this.getNumOfLastErr() == -1) {
-        this.curProp = this.curHandler(this.curProp);
+        this.curPoint = this.curHandler(this.curPoint);
       }
     }
-    return this.curProp;
+    return this.curPoint;
   }
 
   public getNumOfLastErr(): number {

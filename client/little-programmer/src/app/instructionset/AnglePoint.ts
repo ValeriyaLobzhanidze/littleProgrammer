@@ -7,4 +7,8 @@ export default class AnglePoint extends Point {
     super(x, y);
     this.angel = angel;
   }
+
+  copy(): AnglePoint {
+    return new AnglePoint(this.x, this.y, this.angel);
+  }
 }

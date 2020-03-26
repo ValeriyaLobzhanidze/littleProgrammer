@@ -10,7 +10,7 @@ export default class BallStateMachineBuilder {
   private static BARRIER_POINTS: Point[] = [];
 
   public static build(startPoint: AnglePoint, amountOfBarriers: number,
-                      rollRightBarrier: number, fallDownBarrier: number, speed: number = 1.0): StateMachine<AnglePoint> {
+                      rollRightBarrier: number, fallDownBarrier: number, speed: number = 4.0): StateMachine<AnglePoint> {
 
     let stateList: StateEntry<AnglePoint>[] = BallStateMachineBuilder.buildStateList(amountOfBarriers, rollRightBarrier, fallDownBarrier);
     let stateToHandler: Map<any, (value: AnglePoint) => AnglePoint> = BallStateMachineBuilder.buildStateToHandlerMap(speed);
@@ -42,17 +42,21 @@ export default class BallStateMachineBuilder {
     let curYLeftBarrier;
     let rightBarrierPoint;
     let leftBarrierPoint;
+    let constStep = BallStateMachineBuilder.rightFlyDirection(curOrigin, BallStateMachineBuilder.BARRIER_X_POS) * BallStateMachineBuilder.TRAJECTORY_STEP;
 
     for (let i = 0; i < amountOfBarriers - 1; i++) {
       curYRightBarrier = BallStateMachineBuilder.rightFlyDirection(curOrigin, BallStateMachineBuilder.BARRIER_X_POS);
-      curOrigin += curYRightBarrier * BallStateMachineBuilder.TRAJECTORY_STEP;
-      curYLeftBarrier = BallStateMachineBuilder.leftFlyDirection(curOrigin, 0);
-
       rightBarrierPoint = new AnglePoint(BallStateMachineBuilder.BARRIER_X_POS, curYRightBarrier, 0);
+
+      curOrigin += constStep;
+      curYLeftBarrier = BallStateMachineBuilder.leftFlyDirection(curOrigin, 0);
       leftBarrierPoint = new AnglePoint(0, curYLeftBarrier, 0);
 
-      stateList.push(new StateEntry<AnglePoint>(BallState.FLY_RIGHT, rightBarrierPoint));
-      stateList.push(new StateEntry<AnglePoint>(BallState.FLY_LEFT, leftBarrierPoint));
+      let rightState = new StateEntry<AnglePoint>(BallState.FLY_RIGHT, rightBarrierPoint);
+      let leftState = new StateEntry<AnglePoint>(BallState.FLY_LEFT, leftBarrierPoint);
+
+      stateList.push(rightState);
+      stateList.push(leftState);
       BallStateMachineBuilder.BARRIER_POINTS.push(new Point(rightBarrierPoint.x, rightBarrierPoint.y));
     }
 
@@ -62,9 +66,8 @@ export default class BallStateMachineBuilder {
     BallStateMachineBuilder.BARRIER_POINTS.push(new Point(rightBarrierPoint.x, rightBarrierPoint.y));
 
     stateList.push(new StateEntry<AnglePoint>(BallState.ROLL_RIGHT, new AnglePoint(rollBarrierPoint, curYRightBarrier, 0)));
-    stateList.push(new StateEntry<AnglePoint>(BallState.ROLL_DOWN, new AnglePoint(rollBarrierPoint, fallDownPoint, 0)));
+    stateList.push(new StateEntry<AnglePoint>(BallState.ROLL_DOWN, new AnglePoint(rollBarrierPoint, curYRightBarrier + fallDownPoint, 0)));
 
-    console.log(stateList);
     return stateList;
   }
 
@@ -80,12 +83,16 @@ export default class BallStateMachineBuilder {
       point.y = BallStateMachineBuilder.rightFlyDirection(origin, point.x);
       return point;
     };
+
+    let constStep = BallStateMachineBuilder.rightFlyDirection(origin, BallStateMachineBuilder.BARRIER_X_POS) * BallStateMachineBuilder.TRAJECTORY_STEP;
     let flyLeftHandler = (point: AnglePoint) => {
       if (!isOriginChanged) {
-        origin += BallStateMachineBuilder.rightFlyDirection(origin, BallStateMachineBuilder.BARRIER_X_POS) * BallStateMachineBuilder.TRAJECTORY_STEP;
+        origin += constStep;
         isOriginChanged = true;
       }
       point.x -= speed;
+      if(point.x < 0)
+        point.x = 0;
       point.y = BallStateMachineBuilder.leftFlyDirection(origin, point.x);
       return point;
     };
