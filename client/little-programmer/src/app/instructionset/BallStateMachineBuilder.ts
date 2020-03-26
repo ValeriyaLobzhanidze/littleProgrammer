@@ -10,7 +10,7 @@ export default class BallStateMachineBuilder {
   private static BARRIER_POINTS: Point[] = [];
 
   public static build(startPoint: AnglePoint, amountOfBarriers: number,
-                      rollRightBarrier: number, fallDownBarrier: number, speed: number = 4.0): StateMachine<AnglePoint> {
+                      rollRightBarrier: number, fallDownBarrier: number, speed: number = 5.0): StateMachine<AnglePoint> {
 
     let stateList: StateEntry<AnglePoint>[] = BallStateMachineBuilder.buildStateList(amountOfBarriers, rollRightBarrier, fallDownBarrier);
     let stateToHandler: Map<any, (value: AnglePoint) => AnglePoint> = BallStateMachineBuilder.buildStateToHandlerMap(speed);

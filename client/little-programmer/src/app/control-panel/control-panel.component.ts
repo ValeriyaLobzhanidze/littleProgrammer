@@ -118,7 +118,7 @@ export class ControlPanelComponent implements OnInit {
 
     let list2RootComponentProps = new InstructionSetProps();
     list2RootComponentProps.instructionList = ["moveRight(*)", "moveLeft(*)", "moveDown(*)", "moveUp(*)"];
-    list2RootComponentProps.comment = "* write amount of steps";
+    list2RootComponentProps.comment = "* amount of steps";
     let list2 = this.createCanvasProps("You can use commands:", InstructionSetComponent, list2RootComponentProps);
     let popUpProps2 = this.createPopUpProps(list2, CanvasComponent);
 
