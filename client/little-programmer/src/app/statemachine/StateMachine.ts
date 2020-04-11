@@ -74,4 +74,8 @@ export default class StateMachine<T extends Copyable | string> {
   public isActive(): boolean {
     return this.isSmActive;
   }
+
+  public getCurState(): any {
+    return this.curState;
+  }
 }

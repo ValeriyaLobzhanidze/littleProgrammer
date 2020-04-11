@@ -1,15 +1,18 @@
 import {ComponentI} from "../engine/ComponentI";
 import Level1RootComponent from "../level1/Level1RootComponent";
+import Level1RootComponentProps from "../level1/Level1RootComponentProps";
 import MousePointerComponent from "../mousepointer/MousePointerComponent";
 import {DirectMoveFunction} from "../level1/DirectMoveFunction";
+import Point from "../level1/Point";
+import StateEntry from "../statemachine/StateEntry";
 
 export default class HintComponent implements ComponentI {
-  private roundGridComponent;
-  private mousePointer;
+  private roundGridComponent: Level1RootComponent;
+  private mousePointer: MousePointerComponent;
 
-  private curMouseState;
-  private mouseCords;
-  private mouseCordsIdx = 0;
+  private curMouseState: DirectMoveFunction;
+  private mouseCords: Point[];
+  private mouseCordsIdx: number = 0;
 
   constructor() {
 
@@ -17,21 +20,33 @@ export default class HintComponent implements ComponentI {
 
   init(props: any) {
     this.roundGridComponent = new Level1RootComponent();
-    this.roundGridComponent.init({
-      width: props.width, height: props.height, isDefaultRoute: false, sharedService: null, startCanvasX: 0,
-      startCanvasY: 0, isDefaultTarget: false, isPopUpUsed: false
-    });
+    let level1Props = new Level1RootComponentProps();
+    level1Props.canvasWidth = props.width;
+    level1Props.canvasHeight = props.height;
+    level1Props.isDefaultRoute = false;
+    level1Props.isDefaultTarget = true;
+    level1Props.isPopUpUsed = false;
+
+    this.roundGridComponent.init(level1Props);
     let cords = this.roundGridComponent.getCords();
-    let cols = this.roundGridComponent.getAmountOfCols();
-    let rows = this.roundGridComponent.getAmountOfRows();
-    let firstPoint = cords[cols * 2];
-    let secondPoint = cords[cols * 2 + cols - 1];
-    let thirdPoint = cords[cols * rows - 1];
-    let forthPoint = cords[cols * rows - 1 - (cols - 1)];
+    let cols = cords[0].length;
+    let rows = cords.length;
+
+    let firstPoint = new Point(cords[1][0].x, cords[1][0].y);
+    let secondPoint = new Point(cords[1][cols - 1].x, cords[1][cols - 1].y);
+    let thirdPoint = new Point(cords[rows - 1][cols - 1].x, cords[rows - 1][cols - 1].y);
+    let forthPoint = new Point(cords[rows - 1][0].x, cords[rows - 1][0].y);
+
     this.mouseCords = [firstPoint, secondPoint, thirdPoint, forthPoint, firstPoint];
-    // this.mousePointer = new MousePointerComponent(
-    //   [DirectMoveFunction.MOVE_RIGHT, DirectMoveFunction.MOVE_DOWN, DirectMoveFunction.MOVE_LEFT, DirectMoveFunction.MOVE_UP],
-    //   this.mouseCords);
+
+    let stateArr: StateEntry<Point>[] = [];
+    stateArr.push(new StateEntry<Point>(DirectMoveFunction.MOVE_RIGHT, secondPoint));
+    stateArr.push(new StateEntry<Point>(DirectMoveFunction.MOVE_DOWN, thirdPoint));
+    stateArr.push(new StateEntry<Point>(DirectMoveFunction.MOVE_LEFT, forthPoint));
+    stateArr.push(new StateEntry<Point>(DirectMoveFunction.MOVE_UP, firstPoint));
+
+    this.mousePointer = new MousePointerComponent(firstPoint, stateArr);
+
     this.mousePointer.activate();
     this.roundGridComponent.onMouseDown(this.mouseCords[this.mouseCordsIdx].x, this.mouseCords[this.mouseCordsIdx].y);
     this.mouseCordsIdx++;
@@ -52,7 +67,11 @@ export default class HintComponent implements ComponentI {
     this.update();
     this.roundGridComponent.render(canvas);
     this.mousePointer.render(canvas);
-    this.roundGridComponent.onMouseMove(this.mousePointer.getCords().x, this.mousePointer.getCords().y);
+    if (this.mousePointer.isActive()) {
+      this.roundGridComponent.onMouseMove(this.mousePointer.getCurPoint().x, this.mousePointer.getCurPoint().y);
+    } else {
+      this.roundGridComponent.onMouseUp();
+    }
   }
 
 }

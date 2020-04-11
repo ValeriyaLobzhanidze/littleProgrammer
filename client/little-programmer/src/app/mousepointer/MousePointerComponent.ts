@@ -24,7 +24,7 @@ export default class MousePointerComponent implements ComponentI {
     }
   }
 
-  public wasActivated(): boolean{
+  public wasActivated(): boolean {
     return this.activated;
   }
 
@@ -37,10 +37,18 @@ export default class MousePointerComponent implements ComponentI {
     ctx.drawImage(this.image, this.curPoint.x, this.curPoint.y, MousePointerComponent.WIDTH, MousePointerComponent.HEIGHT);
   }
 
-  render(canvas: any) {
+  public render(canvas: any) {
     if (this.stateMachine && this.stateMachine.isActive()) {
       this.curPoint = this.stateMachine.update();
     }
     this._render(canvas);
+  }
+
+  public getState() {
+    return this.stateMachine.getCurState();
+  }
+
+  public getCurPoint(): Point {
+    return this.curPoint;
   }
 }
