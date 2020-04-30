@@ -30,7 +30,9 @@ export class PagerComponent implements OnInit {
     if (viewNo < this.popUpProperties.length) {
       this.componentRef = this.componentBuilder.createComponent(this.popUpProperties[viewNo].type, this.container);
       let props = this.popUpProperties[viewNo].componentProps;
-      (<Init>this.componentRef.instance).init(props);
+      if(props) {
+        (<Init>this.componentRef.instance).init(props);
+      }
     }
   }
 

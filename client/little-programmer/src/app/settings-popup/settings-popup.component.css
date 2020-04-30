@@ -1,0 +1,11 @@
+#container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-content: center;
+
+  color: rgb(99, 177, 117);
+  font-family: KBSticktoIt;
+  font-size: 25px;
+  margin-bottom: 10px;
+}

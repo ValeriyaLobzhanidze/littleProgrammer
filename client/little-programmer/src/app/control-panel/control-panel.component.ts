@@ -15,6 +15,7 @@ import Level1RootComponentProps from "../level1/Level1RootComponentProps";
 import GameProcessDemonstrationProps from "../gameprocessdemonstration/GameProcessDemonstrationProps";
 import SyntaxDemonstrationComponentProps from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponentProps";
 import InstructionSetProps from "../instructionset/InstructionSetProps";
+import {SettingsPopupComponent} from "../settings-popup/settings-popup.component";
 
 @Component({
   selector: 'app-control-panel',
@@ -34,6 +35,11 @@ export class ControlPanelComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  private onSettings(){
+    let popUpProps = this.createPopUpProps(null, SettingsPopupComponent);
+    this.sharedService.showPopUp([popUpProps]);
   }
 
   private onClear() {
