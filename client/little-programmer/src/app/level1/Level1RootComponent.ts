@@ -85,7 +85,7 @@ export default class Level1RootComponent implements ComponentI {
     let popUpPic;
     if (activatedTargets.length === this.targetComponents.length) {
       popUpHeader = "Wonderful!";
-      popUpPic = 'assets/images/clap.png';
+      popUpPic = 'assets/images/happy.png';
     } else {
       let diff = this.targetComponents.length - activatedTargets.length;
       popUpHeader = "You haven't visited " + diff + " point!";
