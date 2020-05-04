@@ -54,4 +54,12 @@ export default class TargetComponent {
     ctx.fillStyle = this.targetPoint.color;
     ctx.fill();
   }
+
+  public changeColor(color: string){
+    this.targetPoint.color = color;
+  }
+
+  public getColor(): string {
+    return this.targetPoint.color;
+  }
 }

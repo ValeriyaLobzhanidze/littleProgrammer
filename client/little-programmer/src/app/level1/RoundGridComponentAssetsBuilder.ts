@@ -10,8 +10,8 @@ export default class RoundGridComponentAssetsBuilder {
   private numOfCols: number;
 
   public build(props: Level1RootComponentProps): RoundGridComponentAssets {
-    let roundCords = this.buildRoundCords(props);
-    let targetRoundCords;
+    let roundCords: CirclePoint[][] = this.buildRoundCords(props);
+    let targetRoundCords: CirclePoint[];
     if (props.isDefaultTarget) {
       targetRoundCords = this.buildTargets(props, roundCords);
     }

@@ -27,7 +27,8 @@ export default class SpriteComponent implements ComponentI {
   private stateMachine: StateMachine<Point>;
   private readonly matrixCords: Point[][];
 
-  private static readonly SPEED = 1.0;
+  private static readonly INIT_SPEED = 1.0;
+  private speed = SpriteComponent.INIT_SPEED;
   private activated: boolean = false;
 
   constructor(props: SpriteComponentProps) {
@@ -67,7 +68,7 @@ export default class SpriteComponent implements ComponentI {
   }
 
   public initStateMachine(route: DirectionValue[]) {
-    this.stateMachine = DirectMoveStateMachineBuilder.buildWithTranslation(route, this.matrixCords, SpriteComponent.SPEED);
+    this.stateMachine = DirectMoveStateMachineBuilder.buildWithTranslation(route, this.matrixCords, this.speed);
     this.activated = true;
   }
 
@@ -115,5 +116,13 @@ export default class SpriteComponent implements ComponentI {
         this.frameIndex = 0;
       }
     }
+  }
+
+  public getSpeed(): number {
+    return this.speed;
+  }
+
+  public setSpeed(speed: number): void {
+    this.speed = speed;
   }
 }

@@ -16,6 +16,7 @@ import GameProcessDemonstrationProps from "../gameprocessdemonstration/GameProce
 import SyntaxDemonstrationComponentProps from "../syntaxdemonstrationpopup/SyntaxDemonstrationComponentProps";
 import InstructionSetProps from "../instructionset/InstructionSetProps";
 import {SettingsPopupComponent} from "../settings-popup/settings-popup.component";
+import RollbackManager from "../RollbackManager";
 
 @Component({
   selector: 'app-control-panel',
@@ -29,7 +30,7 @@ export class ControlPanelComponent implements OnInit {
   private canvasWidth = 350;
   private canvasHeight = 300;
 
-  constructor(sharedService: SharedService, componentBuildService: ComponentBuilderService) {
+  constructor(sharedService: SharedService, componentBuildService: ComponentBuilderService, private rollbackManager: RollbackManager) {
     this.sharedService = sharedService;
     this.componentBuildService = componentBuildService;
   }
@@ -37,7 +38,7 @@ export class ControlPanelComponent implements OnInit {
   ngOnInit() {
   }
 
-  private onSettings(){
+  private onSettings() {
     let popUpProps = this.createPopUpProps(null, SettingsPopupComponent);
     this.sharedService.showPopUp([popUpProps]);
   }
@@ -47,7 +48,7 @@ export class ControlPanelComponent implements OnInit {
   }
 
   private onLastTry() {
-    this.sharedService.showLastAttempt();
+    this.rollbackManager.rollbackToLast();
   }
 
   private createPopUpProps(componentProps: any, type: any): PopUpEventProps {

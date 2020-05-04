@@ -3,8 +3,11 @@ import {Subject} from "rxjs";
 import {DirectMoveFunction} from "./level1/DirectMoveFunction";
 import PopUpEventProps from "./popup/PopUpEventProps";
 import DirectionValue from "./level1/DirectionValue";
+import ParamsToChangeEntry from "./level1/ParamsToChangeEntry";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SharedService {
   private codeLineData: Subject<DirectionValue[]> = new Subject<DirectionValue[]>();
   public codeLineData$ = this.codeLineData.asObservable();
@@ -21,14 +24,14 @@ export class SharedService {
   private clearCodeLinesInputEvent: Subject<void> = new Subject<void>();
   public clearCodeLine$ = this.clearCodeLinesInputEvent.asObservable();
 
-  private showLastTryEvent: Subject<void> = new Subject<void>();
-  public showLastTry$ = this.showLastTryEvent.asObservable();
-
   private clearScoreEvent: Subject<void> = new Subject<void>();
   public clearScore$ = this.clearScoreEvent.asObservable();
 
-  public showLastAttempt() {
-    this.showLastTryEvent.next();
+  private changeLevelParamsEvent: Subject<ParamsToChangeEntry> = new Subject<ParamsToChangeEntry>();
+  public changeLevelParams$ = this.changeLevelParamsEvent.asObservable();
+
+  public changeLevelParams(params: ParamsToChangeEntry) {
+    this.changeLevelParamsEvent.next(params);
   }
 
   public setCodeLineData(data: DirectionValue[]): void {

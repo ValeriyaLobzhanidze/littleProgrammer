@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { CodeViewerComponent } from './code-viewer/code-viewer.component';
 import { CodeLineComponent } from './code-line/code-line.component';
-import {SharedService} from "./SharedService";
 import { ControlPanelComponent } from './control-panel/control-panel.component';
 import { ProgrammingExplanationComponent } from './programming-explanation/programming-explanation.component';
 import { PagePanelComponent } from './page-panel/page-panel.component';
@@ -36,7 +35,7 @@ import { SettingsPopupComponent } from './settings-popup/settings-popup.componen
     AppRoutingModule,
     FormsModule
   ],
-  providers: [SharedService, ComponentBuilderService],
+  providers: [ComponentBuilderService],
   bootstrap: [AppComponent],
   entryComponents: [ProgrammingExplanationComponent, CanvasComponent, SimplePopUpComponent, SettingsPopupComponent]
 })

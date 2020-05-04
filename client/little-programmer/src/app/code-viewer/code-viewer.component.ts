@@ -23,9 +23,9 @@ export class CodeViewerComponent implements OnInit {
   private readonly rootComponent: Level1RootComponent;
   private engine: Engine;
 
-  constructor(sharedService: SharedService) {
+  constructor(sharedService: SharedService, rootLevel: Level1RootComponent) {
     this.sharedService = sharedService;
-    this.rootComponent = new Level1RootComponent();
+    this.rootComponent = rootLevel;
     let props = new Level1RootComponentProps();
     props.sharedService = this.sharedService;
     props.canvasWidth = this.canvasWidth;

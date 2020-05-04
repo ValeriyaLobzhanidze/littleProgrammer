@@ -21,6 +21,14 @@ export default class RoundGridComponent implements ComponentI {
     }
   }
 
+  public changeColor(color: string) {
+    for (let i = 0; i < this.matrixPoints.length; i++) {
+      for (let j = 0; j < this.matrixPoints[0].length; j++) {
+        this.matrixPoints[i][j].color = color;
+      }
+    }
+  }
+
   public getCords(): CirclePoint[][] {
     return this.matrixPoints;
   }

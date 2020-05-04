@@ -3,6 +3,7 @@ import {CodeLineComponent} from "../code-line/code-line.component";
 import {SharedService} from "../SharedService";
 import {DirectMoveFunction} from "../level1/DirectMoveFunction";
 import {SyntaxParser} from "../SyntaxParser";
+import RollbackManager from "../RollbackManager";
 
 @Component({
   selector: 'app-code-editor',
@@ -14,22 +15,17 @@ export class CodeEditorComponent implements OnInit {
   @ViewChildren(CodeLineComponent)
   public codeLines: QueryList<CodeLineComponent>;
 
-  private attemptsCache: string[][] = [];
-
   public isValid = (val: string) => {
     return SyntaxParser.validate(val);
   };
 
   public sharedService: SharedService;
 
-  constructor(sharedService: SharedService) {
+  constructor(sharedService: SharedService, private rollbackManager: RollbackManager) {
     this.sharedService = sharedService;
     this.sharedService.clearCodeLine$.subscribe(() => {
       this.deleteInput();
     });
-    this.sharedService.showLastTry$.subscribe(() => {
-      this.extractFromCache();
-    })
   }
 
   ngOnInit() {
@@ -41,31 +37,17 @@ export class CodeEditorComponent implements OnInit {
 
   }
 
-  private extractFromCache() {
-    if (this.attemptsCache.length > 0) {
-      let lastAttempt = this.attemptsCache[this.attemptsCache.length - 1];
-      this.fillInput(lastAttempt);
-      this.attemptsCache.pop();
-    }
-  }
-
   private fillInput(input: string[]) {
     let idx = 0;
-    this.codeLines.forEach(e => e.codeLine = input[idx++]);
-    this.codeLines.forEach(e => e.onInput());
+    this.codeLines.forEach(e => e.onInput(input[idx++]));
   }
 
   private deleteInput() {
-    this.saveToCache();
+    let input = this.codeLines.map((line) => line.codeLine);
+    this.rollbackManager.saveRollbackOperation(() => {
+      this.fillInput(input)
+    });
     this.codeLines.forEach(elem => elem.codeLine = "");
-  }
-
-  private saveToCache() {
-    let copy = [];
-    for (let line of this.codeLines.toArray()) {
-      copy.push(line.codeLine);
-    }
-    this.attemptsCache.push(copy);
   }
 
   onClick(): void {

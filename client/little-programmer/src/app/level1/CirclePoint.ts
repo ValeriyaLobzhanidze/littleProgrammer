@@ -2,7 +2,7 @@ import Point from "./Point";
 
 export class CirclePoint extends Point {
   private readonly _radius: number;
-  private readonly _color: string;
+  private _color: string;
 
   constructor(x: number, y: number, radius: number, color: string) {
     super(x, y);
@@ -16,6 +16,10 @@ export class CirclePoint extends Point {
 
   get color(): string {
     return this._color;
+  }
+
+  set color(color: string){
+    this._color = color;
   }
 
   public isPointInsideRound(point: Point): boolean {

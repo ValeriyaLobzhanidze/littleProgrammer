@@ -12,7 +12,12 @@ import SimplePopUpProps from "../simple-pop-up/SimplePopUpProps";
 import {SimplePopUpComponent} from "../simple-pop-up/simple-pop-up.component";
 import {SharedService} from "../SharedService";
 import RoundGridComponentAssets from "./RoundGridComponentAssets";
+import ParamsToChangeEntry from "./ParamsToChangeEntry";
+import {Injectable} from "@angular/core";
 
+@Injectable({
+  providedIn: 'root',
+})
 export default class Level1RootComponent implements ComponentI {
   private targetComponents: TargetComponent[] = [];
   private spriteComponent: SpriteComponent;
@@ -42,7 +47,8 @@ export default class Level1RootComponent implements ComponentI {
     this.sharedService = props.sharedService;
     this.isPopUpUsed = props.isPopUpUsed;
     if (this.sharedService) {
-      this.sharedService.closePopUp$.subscribe(() => this.returnToStartCondition())
+      this.sharedService.closePopUp$.subscribe(() => this.returnToStartCondition());
+      this.sharedService.changeLevelParams$.subscribe((params: ParamsToChangeEntry) => this.changeLevelParams(params));
     }
   }
 
@@ -125,5 +131,32 @@ export default class Level1RootComponent implements ComponentI {
 
   public onMouseUp(): void {
     this.dragLineComponent.onMouseUp();
+  }
+
+  private changeTargetColor(color: string): void {
+    for (let tComponent of this.targetComponents) {
+      tComponent.changeColor(color);
+    }
+  }
+
+  private changeLevelParams(params: ParamsToChangeEntry): void {
+    if (params.speed != this.spriteComponent.getSpeed()) {
+      this.spriteComponent.setSpeed(params.speed);
+    }
+
+    debugger;
+
+    if (params.gridColor != this.roundGridComponent.getCords()[0][0].color) {
+      this.roundGridComponent.changeColor(params.gridColor);
+    }
+
+    if (params.targetsColor != this.targetComponents[0].getColor()) {
+      this.changeTargetColor(params.targetsColor);
+    }
+  }
+
+  public getCurLevelParams(): ParamsToChangeEntry {
+    return new ParamsToChangeEntry(this.spriteComponent.getSpeed(),
+      this.roundGridComponent.getCords()[0][0].color, this.targetComponents[0].getColor());
   }
 }

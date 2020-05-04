@@ -13,7 +13,7 @@ export class PagerComponent implements OnInit {
   @ViewChild("container", {static: false, read: ViewContainerRef})
   public container: ViewContainerRef;
   private componentRef: ComponentRef<any>;
-  private buttonValue = "Ok";
+  private buttonValue = "Close";
 
   @Input() public popUpProperties: PopUpEventProps[];
 
