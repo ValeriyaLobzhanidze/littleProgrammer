@@ -1,11 +1,5 @@
 <div id="block_container">
-  <app-code-viewer></app-code-viewer>
-  <app-code-editor></app-code-editor>
-  <app-control-panel></app-control-panel>
-  <div *ngIf="isPopUpRendered" id="pop-up-holder">
-    <app-pager [popUpProperties]="componentPropertiesList"
-               style="margin: auto"></app-pager>
-  </div>
+  <router-outlet></router-outlet>
 </div>
 
 

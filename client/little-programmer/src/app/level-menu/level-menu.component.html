@@ -1,0 +1,11 @@
+<div id="block">
+  <ng-container *ngFor="let i of idList">
+    <div class="level_host">
+      <div class="level">
+        <i class="fa fa-lock fa-3x icon"></i>
+      </div>
+      <div class="name" [routerLink]="['level', i]">Level {{i + 1}}</div>
+    </div>
+  </ng-container>
+</div>
+

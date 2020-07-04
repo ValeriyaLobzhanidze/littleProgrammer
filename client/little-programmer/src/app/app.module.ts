@@ -15,6 +15,8 @@ import { CanvasComponent } from './canvascomponent/canvas.component';
 import { PagerComponent } from './pager/pager.component';
 import { SimplePopUpComponent } from './simple-pop-up/simple-pop-up.component';
 import { SettingsPopupComponent } from './settings-popup/settings-popup.component';
+import { LevelMenuComponent } from './level-menu/level-menu.component';
+import { RootLevelComponent } from './root-level/root-level.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { SettingsPopupComponent } from './settings-popup/settings-popup.componen
     CanvasComponent,
     PagerComponent,
     SimplePopUpComponent,
-    SettingsPopupComponent
+    SettingsPopupComponent,
+    LevelMenuComponent,
+    RootLevelComponent
   ],
   imports: [
     BrowserModule,

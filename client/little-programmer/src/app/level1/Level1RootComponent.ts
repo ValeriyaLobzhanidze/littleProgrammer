@@ -144,8 +144,6 @@ export default class Level1RootComponent implements ComponentI {
       this.spriteComponent.setSpeed(params.speed);
     }
 
-    debugger;
-
     if (params.gridColor != this.roundGridComponent.getCords()[0][0].color) {
       this.roundGridComponent.changeColor(params.gridColor);
     }

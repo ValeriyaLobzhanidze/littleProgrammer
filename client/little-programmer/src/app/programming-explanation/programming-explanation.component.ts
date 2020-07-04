@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Injectable, OnInit, ViewChild, ViewRef} from '@angular/core';
 import {Init} from "../pager/Init";
 
 @Component({
@@ -12,6 +12,9 @@ export class ProgrammingExplanationComponent implements OnInit, Init {
 
   private upperImageSource: string;
   private lowerImageSource: string;
+
+  constructor(){
+  }
 
   public init(props: any) {
     this.upperTextContent = props.upperTextContent || '';

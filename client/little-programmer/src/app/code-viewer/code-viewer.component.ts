@@ -40,7 +40,7 @@ export class CodeViewerComponent implements OnInit {
     this.sharedService.score$.subscribe(() => {
       this.currentScore++;
     });
-    document.addEventListener("DOMContentLoaded", this.load.bind(this));
+    this.load();
     this.sharedService.showPopUp$.subscribe(() => {
       this.rootComponent.unsubscribeFromGettingCodeLines()
     });

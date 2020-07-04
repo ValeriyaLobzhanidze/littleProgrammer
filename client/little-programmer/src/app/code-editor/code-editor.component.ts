@@ -32,10 +32,10 @@ export class CodeEditorComponent implements OnInit {
     this.numbers = Array(15).fill(0).map((x, i) => i);
   }
 
-  @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-
-  }
+  // @HostListener('window:keyup', ['$event'])
+  // keyEvent(event: KeyboardEvent) {
+  //
+  // }
 
   private fillInput(input: string[]) {
     let idx = 0;

@@ -6,6 +6,7 @@ import {
   Type,
   ViewContainerRef
 } from "@angular/core";
+import {ProgrammingExplanationComponent} from "./programming-explanation/programming-explanation.component";
 
 @Injectable()
 export default class ComponentBuilderService {

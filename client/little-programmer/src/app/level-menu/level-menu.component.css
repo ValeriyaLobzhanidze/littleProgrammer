@@ -1,0 +1,52 @@
+@font-face {
+  font-family: "KBSticktoIt";
+  src: url("../../fonts/KBSticktoIt.ttf") format("woff2"),
+  url("../../fonts/Littlemisspriss-LPlW.ttf") format("woff");
+}
+
+#block {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.22);
+  border-radius: 25px;
+  height: 700px;
+  width: 1200px;
+}
+
+.level_host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 260px;
+  height: 260px;
+
+  font-family: KBSticktoIt;
+  font-size: 25px;
+}
+
+.level {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.22);
+  border-radius: 50%;
+  width: 160px;
+  height: 160px;
+}
+
+.icon {
+  color: rgba(128, 128, 128, 0.4);
+}
+
+.name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+
+  color: rgba(128, 128, 128, 0.6);
+}
