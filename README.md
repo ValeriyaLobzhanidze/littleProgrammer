@@ -1,2 +1,2 @@
 # littleProgrammer
-Web-game for helping to investigate some basic concepts of programming fore children. 1 level is finished
+Web-game for helping to investigate some basic concepts of programming for children. 1st level is finished
